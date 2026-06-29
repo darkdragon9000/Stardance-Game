@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://8nc3c7g0n45a"]
+
+[ext_resource type="Texture2D" uid="uid://c5fjpdxcqgw1c" path="res://sprites/grid_black_512x512.png" id="1_cksea"]
+[ext_resource type="PackedScene" uid="uid://ofr3vmp1xo30" path="res://Scenes/player.tscn" id="2_3fw05"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rydr0"]
+size = Vector2(1150.5, 129)
+
+[node name="DebugLvl" type="Node2D" unique_id=1328486983]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=155711550]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=514645355]
+position = Vector2(576, 495.5)
+shape = SubResource("RectangleShape2D_rydr0")
+
+[node name="TextureRect" type="TextureRect" parent="StaticBody2D" unique_id=1184838923]
+offset_top = 431.0
+offset_right = 4608.0
+offset_bottom = 943.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_cksea")
+stretch_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Player" parent="." unique_id=1102123049 instance=ExtResource("2_3fw05")]
+position = Vector2(557, 208)

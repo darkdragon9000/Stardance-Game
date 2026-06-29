@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bdt2i0orujok5"]
+
+[ext_resource type="Script" uid="uid://ssmqm08ljefr" path="res://Scenes/bullet.gd" id="1_oduel"]
+[ext_resource type="Texture2D" uid="uid://cqaf64ya0vo0u" path="res://sprites/icon.svg" id="1_xjght"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oduel"]
+
+[node name="Bullet" type="RigidBody2D" unique_id=97826846]
+collision_layer = 2
+collision_mask = 2
+gravity_scale = 0.0
+script = ExtResource("1_oduel")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1628525374]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_xjght")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1056432901]
+scale = Vector2(3.1599991, 3.1599991)
+shape = SubResource("CircleShape2D_oduel")
+
+[node name="Timer" type="Timer" parent="." unique_id=1870759829]
+wait_time = 3.0
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

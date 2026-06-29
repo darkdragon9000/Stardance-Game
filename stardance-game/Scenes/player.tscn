@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://ofr3vmp1xo30"]
+
+[ext_resource type="Script" uid="uid://bfd33q2wwr408" path="res://Scenes/player.gd" id="1_6t5aa"]
+[ext_resource type="Texture2D" uid="uid://bi15rubjjs7sd" path="res://sprites/output-onlinepngtools.png" id="1_v0iea"]
+[ext_resource type="Texture2D" uid="uid://cc8ruaj7tpmrh" path="res://sprites/New Piskel-1.png (2).png" id="3_vgqql"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cvnsp"]
+radius = 24.0
+height = 66.0
+
+[node name="Player" type="CharacterBody2D" unique_id=1102123049]
+script = ExtResource("1_6t5aa")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1225272244]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_v0iea")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1052509502]
+position = Vector2(0, 7)
+shape = SubResource("CapsuleShape2D_cvnsp")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=276101824]
+position_smoothing_enabled = true
+
+[node name="SlamParticles" type="CPUParticles2D" parent="." unique_id=1801080211]
+emitting = false
+texture = ExtResource("3_vgqql")
+one_shot = true
+explosiveness = 1.0
+direction = Vector2(0, -1)
+spread = 52.0
+initial_velocity_min = 215.0
+initial_velocity_max = 472.0
