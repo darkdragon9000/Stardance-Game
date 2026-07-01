@@ -1,13 +1,21 @@
 extends CharacterBody2D
 
+const ACCELERATION = 1500.0
+const SPEED := 200.0
+const JUMP_VELOCITY := -400.0
+const FRICTION = 1500
 
-const SPEED = 200.0
-const JUMP_VELOCITY = -400.0
-var slam_charges = 1
-var slamming = false
-const slam_power = 100
-var was_in_air = false
+var slam_charges := 1
+var slamming := false
+const slam_power := 100
+var was_in_air := false
+
 var bullet = preload("res://Scenes/bullet.tscn")
+
+var pistol_force := Vector2.ZERO
+var knocked_back := false
+@export var knockback_strength = 130
+
 @onready var SlamParticles: CPUParticles2D = $SlamParticles
 
 func _physics_process(delta: float) -> void:
@@ -26,10 +34,19 @@ func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
-	if direction and not slamming:
-		velocity.x = direction * SPEED
+	if knocked_back:
+		var target_x = pistol_force.x + direction * SPEED * 0.2 #target x velocity: (add pistol force to a fraction of player movement)
+		velocity.x = move_toward(velocity.x, target_x, 6) #ease towards target_x
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		# Normal delta-scaled acceleration/friction
+		if direction and not slamming:
+			velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * delta) #use move_towards to prevent velocity from snapping to speed as soon as recoil ends
+		else:
+			velocity.x = move_toward(velocity.x, 0, FRICTION * delta) #delta-scaled friction to prevent knockback from snapping to 0 once recoil ends
+	#if direction and not slamming and not knocked_back:
+	#	velocity.x = direction * SPEED
+	#elif not direction and not slamming and not knocked_back:
+	#	velocity.x = move_toward(velocity.x, 0, SPEED)
 		
 	#handle ground slam mechanic
 	if not is_on_floor() and slam_charges == 1 and Input.is_action_just_pressed("slam"):
@@ -44,16 +61,28 @@ func _physics_process(delta: float) -> void:
 		was_in_air = false
 		
 	move_and_slide()
+	if Input.is_action_just_pressed("shoot"):
+		shoot()
+		var force_direction = (global_position - get_global_mouse_position()).normalized() #create a vector for the direction of recoil
+		pistol_force = (force_direction * knockback_strength)
+		knocked_back = true
+
 	
-	shoot()
+	velocity += pistol_force
+	
+	#make pistol_force decay
+	pistol_force = pistol_force.move_toward(Vector2.ZERO, 800 * delta)
+	
+	if pistol_force.is_zero_approx():
+		knocked_back = false
+		
+	
 
 func shoot():
-	if Input.is_action_just_pressed("shoot"):
-		print("shoot")
-		var bullet_instance = bullet.instantiate()
-		bullet_instance.rotation = get_angle_to(get_global_mouse_position())
-		bullet_instance.global_position = global_position
-		bullet_instance.add_collision_exception_with(bullet_instance)
-		get_parent().add_child(bullet_instance)
 
-	move_and_slide()
+	print("shoot")
+	var bullet_instance = bullet.instantiate()
+	bullet_instance.rotation = get_angle_to(get_global_mouse_position())
+	bullet_instance.global_position = global_position
+	bullet_instance.add_collision_exception_with(bullet_instance)
+	get_parent().add_child(bullet_instance)

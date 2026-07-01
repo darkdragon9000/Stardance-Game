@@ -2,7 +2,7 @@ extends RigidBody2D
 
 
 # Called when the node enters the scene tree for the first time.
-var bulletSpeed = 700
+var bulletSpeed = 1200
 @onready var timer: Timer = $Timer
 
 func _ready() -> void:
