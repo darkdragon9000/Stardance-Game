@@ -1,13 +1,13 @@
 extends CharacterBody2D
 
 const ACCELERATION = 1500.0
-const SPEED := 200.0
+const SPEED := 300.0
 const JUMP_VELOCITY := -400.0
 const FRICTION = 1500
 
 var slam_charges := 1
 var slamming := false
-const slam_power := 100
+@export var slam_power := 150
 var was_in_air := false
 
 var bullet = preload("res://Scenes/bullet.tscn")
@@ -15,6 +15,10 @@ var bullet = preload("res://Scenes/bullet.tscn")
 var pistol_force := Vector2.ZERO
 var knocked_back := false
 @export var knockback_strength = 130
+
+var grapple = preload("res://Scenes/grapple.tscn")
+
+
 
 @onready var SlamParticles: CPUParticles2D = $SlamParticles
 
@@ -38,11 +42,12 @@ func _physics_process(delta: float) -> void:
 		var target_x = pistol_force.x + direction * SPEED * 0.2 #target x velocity: (add pistol force to a fraction of player movement)
 		velocity.x = move_toward(velocity.x, target_x, 6) #ease towards target_x
 	else:
-		# Normal delta-scaled acceleration/friction
+		# Normal delta-scaled acceleration/friction 
+		# Feels loose and would like to revisit turning being snappier and a more standard platformer base feel
 		if direction and not slamming:
 			velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * delta) #use move_towards to prevent velocity from snapping to speed as soon as recoil ends
 		else:
-			velocity.x = move_toward(velocity.x, 0, FRICTION * delta) #delta-scaled friction to prevent knockback from snapping to 0 once recoil ends
+			velocity.x = move_toward(velocity.x, 0, FRICTION * delta) #delta-scaled friction to prevent knockback from snapping to 0 once recoil ends 
 	#if direction and not slamming and not knocked_back:
 	#	velocity.x = direction * SPEED
 	#elif not direction and not slamming and not knocked_back:
@@ -76,8 +81,12 @@ func _physics_process(delta: float) -> void:
 	if pistol_force.is_zero_approx():
 		knocked_back = false
 		
-	
-
+	if Input.is_action_just_pressed("grapple"):
+		print("grap")
+		var grapple_instance = grapple.instantiate()
+		grapple.target_position = get_global_mouse_position() #makes raycast check toward current mouse position
+		var grapple_anchor = grapple.get_collider() #finds the closest object in the direction of the raycast
+		
 func shoot():
 
 	print("shoot")

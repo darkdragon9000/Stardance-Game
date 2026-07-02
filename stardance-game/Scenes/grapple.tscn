@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dq8dyskr3caai"]
+
+[ext_resource type="Script" uid="uid://cbtwdmcnobaqp" path="res://Scenes/grapple.gd" id="1_mxbbx"]
+
+[node name="Grapple" type="RayCast2D" unique_id=1201883491]
+collide_with_areas = true
+collide_with_bodies = false
+script = ExtResource("1_mxbbx")
