@@ -33,3 +33,9 @@ direction = Vector2(0, -1)
 spread = 52.0
 initial_velocity_min = 215.0
 initial_velocity_max = 472.0
+
+[node name="PistolCooldown" type="Timer" parent="." unique_id=1212803937]
+wait_time = 0.7
+one_shot = true
+
+[connection signal="timeout" from="PistolCooldown" to="." method="_on_pistol_cooldown_timeout"]
