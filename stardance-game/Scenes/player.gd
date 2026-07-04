@@ -1,26 +1,29 @@
 extends CharacterBody2D
-
+#basic movement
 const ACCELERATION = 1500.0
-const SPEED := 300.0
-const JUMP_VELOCITY := -400.0
 const FRICTION = 1500
+@export var SPEED := 300.0
+@export var JUMP_VELOCITY := -400.0
 
+#slam
 var slam_charges := 1
 var slamming := false
-@export var slam_power := 150
 var was_in_air := false
+@export var slam_power := 150
+@onready var SlamParticles: CPUParticles2D = $SlamParticles
 
+#shooting
 var bullet = preload("res://Scenes/bullet.tscn")
 
 var pistol_force := Vector2.ZERO
 var knocked_back := false
 @export var knockback_strength = 130
 
-var grapple = preload("res://Scenes/grapple.tscn")
+#grapple
+@export var grapple_speed = 100
+@export var grapple_range = 300
 
 
-
-@onready var SlamParticles: CPUParticles2D = $SlamParticles
 
 func _physics_process(delta: float) -> void:
 	
@@ -61,7 +64,7 @@ func _physics_process(delta: float) -> void:
 		slamming = true
 		velocity +=  get_gravity() * delta * 50
 	if is_on_floor() and was_in_air:
-		print("debug")
+		print("slam")
 		SlamParticles.emitting = true
 		was_in_air = false
 		
@@ -83,10 +86,16 @@ func _physics_process(delta: float) -> void:
 		
 	if Input.is_action_just_pressed("grapple"):
 		print("grap")
-		var grapple_instance = grapple.instantiate()
-		grapple.target_position = get_global_mouse_position() #makes raycast check toward current mouse position
-		var grapple_anchor = grapple.get_collider() #finds the closest object in the direction of the raycast
-		
+		var space_state = get_world_2d().direct_space_state
+		# use global coordinates, not local to node
+		var grapple_direction = (get_global_mouse_position() - global_position).normalized()  #creates a vector for the direction of the grapple
+		var query = PhysicsRayQueryParameters2D.create(global_position, global_position + (grapple_direction * grapple_range)) #sets start and end point for collison detecting ray
+		query.exclude = [self]
+		var result = space_state.intersect_ray(query)
+		if result:
+			print(result.position)
+			print(result.collider)
+	
 func shoot():
 
 	print("shoot")

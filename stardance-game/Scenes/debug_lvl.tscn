@@ -23,5 +23,22 @@ texture = ExtResource("1_cksea")
 stretch_mode = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=128418698]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1274530596]
+position = Vector2(1525, 300)
+shape = SubResource("RectangleShape2D_rydr0")
+
+[node name="TextureRect" type="TextureRect" parent="StaticBody2D2" unique_id=1771944305]
+offset_left = 948.0
+offset_top = 236.0
+offset_right = 5556.0
+offset_bottom = 748.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_cksea")
+stretch_mode = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="Player" parent="." unique_id=1102123049 instance=ExtResource("2_3fw05")]
 position = Vector2(557, 208)
+grapple_range = 500
