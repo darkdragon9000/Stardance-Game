@@ -15,14 +15,19 @@ var was_in_air := false
 #shooting
 var bullet = preload("res://Scenes/bullet.tscn")
 
+var can_shoot_pistol := true
+var shot_in_air := false
 var pistol_force := Vector2.ZERO
 var knocked_back := false
-@export var knockback_strength = 130
+@export var pistol_strength = 130
+@export var air_decay = 0.75
 
 #grapple
 @export var grapple_speed = 100
 @export var grapple_range = 300
 
+
+@onready var pistol_cooldown: Timer = $PistolCooldown
 
 
 func _physics_process(delta: float) -> void:
@@ -30,6 +35,7 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		slamming = false
 		slam_charges = 1
+		shot_in_air = false
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -62,18 +68,16 @@ func _physics_process(delta: float) -> void:
 		was_in_air = true
 		#make sure you can't double jump or switch directions in a slam, also makes sure slam has unique gravity
 		slamming = true
-		velocity +=  get_gravity() * delta * 50
+		velocity +=  get_gravity() * delta * slam_power
 	if is_on_floor() and was_in_air:
 		print("slam")
 		SlamParticles.emitting = true
 		was_in_air = false
 		
 	move_and_slide()
-	if Input.is_action_just_pressed("shoot"):
+	if Input.is_action_just_pressed("shoot") and can_shoot_pistol:
+		apply_recoil(get_global_mouse_position(), pistol_strength)
 		shoot()
-		var force_direction = (global_position - get_global_mouse_position()).normalized() #create a vector for the direction of recoil
-		pistol_force = (force_direction * knockback_strength)
-		knocked_back = true
 
 	
 	velocity += pistol_force
@@ -97,10 +101,24 @@ func _physics_process(delta: float) -> void:
 			print(result.collider)
 	
 func shoot():
-
+	pistol_cooldown.start()
+	can_shoot_pistol = false
 	print("shoot")
+	if not is_on_floor():
+		shot_in_air = true
 	var bullet_instance = bullet.instantiate()
 	bullet_instance.rotation = get_angle_to(get_global_mouse_position())
 	bullet_instance.global_position = global_position
 	bullet_instance.add_collision_exception_with(bullet_instance)
 	get_parent().add_child(bullet_instance)
+
+func apply_recoil(source_position: Vector2, knockback_strength: float):
+	var force_direction = (global_position - source_position).normalized() #create a vector for the direction of recoil
+	if shot_in_air:
+		pistol_force = (force_direction * (knockback_strength * air_decay)) #air decay makes your second and onwards shot in the air weaker so you can't fly
+	else:
+		pistol_force = (force_direction * knockback_strength)
+	knocked_back = true
+
+func _on_pistol_cooldown_timeout() -> void:
+	can_shoot_pistol = true
