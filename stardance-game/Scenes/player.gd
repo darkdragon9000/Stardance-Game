@@ -13,6 +13,7 @@ var was_in_air := false
 @onready var SlamParticles: CPUParticles2D = $SlamParticles
 
 #shooting
+var gun_equipped := 1
 var bullet = preload("res://Scenes/bullet.tscn")
 
 var can_shoot_pistol := true
@@ -29,6 +30,7 @@ var knocked_back := false
 
 @onready var pistol_cooldown: Timer = $PistolCooldown
 
+@onready var gun_label: Label = $"../CanvasLayer/PanelContainer/MarginContainer/Label"
 
 func _physics_process(delta: float) -> void:
 	
@@ -75,7 +77,7 @@ func _physics_process(delta: float) -> void:
 		was_in_air = false
 		
 	move_and_slide()
-	if Input.is_action_just_pressed("shoot") and can_shoot_pistol:
+	if Input.is_action_just_pressed("shoot") and can_shoot_pistol and gun_equipped == 1:
 		apply_recoil(get_global_mouse_position(), pistol_strength)
 		shoot()
 
@@ -99,6 +101,26 @@ func _physics_process(delta: float) -> void:
 		if result:
 			print(result.position)
 			print(result.collider)
+	
+	if Input.is_action_just_pressed("pistol"):
+		gun_equipped = 1
+	if Input.is_action_just_pressed("rocket launcher"):
+		gun_equipped = 3
+	
+	if Input.is_action_just_pressed("cycle weapons right"):
+		gun_equipped = wrapi(gun_equipped + 1, 1, 4)
+		print(gun_equipped)
+	if Input.is_action_just_pressed("cycle weapons left"):
+		gun_equipped = wrapi(gun_equipped - 1, 1, 4)
+		print(gun_equipped)
+	
+	match gun_equipped:
+		1:
+			gun_label.text = "Pistol"
+		2:
+			gun_label.text = "Shotgun"
+		3:
+			gun_label.text = "Rocket Launcher"
 	
 func shoot():
 	pistol_cooldown.start()
