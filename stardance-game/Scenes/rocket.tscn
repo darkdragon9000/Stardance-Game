@@ -4,16 +4,24 @@
 [ext_resource type="Texture2D" uid="uid://bc4ub0oh8jlco" path="res://sprites/Screenshot_2026-07-05_150206-removebg-preview.png" id="1_wrv6b"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kvp10"]
-radius = 69.00725
+radius = 33.01515
 
 [node name="Rocket" type="RigidBody2D" unique_id=621687221]
+collision_layer = 2
+collision_mask = 3
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 5
 script = ExtResource("1_kvp10")
+bulletSpeed = 750
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=156200338]
-scale = Vector2(0.3, 0.3)
+scale = Vector2(0.15, 0.15)
 texture = ExtResource("1_wrv6b")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1898732409]
 shape = SubResource("CircleShape2D_kvp10")
 
 [node name="Timer" type="Timer" parent="." unique_id=1930094108]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

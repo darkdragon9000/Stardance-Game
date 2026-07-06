@@ -11,6 +11,7 @@ height = 66.0
 [node name="Player" type="CharacterBody2D" unique_id=1102123049]
 script = ExtResource("1_6t5aa")
 slam_power = 149
+rocket_strength = 80
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1225272244]
 scale = Vector2(0.25, 0.25)
@@ -38,4 +39,9 @@ initial_velocity_max = 472.0
 wait_time = 0.7
 one_shot = true
 
+[node name="RocketCooldown" type="Timer" parent="." unique_id=115616237]
+wait_time = 1.4
+one_shot = true
+
 [connection signal="timeout" from="PistolCooldown" to="." method="_on_pistol_cooldown_timeout"]
+[connection signal="timeout" from="RocketCooldown" to="." method="_on_rocket_cooldown_timeout"]

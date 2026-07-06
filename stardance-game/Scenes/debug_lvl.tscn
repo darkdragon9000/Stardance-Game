@@ -41,6 +41,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Player" parent="." unique_id=1102123049 instance=ExtResource("2_3fw05")]
 position = Vector2(557, 208)
+rocket_strength = 110
 grapple_range = 500
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1823001167]

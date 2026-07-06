@@ -1,19 +1,25 @@
 [gd_scene format=3 uid="uid://bdt2i0orujok5"]
 
 [ext_resource type="Script" uid="uid://ssmqm08ljefr" path="res://Scenes/bullet.gd" id="1_oduel"]
-[ext_resource type="Texture2D" uid="uid://cqaf64ya0vo0u" path="res://sprites/icon.svg" id="1_xjght"]
+[ext_resource type="Script" uid="uid://07m1r41035xw" path="res://Scenes/line_2d.gd" id="3_ycag2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oduel"]
 
-[node name="Bullet" type="RigidBody2D" unique_id=97826846]
+[sub_resource type="Curve" id="Curve_6afsh"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.56, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_odot3"]
+offsets = PackedFloat32Array(0, 0.086065575, 0.20081967)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 0.70980394, 1, 1, 0.57254905, 0, 1)
+
+[node name="Bullet" type="RigidBody2D" unique_id=97826846 groups=["pistol_bullets"]]
 collision_layer = 2
 collision_mask = 2
 gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_oduel")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1628525374]
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("1_xjght")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1056432901]
 scale = Vector2(3.1599991, 3.1599991)
@@ -22,4 +28,12 @@ shape = SubResource("CircleShape2D_oduel")
 [node name="Timer" type="Timer" parent="." unique_id=1870759829]
 wait_time = 3.0
 
+[node name="Line2D" type="Line2D" parent="." unique_id=1381297582]
+closed = true
+width_curve = SubResource("Curve_6afsh")
+gradient = SubResource("Gradient_odot3")
+script = ExtResource("3_ycag2")
+length = 10
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

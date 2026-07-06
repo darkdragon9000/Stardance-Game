@@ -15,12 +15,23 @@ var was_in_air := false
 #shooting
 var gun_equipped := 1
 var bullet = preload("res://Scenes/bullet.tscn")
+var rocket = preload("res://Scenes/rocket.tscn")
 
 var can_shoot_pistol := true
+var pistol_shot := false
+var can_shoot_rocket := true
+var rocket_shot := false
 var shot_in_air := false
 var pistol_force := Vector2.ZERO
+var rocket_force := Vector2.ZERO
+var explosion_force := Vector2.ZERO
 var knocked_back := false
+var exploded := false
+
 @export var pistol_strength = 130
+@export var rocket_strength = 130
+@export var explosion_strength = 160
+
 @export var air_decay = 0.75
 
 #grapple
@@ -29,8 +40,12 @@ var knocked_back := false
 
 
 @onready var pistol_cooldown: Timer = $PistolCooldown
+@onready var rocket_cooldown: Timer = $RocketCooldown
 
 @onready var gun_label: Label = $"../CanvasLayer/PanelContainer/MarginContainer/Label"
+
+func _ready() -> void:
+	add_to_group("player")
 
 func _physics_process(delta: float) -> void:
 	
@@ -50,7 +65,7 @@ func _physics_process(delta: float) -> void:
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
 	if knocked_back:
-		var target_x = pistol_force.x + direction * SPEED * 0.2 #target x velocity: (add pistol force to a fraction of player movement)
+		var target_x = (pistol_force.x + rocket_force.x) + direction * SPEED * 0.2 #target x velocity: (add pistol force to a fraction of player movement)
 		velocity.x = move_toward(velocity.x, target_x, 6) #ease towards target_x
 	else:
 		# Normal delta-scaled acceleration/friction 
@@ -78,17 +93,30 @@ func _physics_process(delta: float) -> void:
 		
 	move_and_slide()
 	if Input.is_action_just_pressed("shoot") and can_shoot_pistol and gun_equipped == 1:
-		apply_recoil(get_global_mouse_position(), pistol_strength)
+		apply_recoil(get_global_mouse_position(), pistol_strength, false)
+		shoot()
+	if Input.is_action_just_pressed("shoot") and can_shoot_rocket and gun_equipped == 3:
+		apply_recoil(get_global_mouse_position(), rocket_strength, false)
 		shoot()
 
 	
-	velocity += pistol_force
+	velocity = velocity + (pistol_force + rocket_force + explosion_force)
 	
 	#make pistol_force decay
 	pistol_force = pistol_force.move_toward(Vector2.ZERO, 800 * delta)
+	rocket_force = rocket_force.move_toward(Vector2.ZERO, 800 * delta)
+	explosion_force = explosion_force.move_toward(Vector2.ZERO, 800 * delta)
 	
-	if pistol_force.is_zero_approx():
+	if pistol_force.is_zero_approx() and pistol_shot:
 		knocked_back = false
+		pistol_shot = false
+	if rocket_force.is_zero_approx() and rocket_shot:
+		knocked_back = false
+		rocket_shot = false
+	if explosion_force.is_zero_approx() and exploded:
+		knocked_back = false
+		exploded = false
+	
 		
 	if Input.is_action_just_pressed("grapple"):
 		print("grap")
@@ -123,24 +151,63 @@ func _physics_process(delta: float) -> void:
 			gun_label.text = "Rocket Launcher"
 	
 func shoot():
-	pistol_cooldown.start()
-	can_shoot_pistol = false
-	print("shoot")
-	if not is_on_floor():
-		shot_in_air = true
-	var bullet_instance = bullet.instantiate()
-	bullet_instance.rotation = get_angle_to(get_global_mouse_position())
-	bullet_instance.global_position = global_position
-	bullet_instance.add_collision_exception_with(bullet_instance)
-	get_parent().add_child(bullet_instance)
+	match gun_equipped:
+		1:
+			pistol_cooldown.start()
+			can_shoot_pistol = false
+			print("shoot pistol")
+			if not is_on_floor():
+				shot_in_air = true
+			var bullet_instance = bullet.instantiate()
+			bullet_instance.rotation = get_angle_to(get_global_mouse_position())
+			bullet_instance.global_position = global_position
+			bullet_instance.add_collision_exception_with(bullet_instance)
+			get_parent().add_child(bullet_instance)
+			pistol_shot = true
+			rocket_shot = false
+			exploded = false
+		2:
+			pass #Aarav you better fucking lock in on the shotgun
+		3:
+			rocket_cooldown.start()
+			can_shoot_rocket = false
+			print("shoot rocket")
+			if not is_on_floor():
+				shot_in_air = true
+			var rocket_instance = rocket.instantiate()
+			rocket_instance.rotation = get_angle_to(get_global_mouse_position())
+			rocket_instance.global_position = global_position
+			rocket_instance.add_collision_exception_with(rocket_instance)
+			rocket_instance.add_collision_exception_with(self)
+			get_parent().add_child(rocket_instance)
+			rocket_shot = true
+			pistol_shot = false
+			exploded = false
 
-func apply_recoil(source_position: Vector2, knockback_strength: float):
+func apply_recoil(source_position: Vector2, knockback_strength: float, is_explosion: bool):
 	var force_direction = (global_position - source_position).normalized() #create a vector for the direction of recoil
-	if shot_in_air:
-		pistol_force = (force_direction * (knockback_strength * air_decay)) #air decay makes your second and onwards shot in the air weaker so you can't fly
+	if not is_explosion:
+		match gun_equipped:
+			1:
+				if shot_in_air:
+					pistol_force = (force_direction * (knockback_strength * air_decay)) #air decay makes your second and onwards shot in the air weaker so you can't fly
+				else:
+					pistol_force = (force_direction * knockback_strength)
+				knocked_back = true
+			2:
+				pass
+			3: 
+				rocket_force = (force_direction * knockback_strength)
+				knocked_back = true
 	else:
-		pistol_force = (force_direction * knockback_strength)
-	knocked_back = true
+		explosion_force = (force_direction * knockback_strength)
+		knocked_back = true
+		pistol_shot = false
+		rocket_shot = false
 
 func _on_pistol_cooldown_timeout() -> void:
 	can_shoot_pistol = true
+
+
+func _on_rocket_cooldown_timeout() -> void:
+	can_shoot_rocket = true

@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bvada8hx7m7n"]
+
+[ext_resource type="Script" uid="uid://d2u2j76u1hffs" path="res://explosion.gd" id="1_aayv4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a801j"]
+radius = 303.42215
+
+[node name="Explosion" type="Area2D" unique_id=1442410065]
+script = ExtResource("1_aayv4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2136297748]
+shape = SubResource("CircleShape2D_a801j")
+
+[node name="DespawnTimer" type="Timer" parent="." unique_id=1722575064]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="DespawnTimer" to="." method="_on_despawn_timer_timeout"]
