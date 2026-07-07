@@ -12,6 +12,7 @@ height = 66.0
 script = ExtResource("1_6t5aa")
 slam_power = 149
 rocket_strength = 80
+grapple_range = 350
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1225272244]
 scale = Vector2(0.25, 0.25)
@@ -23,7 +24,7 @@ shape = SubResource("CapsuleShape2D_cvnsp")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=276101824]
 position_smoothing_enabled = true
-position_smoothing_speed = 2.5
+position_smoothing_speed = 1.0
 
 [node name="SlamParticles" type="CPUParticles2D" parent="." unique_id=1801080211]
 emitting = false
@@ -35,6 +36,9 @@ spread = 52.0
 initial_velocity_min = 215.0
 initial_velocity_max = 472.0
 
+[node name="GrappleTime" type="Timer" parent="." unique_id=1383286482]
+one_shot = true
+
 [node name="PistolCooldown" type="Timer" parent="." unique_id=1212803937]
 wait_time = 0.7
 one_shot = true
@@ -43,5 +47,6 @@ one_shot = true
 wait_time = 1.4
 one_shot = true
 
+[connection signal="timeout" from="GrappleTime" to="." method="_on_grapple_time_timeout"]
 [connection signal="timeout" from="PistolCooldown" to="." method="_on_pistol_cooldown_timeout"]
 [connection signal="timeout" from="RocketCooldown" to="." method="_on_rocket_cooldown_timeout"]

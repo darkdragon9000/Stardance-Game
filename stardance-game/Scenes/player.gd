@@ -37,6 +37,9 @@ var exploded := false
 #grapple
 @export var grapple_speed = 100
 @export var grapple_range = 300
+var grapple_line = preload("res://Scenes/grappling_line.tscn")
+var result = null
+@onready var grapple_time = $GrappleTime
 
 
 @onready var pistol_cooldown: Timer = $PistolCooldown
@@ -102,7 +105,7 @@ func _physics_process(delta: float) -> void:
 	
 	velocity = velocity + (pistol_force + rocket_force + explosion_force)
 	
-	#make pistol_force decay
+	#make shot force decay
 	pistol_force = pistol_force.move_toward(Vector2.ZERO, 800 * delta)
 	rocket_force = rocket_force.move_toward(Vector2.ZERO, 800 * delta)
 	explosion_force = explosion_force.move_toward(Vector2.ZERO, 800 * delta)
@@ -125,10 +128,12 @@ func _physics_process(delta: float) -> void:
 		var grapple_direction = (get_global_mouse_position() - global_position).normalized()  #creates a vector for the direction of the grapple
 		var query = PhysicsRayQueryParameters2D.create(global_position, global_position + (grapple_direction * grapple_range)) #sets start and end point for collison detecting ray
 		query.exclude = [self]
-		var result = space_state.intersect_ray(query)
+		result = space_state.intersect_ray(query)
 		if result:
 			print(result.position)
 			print(result.collider)
+			shoot_grapple()
+	
 	
 	if Input.is_action_just_pressed("pistol"):
 		gun_equipped = 1
@@ -211,3 +216,14 @@ func _on_pistol_cooldown_timeout() -> void:
 
 func _on_rocket_cooldown_timeout() -> void:
 	can_shoot_rocket = true
+
+func shoot_grapple():
+	var grappling_line = grapple_line.instantiate()
+	grappling_line.clear_points()
+	grappling_line.add_point(global_position)
+	grappling_line.add_point(result.position)
+	get_parent().add_child(grappling_line)
+	await get_tree().create_timer(.7).timeout
+	grappling_line.queue_free()
+	
+	print("grapple spawned")

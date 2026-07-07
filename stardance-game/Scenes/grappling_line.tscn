@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://br548uwi825m7"]
+
+[node name="Grappling Line" type="Line2D" unique_id=1162408590]
+points = PackedVector2Array(0, 0, 400, 0)
+width = 5.0
+default_color = Color(0.051970966, 0.05197096, 0.05197095, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
