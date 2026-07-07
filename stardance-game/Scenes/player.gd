@@ -74,9 +74,17 @@ func _physics_process(delta: float) -> void:
 		# Normal delta-scaled acceleration/friction 
 		# Feels loose and would like to revisit turning being snappier and a more standard platformer base feel
 		if direction and not slamming:
-			velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * delta) #use move_towards to prevent velocity from snapping to speed as soon as recoil ends
+			if abs(velocity.x) <= SPEED and is_on_floor():  #if going slower than walk speed on the floor use basic movement to make it snappier
+				velocity.x = direction * SPEED
+			elif direction * velocity.x > 0 and abs(velocity.x) >= SPEED and not is_on_floor():
+				pass
+			else:
+				velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * delta) #use move_towards to prevent velocity from snapping to speed as soon as recoil ends
 		else:
-			velocity.x = move_toward(velocity.x, 0, FRICTION * delta) #delta-scaled friction to prevent knockback from snapping to 0 once recoil ends 
+			if abs(velocity.x) <= SPEED and is_on_floor(): 
+				velocity.x = move_toward(velocity.x, 0, SPEED) #if going slower than walk speed there is high friction to make it snappier
+			else:
+				velocity.x = move_toward(velocity.x, 0, FRICTION * delta) #delta-scaled friction to prevent knockback from snapping to 0 once recoil ends 
 	#if direction and not slamming and not knocked_back:
 	#	velocity.x = direction * SPEED
 	#elif not direction and not slamming and not knocked_back:
