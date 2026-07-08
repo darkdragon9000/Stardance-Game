@@ -1,7 +1,7 @@
 extends CharacterBody2D
 #basic movement
 const ACCELERATION = 1500.0
-const FRICTION = 1500
+const FRICTION = 1200
 @export var SPEED := 300.0
 @export var JUMP_VELOCITY := -400.0
 
@@ -16,11 +16,13 @@ var was_in_air := false
 var gun_equipped := 1
 var bullet = preload("res://Scenes/bullet.tscn")
 var rocket = preload("res://Scenes/rocket.tscn")
+var mine = preload("res://Scenes/mine.tscn")
 
 var can_shoot_pistol := true
 var pistol_shot := false
 var can_shoot_rocket := true
 var rocket_shot := false
+var can_shoot_mine := true
 var shot_in_air := false
 var pistol_force := Vector2.ZERO
 var rocket_force := Vector2.ZERO
@@ -30,7 +32,6 @@ var exploded := false
 
 @export var pistol_strength = 130
 @export var rocket_strength = 130
-@export var explosion_strength = 160
 
 @export var air_decay = 0.75
 
@@ -44,6 +45,7 @@ var result = null
 
 @onready var pistol_cooldown: Timer = $PistolCooldown
 @onready var rocket_cooldown: Timer = $RocketCooldown
+@onready var mine_cooldown: Timer = $MineCooldown
 
 @onready var gun_label: Label = $"../CanvasLayer/PanelContainer/MarginContainer/Label"
 
@@ -95,12 +97,16 @@ func _physics_process(delta: float) -> void:
 		was_in_air = false
 		
 	move_and_slide()
-	if Input.is_action_just_pressed("shoot") and can_shoot_pistol and gun_equipped == 1:
-		apply_recoil(get_global_mouse_position(), pistol_strength, false)
-		shoot()
-	if Input.is_action_just_pressed("shoot") and can_shoot_rocket and gun_equipped == 3:
-		apply_recoil(get_global_mouse_position(), rocket_strength, false)
-		shoot()
+	if gun_equipped == 1:
+		if Input.is_action_just_pressed("shoot") and can_shoot_pistol:
+			apply_recoil(get_global_mouse_position(), pistol_strength, false)
+			shoot()
+	if gun_equipped == 3:
+		if Input.is_action_just_pressed("shoot") and can_shoot_rocket:
+			apply_recoil(get_global_mouse_position(), rocket_strength, false)
+			shoot()
+		if Input.is_action_just_pressed("alt shoot") and can_shoot_mine:
+			alt_shoot()
 
 	
 	velocity = velocity + (pistol_force + rocket_force + explosion_force)
@@ -189,6 +195,20 @@ func shoot():
 			pistol_shot = false
 			exploded = false
 
+func alt_shoot():
+	match gun_equipped:
+		1:
+			pass
+		2:
+			pass
+		3:
+			mine_cooldown.start()
+			can_shoot_mine = false
+			var mine_instance = mine.instantiate()
+			mine_instance.global_position = global_position
+			mine_instance.add_collision_exception_with(self)
+			get_parent().add_child(mine_instance)
+
 func apply_recoil(source_position: Vector2, knockback_strength: float, is_explosion: bool):
 	var force_direction = (global_position - source_position).normalized() #create a vector for the direction of recoil
 	if not is_explosion:
@@ -227,3 +247,7 @@ func shoot_grapple():
 	grappling_line.queue_free()
 	
 	print("grapple spawned")
+
+
+func _on_mine_cooldown_timeout() -> void:
+	can_shoot_mine = true
