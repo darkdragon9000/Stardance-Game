@@ -24,7 +24,7 @@ shape = SubResource("CapsuleShape2D_cvnsp")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=276101824]
 position_smoothing_enabled = true
-position_smoothing_speed = 1.0
+position_smoothing_speed = 2.0
 
 [node name="SlamParticles" type="CPUParticles2D" parent="." unique_id=1801080211]
 emitting = false
@@ -48,7 +48,7 @@ wait_time = 1.4
 one_shot = true
 
 [node name="MineCooldown" type="Timer" parent="." unique_id=468334011]
-wait_time = 2.0
+wait_time = 1.2
 one_shot = true
 
 [connection signal="timeout" from="GrappleTime" to="." method="_on_grapple_time_timeout"]

@@ -6,13 +6,16 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_mygvu"]
 radius = 37.054016
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_o84ae"]
+radius = 39.20459
+
 [node name="Mine" type="RigidBody2D" unique_id=1840298819]
 collision_layer = 2
-collision_mask = 2
+collision_mask = 3
 gravity_scale = 0.0
 lock_rotation = true
 contact_monitor = true
-max_contacts_reported = 1
+max_contacts_reported = 5
 linear_damp = 0.5
 script = ExtResource("1_mygvu")
 move_speed = 150
@@ -29,5 +32,11 @@ texture = ExtResource("1_qoe3o")
 wait_time = 3.0
 one_shot = true
 
+[node name="Area2D" type="Area2D" parent="." unique_id=929806121]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1809312112]
+shape = SubResource("CircleShape2D_o84ae")
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="ExplodeTimer" to="." method="_on_explode_timer_timeout"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
