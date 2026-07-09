@@ -8,6 +8,11 @@ size = Vector2(1150.5, 129)
 
 [node name="DebugLvl" type="Node2D" unique_id=1328486983]
 
+[node name="Player" parent="." unique_id=1102123049 instance=ExtResource("2_3fw05")]
+position = Vector2(557, 208)
+rocket_strength = 110
+grapple_range = 500
+
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=155711550]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=514645355]
@@ -57,8 +62,3 @@ size_flags_horizontal = 4
 [node name="Label" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer" unique_id=849027984]
 layout_mode = 2
 text = "Gun"
-
-[node name="Player" parent="." unique_id=1102123049 instance=ExtResource("2_3fw05")]
-position = Vector2(557, 208)
-rocket_strength = 110
-grapple_range = 500

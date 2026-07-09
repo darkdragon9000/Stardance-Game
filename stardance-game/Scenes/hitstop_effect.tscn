@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://c68jt8fhoaplj"]
+
+[ext_resource type="Shader" uid="uid://7hi663t5bbau" path="res://hitstop_shader.gdshader" id="1_2bkp2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2bkp2"]
+shader = ExtResource("1_2bkp2")
+shader_parameter/effect_strength = 1.999999955296
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+
+[node name="HitstopEffect" type="CanvasLayer" unique_id=1734960977]
+layer = 100
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=64512246]
+material = SubResource("ShaderMaterial_2bkp2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

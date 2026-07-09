@@ -26,6 +26,8 @@ func _on_body_entered(body: Node) -> void:
 		var explosion_instance = explosion.instantiate()
 		explosion_instance.global_position = global_position
 		get_parent().add_child(explosion_instance)
+		GameManager.hitstop(0.3)
+		GameManager.screen_shake(10, 0.15)
 		queue_free()
 	if body.is_in_group("rockets"):
 		explode_timer.stop()
@@ -36,6 +38,8 @@ func _on_body_entered(body: Node) -> void:
 		print(explosion_instance.explosion_strength)
 		explosion_instance.scale *= 1.2
 		get_parent().add_child(explosion_instance)
+		GameManager.hitstop(0.3)
+		GameManager.screen_shake(10, 0.15)
 		queue_free()
 
 
@@ -49,6 +53,8 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		print(explosion_instance.explosion_strength)
 		explosion_instance.scale *= 1.2
 		get_parent().add_child(explosion_instance)
+		GameManager.hitstop(0.5)
+		GameManager.screen_shake(20, 0.15)
 		queue_free()
 
 

@@ -22,8 +22,11 @@ func _on_timer_timeout() -> void:
 
 
 func _on_body_entered(body: Node) -> void:
-	if not body.is_in_group("player"):
+	if not body.is_in_group("player") and not body.is_in_group("explosions"):
 		var explosion_instance = explosion.instantiate()
 		explosion_instance.global_position = global_position
 		get_parent().add_child(explosion_instance)
+		if body.is_in_group("mines") or body.is_in_group("pistol_bullets") or body.is_in_group("rockets"):
+			GameManager.hitstop(0.3)
+			GameManager.screen_shake(10, 0.15)
 		queue_free()

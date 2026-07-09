@@ -48,6 +48,7 @@ var result = null
 @onready var mine_cooldown: Timer = $MineCooldown
 
 @onready var gun_label: Label = $"../CanvasLayer/PanelContainer/MarginContainer/Label"
+@onready var camera_2d: Camera2D = $Camera2D
 
 func _ready() -> void:
 	add_to_group("player")
@@ -251,3 +252,6 @@ func shoot_grapple():
 
 func _on_mine_cooldown_timeout() -> void:
 	can_shoot_mine = true
+
+func screen_shake(strength: int, time: float):
+	camera_2d.screen_shake(strength, time)

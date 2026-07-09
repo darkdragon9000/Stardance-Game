@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bfd33q2wwr408" path="res://Scenes/player.gd" id="1_6t5aa"]
 [ext_resource type="Texture2D" uid="uid://bi15rubjjs7sd" path="res://sprites/output-onlinepngtools.png" id="1_v0iea"]
+[ext_resource type="Script" uid="uid://ld3x52ixfok2" path="res://Scenes/camera_2d.gd" id="3_fkybt"]
 [ext_resource type="Texture2D" uid="uid://cc8ruaj7tpmrh" path="res://sprites/New Piskel-1.png (2).png" id="3_vgqql"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cvnsp"]
@@ -25,6 +26,7 @@ shape = SubResource("CapsuleShape2D_cvnsp")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=276101824]
 position_smoothing_enabled = true
 position_smoothing_speed = 2.0
+script = ExtResource("3_fkybt")
 
 [node name="SlamParticles" type="CPUParticles2D" parent="." unique_id=1801080211]
 emitting = false
