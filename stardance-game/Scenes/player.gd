@@ -82,11 +82,12 @@ func _physics_process(delta: float) -> void:
 				velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * delta) #use move_towards to prevent velocity from snapping to speed as soon as recoil ends
 		else:
 			if abs(velocity.x) <= SPEED and is_on_floor(): 
-				velocity.x = move_toward(velocity.x, 0, FRICTION * delta) #if going slower than walk speed there is high friction to make it snappier
+				#velocity.x = move_toward(velocity.x, 0, FRICTION * delta) 
+				velocity.x = move_toward(velocity.x, 0, SPEED)     #if going slower than walk speed there is high friction to make it snappier
 	#if direction and not slamming and not knocked_back:
 	#	velocity.x = direction * SPEED
 	#elif not direction and not slamming and not knocked_back:
-	#	velocity.x = move_toward(velocity.x, 0, SPEED)
+
 		
 	#handle ground slam mechanic
 	if not is_on_floor() and slam_charges == 1 and Input.is_action_just_pressed("slam"):
