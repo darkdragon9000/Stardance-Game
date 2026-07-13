@@ -6,7 +6,7 @@ var hitstop_timer : Timer
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	HitstopEffect.visible = false
-	GameManager.process_mode = Node.PROCESS_MODE_ALWAYS
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	hitstop_timer = Timer.new()
 	hitstop_timer.one_shot = true
 	hitstop_timer.connect("timeout", _on_hitstop_timer_timeout)

@@ -37,11 +37,11 @@ var exploded := false
 
 #grapple
 @export var grapple_speed = 100
-@export var grapple_range = 300
+@export var grapple_range = 700
 var grapple_line = preload("res://Scenes/grappling_line.tscn")
 var result = null
-@onready var grapple_time = $GrappleTime
-
+var is_grappling: bool
+var anchor_point: Vector2
 
 @onready var pistol_cooldown: Timer = $PistolCooldown
 @onready var rocket_cooldown: Timer = $RocketCooldown
@@ -60,7 +60,7 @@ func _physics_process(delta: float) -> void:
 		slam_charges = 1
 		shot_in_air = false
 	# Add the gravity.
-	if not is_on_floor():
+	if not is_on_floor() and not is_grappling:
 		velocity += get_gravity() * delta
 
 	# Handle jump.
@@ -70,7 +70,9 @@ func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
-	if knocked_back:
+	if is_grappling:
+		pass
+	elif knocked_back:
 		var target_x = (pistol_force.x + rocket_force.x) + direction * SPEED * 0.2 #target x velocity: (add pistol force to a fraction of player movement)
 		velocity.x = move_toward(velocity.x, target_x, 6) #ease towards target_x
 	else:
@@ -146,7 +148,20 @@ func _physics_process(delta: float) -> void:
 		if result:
 			print(result.position)
 			print(result.collider)
+			anchor_point = result.position
+			is_grappling = true
 			shoot_grapple()
+	
+	if Input.is_action_just_released("grapple"):
+		is_grappling = false
+		
+	
+	if is_grappling:
+		velocity += ((anchor_point - global_position).normalized()) * grapple_speed * delta
+		if global_position.distance_to(anchor_point) <= 30:
+			velocity = Vector2.ZERO
+			velocity.y += JUMP_VELOCITY
+			is_grappling = false
 	
 	
 	if Input.is_action_just_pressed("pistol"):
@@ -249,7 +264,7 @@ func shoot_grapple():
 	var grappling_line = grapple_line.instantiate()
 	grappling_line.clear_points()
 	grappling_line.add_point(global_position)
-	grappling_line.add_point(result.position)
+	grappling_line.add_point(anchor_point)
 	get_parent().add_child(grappling_line)
 	await get_tree().create_timer(.7).timeout
 	grappling_line.queue_free()

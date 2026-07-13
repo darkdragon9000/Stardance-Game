@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bfd33q2wwr408" path="res://Scenes/player.gd" id="1_6t5aa"]
 [ext_resource type="Texture2D" uid="uid://bi15rubjjs7sd" path="res://sprites/output-onlinepngtools.png" id="1_v0iea"]
-[ext_resource type="Script" uid="uid://ld3x52ixfok2" path="res://Scenes/camera_2d.gd" id="3_fkybt"]
+[ext_resource type="Script" path="res://Scenes/camera_2d.gd" id="3_fkybt"]
 [ext_resource type="Texture2D" uid="uid://cc8ruaj7tpmrh" path="res://sprites/New Piskel-1.png (2).png" id="3_vgqql"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cvnsp"]
@@ -13,7 +13,8 @@ height = 66.0
 script = ExtResource("1_6t5aa")
 slam_power = 149
 rocket_strength = 80
-grapple_range = 350
+grapple_speed = 2000
+grapple_range = 800
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1225272244]
 scale = Vector2(0.25, 0.25)
@@ -38,9 +39,6 @@ spread = 52.0
 initial_velocity_min = 215.0
 initial_velocity_max = 472.0
 
-[node name="GrappleTime" type="Timer" parent="." unique_id=1383286482]
-one_shot = true
-
 [node name="PistolCooldown" type="Timer" parent="." unique_id=1212803937]
 wait_time = 0.7
 one_shot = true
@@ -53,7 +51,6 @@ one_shot = true
 wait_time = 1.2
 one_shot = true
 
-[connection signal="timeout" from="GrappleTime" to="." method="_on_grapple_time_timeout"]
 [connection signal="timeout" from="PistolCooldown" to="." method="_on_pistol_cooldown_timeout"]
 [connection signal="timeout" from="RocketCooldown" to="." method="_on_rocket_cooldown_timeout"]
 [connection signal="timeout" from="MineCooldown" to="." method="_on_mine_cooldown_timeout"]
