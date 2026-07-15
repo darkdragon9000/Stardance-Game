@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bfd33q2wwr408" path="res://Scenes/player.gd" id="1_6t5aa"]
 [ext_resource type="Texture2D" uid="uid://bi15rubjjs7sd" path="res://sprites/output-onlinepngtools.png" id="1_v0iea"]
-[ext_resource type="Script" path="res://Scenes/camera_2d.gd" id="3_fkybt"]
+[ext_resource type="Script" uid="uid://ld3x52ixfok2" path="res://Scenes/camera_2d.gd" id="3_fkybt"]
 [ext_resource type="Texture2D" uid="uid://cc8ruaj7tpmrh" path="res://sprites/New Piskel-1.png (2).png" id="3_vgqql"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cvnsp"]
@@ -51,6 +51,10 @@ one_shot = true
 wait_time = 1.2
 one_shot = true
 
+[node name="GrappleCooldown" type="Timer" parent="." unique_id=1987377852]
+wait_time = 0.7
+
 [connection signal="timeout" from="PistolCooldown" to="." method="_on_pistol_cooldown_timeout"]
 [connection signal="timeout" from="RocketCooldown" to="." method="_on_rocket_cooldown_timeout"]
 [connection signal="timeout" from="MineCooldown" to="." method="_on_mine_cooldown_timeout"]
+[connection signal="timeout" from="GrappleCooldown" to="." method="_on_grapple_cooldown_timeout"]
