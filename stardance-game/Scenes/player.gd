@@ -38,10 +38,11 @@ var exploded := false
 #grapple
 @export var grapple_speed = 100
 @export var grapple_range = 700
-var grapple_line = preload("res://Scenes/grappling_line.tscn")
+var grapple_line = preload("res://Scenes/active_grapple_line.tscn")
 var result = null
 var is_grappling: bool
 var anchor_point: Vector2
+var active_grapple_line = null
 
 @onready var pistol_cooldown: Timer = $PistolCooldown
 @onready var rocket_cooldown: Timer = $RocketCooldown
@@ -112,11 +113,12 @@ func _physics_process(delta: float) -> void:
 			apply_recoil(get_global_mouse_position(), pistol_strength, false)
 			shoot()
 	if gun_equipped == 3:
-		if Input.is_action_just_pressed("shoot") and can_shoot_rocket:
-			apply_recoil(get_global_mouse_position(), rocket_strength, false)
-			shoot()
-		if Input.is_action_just_pressed("alt shoot") and can_shoot_mine:
-			alt_shoot()
+		if not is_grappling: 
+			if Input.is_action_just_pressed("shoot") and can_shoot_rocket:
+				apply_recoil(get_global_mouse_position(), rocket_strength, false)
+				shoot()
+			if Input.is_action_just_pressed("alt shoot") and can_shoot_mine:
+				alt_shoot()
 
 	
 	velocity = velocity + (pistol_force + rocket_force + explosion_force)
@@ -154,7 +156,9 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_just_released("grapple"):
 		is_grappling = false
-		
+		if is_instance_valid(active_grapple_line) == true:
+			active_grapple_line.queue_free()
+			active_grapple_line = null
 	
 	if is_grappling:
 		velocity += ((anchor_point - global_position).normalized()) * grapple_speed * delta
@@ -162,7 +166,12 @@ func _physics_process(delta: float) -> void:
 			velocity = Vector2.ZERO
 			velocity.y += JUMP_VELOCITY
 			is_grappling = false
+			if is_instance_valid(active_grapple_line) == true:
+				active_grapple_line.queue_free()
+				active_grapple_line = null
 	
+	if is_grappling and grapple_line != null:
+		active_grapple_line.set_point_position(0, global_position)
 	
 	if Input.is_action_just_pressed("pistol"):
 		gun_equipped = 1
@@ -237,16 +246,22 @@ func apply_recoil(source_position: Vector2, knockback_strength: float, is_explos
 	if not is_explosion:
 		match gun_equipped:
 			1:
-				if shot_in_air:
+				if is_grappling:
+					pass
+				elif shot_in_air:
 					pistol_force = (force_direction * (knockback_strength * air_decay)) #air decay makes your second and onwards shot in the air weaker so you can't fly
+					knocked_back = true
 				else:
 					pistol_force = (force_direction * knockback_strength)
-				knocked_back = true
+					knocked_back = true
 			2:
 				pass
 			3: 
-				rocket_force = (force_direction * knockback_strength)
-				knocked_back = true
+				if is_grappling:
+					pass
+				else:
+					rocket_force = (force_direction * knockback_strength)
+					knocked_back = true
 	else:
 		explosion_force = (force_direction * knockback_strength)
 		knocked_back = true
@@ -261,13 +276,11 @@ func _on_rocket_cooldown_timeout() -> void:
 	can_shoot_rocket = true
 
 func shoot_grapple():
-	var grappling_line = grapple_line.instantiate()
-	grappling_line.clear_points()
-	grappling_line.add_point(global_position)
-	grappling_line.add_point(anchor_point)
-	get_parent().add_child(grappling_line)
-	await get_tree().create_timer(.7).timeout
-	grappling_line.queue_free()
+	active_grapple_line = grapple_line.instantiate()
+	active_grapple_line.clear_points()
+	active_grapple_line.add_point(global_position)
+	active_grapple_line.add_point(anchor_point)
+	get_parent().add_child(active_grapple_line)
 	
 	print("grapple spawned")
 
