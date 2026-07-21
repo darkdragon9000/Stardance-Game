@@ -182,12 +182,13 @@ func _physics_process(delta: float) -> void:
 				active_grapple_line.remove_point(active_grapple_line.get_point_count() - 1)
 				active_grapple_line.add_point(anchor_point)
 				slam_charges = 0
-			if global_position.distance_to(anchor_point) <= 30:
+			if global_position.distance_to(anchor_point) <= 45:
 				if grapple_type == 1:
 					is_grappling = false
 					clear_grapple()
 				else:
 					velocity = Vector2.ZERO
+					velocity.y += JUMP_VELOCITY
 					velocity += ((anchor_point - global_position).normalized()) * grapple_speed * delta * 25
 					is_grappling = false
 					clear_grapple()
