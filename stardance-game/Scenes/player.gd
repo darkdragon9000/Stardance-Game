@@ -43,6 +43,8 @@ var result = null
 var is_grappling: bool
 var anchor_point: Vector2
 var active_grapple_line = null
+var grapple_type: int
+var grapple_target
 
 @onready var pistol_cooldown: Timer = $PistolCooldown
 @onready var rocket_cooldown: Timer = $RocketCooldown
@@ -71,7 +73,7 @@ func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
-	if is_grappling:
+	if is_grappling and grapple_type != 2:
 		pass
 	elif knocked_back:
 		var target_x = (pistol_force.x + rocket_force.x) + direction * SPEED * 0.2 #target x velocity: (add pistol force to a fraction of player movement)
@@ -87,9 +89,7 @@ func _physics_process(delta: float) -> void:
 			else:
 				velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * delta) #use move_towards to prevent velocity from snapping to speed as soon as recoil ends
 		else:
-			if abs(velocity.x) <= SPEED and is_on_floor(): 
-				#velocity.x = move_toward(velocity.x, 0, FRICTION * delta) 
-				velocity.x = move_toward(velocity.x, 0, SPEED)     #if going slower than walk speed there is high friction to make it snappier
+			velocity.x = move_toward(velocity.x, 0, FRICTION * delta) 
 	#if direction and not slamming and not knocked_back:
 	#	velocity.x = direction * SPEED
 	#elif not direction and not slamming and not knocked_back:
@@ -148,10 +148,17 @@ func _physics_process(delta: float) -> void:
 		query.exclude = [self]
 		result = space_state.intersect_ray(query)
 		if result:
-			print(result.position)
 			print(result.collider)
+			if result.collider.is_in_group("mines"):
+				grapple_type = 1
+			elif result.collider.is_in_group("rockets"):
+				grapple_type = 2
+				grapple_target = result.collider
+			else:
+				grapple_type = 0
 			anchor_point = result.position
 			is_grappling = true
+			
 			shoot_grapple()
 	
 	if Input.is_action_just_released("grapple"):
@@ -161,14 +168,34 @@ func _physics_process(delta: float) -> void:
 			active_grapple_line = null
 	
 	if is_grappling:
-		velocity += ((anchor_point - global_position).normalized()) * grapple_speed * delta
-		if global_position.distance_to(anchor_point) <= 30:
-			velocity = Vector2.ZERO
-			velocity.y += JUMP_VELOCITY
-			is_grappling = false
-			if is_instance_valid(active_grapple_line) == true:
-				active_grapple_line.queue_free()
-				active_grapple_line = null
+		if grapple_type == 2:
+			if is_instance_valid(grapple_target):
+				grapple_target.global_position = grapple_target.global_position.move_toward(global_position, grapple_speed * delta)
+				anchor_point = grapple_target.global_position
+				active_grapple_line.remove_point(active_grapple_line.get_point_count() - 1)
+				active_grapple_line.add_point(anchor_point)
+				if is_instance_valid(active_grapple_line) == true and global_position.distance_to(anchor_point) <= 15 or not is_instance_valid(grapple_target):
+					is_grappling = false
+					active_grapple_line.queue_free()
+					active_grapple_line = null
+		else:
+			velocity += ((anchor_point - global_position).normalized()) * grapple_speed * delta
+			if grapple_type == 1:
+				active_grapple_line.remove_point(active_grapple_line.get_point_count() - 1)
+				active_grapple_line.add_point(anchor_point)
+			if global_position.distance_to(anchor_point) <= 30:
+				if grapple_type == 1:
+					is_grappling = false
+					if is_instance_valid(active_grapple_line) == true:
+						active_grapple_line.queue_free()
+						active_grapple_line = null
+				else:
+					velocity = Vector2.ZERO
+					velocity += ((anchor_point - global_position).normalized()) * grapple_speed * delta * 25
+					is_grappling = false
+					if is_instance_valid(active_grapple_line) == true:
+						active_grapple_line.queue_free()
+						active_grapple_line = null
 	
 	if is_grappling and grapple_line != null:
 		active_grapple_line.set_point_position(0, global_position)
