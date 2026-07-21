@@ -112,6 +112,8 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("shoot") and can_shoot_pistol:
 			apply_recoil(get_global_mouse_position(), pistol_strength, false)
 			shoot()
+		if Input.is_action_just_pressed("alt shoot") and can_shoot_grapple:
+			alt_shoot()
 	if gun_equipped == 3:
 		if not is_grappling: 
 			if Input.is_action_just_pressed("shoot") and can_shoot_rocket:
@@ -140,33 +142,14 @@ func _physics_process(delta: float) -> void:
 	
 		
 	if Input.is_action_just_pressed("grapple") and can_shoot_grapple:
-		print("grapple")
-		can_shoot_grapple = false
-		grapple_cooldown.start()
-		var space_state = get_world_2d().direct_space_state # use global coordinates, not local to node
-		var grapple_direction = (get_global_mouse_position() - global_position).normalized()  #creates a vector for the direction of the grapple
-		var query = PhysicsRayQueryParameters2D.create(global_position, global_position + (grapple_direction * grapple_range)) #sets start and end point for collison detecting ray
-		query.exclude = [self]
-		result = space_state.intersect_ray(query)
-		if result:
-			print(result.collider)
-			if result.collider.is_in_group("mines"):
-				grapple_type = 1
-			elif result.collider.is_in_group("rockets"):
-				grapple_type = 2
-				grapple_target = result.collider
-			else:
-				grapple_type = 0
-			anchor_point = result.position
-			is_grappling = true
-			
-			shoot_grapple()
+		start_grapple()
 	
-	if Input.is_action_just_released("grapple"):
+	if Input.is_action_just_released("grapple") or Input.is_action_just_released("alt shoot"):
 		is_grappling = false
 		clear_grapple()
 	
 	if is_grappling:
+		slam_charges = 0
 		if grapple_type == 2:
 			if is_instance_valid(grapple_target):
 				grapple_target.global_position = grapple_target.global_position.move_toward(global_position, grapple_speed * delta)
@@ -181,19 +164,18 @@ func _physics_process(delta: float) -> void:
 			if grapple_type == 1:
 				active_grapple_line.remove_point(active_grapple_line.get_point_count() - 1)
 				active_grapple_line.add_point(anchor_point)
-				slam_charges = 0
 			if global_position.distance_to(anchor_point) <= 45:
 				if grapple_type == 1:
 					is_grappling = false
 					clear_grapple()
 				else:
-					velocity = Vector2.ZERO
+					velocity.y = 0
 					velocity.y += JUMP_VELOCITY
 					velocity += ((anchor_point - global_position).normalized()) * grapple_speed * delta * 25
 					is_grappling = false
 					clear_grapple()
 	
-	if is_grappling and grapple_line != null:
+	if is_grappling and active_grapple_line != null:
 		active_grapple_line.set_point_position(0, global_position)
 	
 	if Input.is_action_just_pressed("pistol"):
@@ -253,7 +235,7 @@ func shoot():
 func alt_shoot():
 	match gun_equipped:
 		1:
-			pass
+			start_grapple()
 		2:
 			pass
 		3:
@@ -302,6 +284,29 @@ func _on_mine_cooldown_timeout() -> void:
 
 func _on_grapple_cooldown_timeout():
 	can_shoot_grapple = true
+
+func start_grapple():
+	print("grapple")
+	can_shoot_grapple = false
+	grapple_cooldown.start()
+	var space_state = get_world_2d().direct_space_state # use global coordinates, not local to node
+	var grapple_direction = (get_global_mouse_position() - global_position).normalized()  #creates a vector for the direction of the grapple
+	var query = PhysicsRayQueryParameters2D.create(global_position, global_position + (grapple_direction * grapple_range)) #sets start and end point for collison detecting ray
+	query.exclude = [self]
+	result = space_state.intersect_ray(query)
+	if result:
+		print(result.collider)
+		if result.collider.is_in_group("mines"):
+			grapple_type = 1
+		elif result.collider.is_in_group("rockets"):
+			grapple_type = 2
+			grapple_target = result.collider
+		else:
+			grapple_type = 0
+		anchor_point = result.position
+		is_grappling = true
+		
+		shoot_grapple()
 
 func shoot_grapple():
 	active_grapple_line = grapple_line.instantiate()
