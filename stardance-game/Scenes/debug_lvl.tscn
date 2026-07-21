@@ -18,6 +18,7 @@ rocket_strength = 110
 grapple_range = 500
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=155711550]
+collision_layer = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=514645355]
 position = Vector2(576, 495.5)
@@ -33,6 +34,7 @@ stretch_mode = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=128418698]
+collision_layer = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1274530596]
 position = Vector2(1525, 300)
