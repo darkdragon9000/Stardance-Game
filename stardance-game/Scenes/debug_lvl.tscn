@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://c5fjpdxcqgw1c" path="res://sprites/grid_black_512x512.png" id="1_cksea"]
 [ext_resource type="PackedScene" uid="uid://ofr3vmp1xo30" path="res://Scenes/player.tscn" id="2_3fw05"]
-[ext_resource type="PackedScene" uid="uid://bmaov76ywligj" path="res://Scenes/kill_box.tscn" id="3_3fw05"]
+[ext_resource type="PackedScene" path="res://Scenes/kill_box.tscn" id="3_3fw05"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rydr0"]
 size = Vector2(1150.5, 129)
