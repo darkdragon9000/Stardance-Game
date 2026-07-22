@@ -157,6 +157,7 @@ func _physics_process(delta: float) -> void:
 				active_grapple_line.remove_point(active_grapple_line.get_point_count() - 1)
 				active_grapple_line.add_point(anchor_point)
 				if is_instance_valid(active_grapple_line) == true and global_position.distance_to(anchor_point) <= 15 or not is_instance_valid(grapple_target):
+					grapple_target.reset_velocity()
 					is_grappling = false
 					clear_grapple()
 		else:

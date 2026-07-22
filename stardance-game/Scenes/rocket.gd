@@ -6,6 +6,7 @@ extends RigidBody2D
 @onready var timer: Timer = $Timer
 var explosion = preload("res://Scenes/explosion.tscn")
 
+
 func _ready() -> void:
 	linear_velocity = Vector2(bulletSpeed, 0).rotated(rotation)
 	timer.start()
@@ -30,3 +31,6 @@ func _on_body_entered(body: Node) -> void:
 			GameManager.hitstop(0.3)
 			GameManager.screen_shake(10, 0.15)
 		queue_free()
+
+func reset_velocity() -> void:
+	linear_velocity = Vector2(bulletSpeed, 0).rotated(rotation)
