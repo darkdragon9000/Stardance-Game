@@ -40,21 +40,6 @@ scale_min = 0.049999997
 scale_max = 0.25
 scale_curve = SubResource("CurveXYZTexture_61lnk")
 
-[sub_resource type="Curve" id="Curve_61lnk"]
-_limits = [0.0, 4.0, 0.0, 1.0]
-_data = [Vector2(0, 2), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-metadata/_snap_enabled = true
-
-[sub_resource type="CurveTexture" id="CurveTexture_14ogo"]
-curve = SubResource("Curve_61lnk")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_48id1"]
-particle_flag_disable_z = true
-gravity = Vector3(0, 0, 0)
-scale_curve = SubResource("CurveTexture_14ogo")
-color = Color(2.5, 1, 0, 1)
-
 [sub_resource type="Curve" id="Curve_48id1"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.3823164, 0.0, 0, 0]
 point_count = 2
@@ -103,6 +88,21 @@ scale_max = 0.79999995
 scale_curve = SubResource("CurveTexture_48id1")
 color_ramp = SubResource("GradientTexture1D_4okmj")
 
+[sub_resource type="Curve" id="Curve_61lnk"]
+_limits = [0.0, 4.0, 0.0, 1.0]
+_data = [Vector2(0, 2), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
+[sub_resource type="CurveTexture" id="CurveTexture_14ogo"]
+curve = SubResource("Curve_61lnk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_48id1"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_14ogo")
+color = Color(2.5, 1, 0, 1)
+
 [node name="Explosion" type="Area2D" unique_id=1442410065]
 script = ExtResource("1_aayv4")
 
@@ -125,16 +125,6 @@ explosiveness = 1.0
 fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_14ogo")
 
-[node name="Flash" type="GPUParticles2D" parent="Node2D" unique_id=1399483856]
-emitting = false
-amount = 1
-texture = ExtResource("2_4okmj")
-lifetime = 0.2
-one_shot = true
-explosiveness = 1.0
-fixed_fps = 60
-process_material = SubResource("ParticleProcessMaterial_48id1")
-
 [node name="Smoke" type="GPUParticles2D" parent="Node2D" unique_id=1992166921]
 emitting = false
 amount = 10
@@ -154,6 +144,16 @@ one_shot = true
 explosiveness = 1.0
 fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_h4yxj")
+
+[node name="Flash" type="GPUParticles2D" parent="Node2D" unique_id=1399483856]
+emitting = false
+amount = 1
+texture = ExtResource("2_4okmj")
+lifetime = 0.2
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_48id1")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="DespawnTimer" to="." method="_on_despawn_timer_timeout"]
