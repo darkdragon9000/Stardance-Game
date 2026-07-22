@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bmaov76ywligj"]
+
+[ext_resource type="Script" uid="uid://btyowawvwhi57" path="res://Scenes/kill_box.gd" id="1_okvdv"]
+
+[node name="kill_box" type="Area2D" unique_id=1011084385]
+script = ExtResource("1_okvdv")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
