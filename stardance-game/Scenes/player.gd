@@ -163,6 +163,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity += ((anchor_point - global_position).normalized()) * grapple_speed * delta
 			if grapple_type == 1:
+				anchor_point = grapple_target.global_position
 				active_grapple_line.remove_point(active_grapple_line.get_point_count() - 1)
 				active_grapple_line.add_point(anchor_point)
 			if global_position.distance_to(anchor_point) <= 45:
@@ -299,6 +300,7 @@ func start_grapple():
 		print(result.collider)
 		if result.collider.is_in_group("mines"):
 			grapple_type = 1
+			grapple_target = result.collider
 		elif result.collider.is_in_group("rockets"):
 			grapple_type = 2
 			grapple_target = result.collider
