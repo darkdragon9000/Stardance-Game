@@ -6,11 +6,13 @@ var canvas_layer : CanvasLayer
 @onready var debug_lvl: Node = $"."
 @onready var player: CharacterBody2D = get_node("/root/DebugLvl/Player")
 var error_popup = preload("res://Scenes/texture_rect.tscn")
-var can_popup := true
 var popup_rep := 0
 var reloaded := false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	get_tree().paused = false
+	popup_rep = 0
+	reloaded = false
 	HitstopEffect.visible = false
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	hitstop_timer = Timer.new()
@@ -47,8 +49,10 @@ func _on_popup_timer_timeout() -> void:
 		popup_timer.wait_time *= 0.8
 		popup_rep += 1
 	else:
+		popup_timer.stop()
 		reloaded = true
-		get_tree().reload_current_scene()
+		get_tree().paused = false
+		get_tree().call_deferred("reload_current_scene")
 
 func screen_shake(strength: int, time: float):
 	player.screen_shake(strength, time)
