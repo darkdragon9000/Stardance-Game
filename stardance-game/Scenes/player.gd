@@ -18,6 +18,8 @@ var bullet = preload("res://Scenes/bullet.tscn")
 var rocket = preload("res://Scenes/rocket.tscn")
 var mine = preload("res://Scenes/mine.tscn")
 
+var error_popup = preload("res://Scenes/texture_rect.tscn")
+
 var can_shoot_pistol := true
 var pistol_shot := false
 var can_shoot_rocket := true
@@ -326,3 +328,4 @@ func clear_grapple():
 
 func screen_shake(strength: int, time: float):
 	camera_2d.screen_shake(strength, time)
+		
