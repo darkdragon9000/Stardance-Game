@@ -43,6 +43,9 @@ initial_velocity_max = 472.0
 wait_time = 0.7
 one_shot = true
 
+[node name="ShotgunCooldown" type="Timer" parent="." unique_id=1129978184]
+one_shot = true
+
 [node name="RocketCooldown" type="Timer" parent="." unique_id=115616237]
 wait_time = 1.4
 one_shot = true
@@ -55,6 +58,7 @@ one_shot = true
 wait_time = 0.7
 
 [connection signal="timeout" from="PistolCooldown" to="." method="_on_pistol_cooldown_timeout"]
+[connection signal="timeout" from="ShotgunCooldown" to="." method="_on_shotgun_cooldown_timeout"]
 [connection signal="timeout" from="RocketCooldown" to="." method="_on_rocket_cooldown_timeout"]
 [connection signal="timeout" from="MineCooldown" to="." method="_on_mine_cooldown_timeout"]
 [connection signal="timeout" from="GrappleCooldown" to="." method="_on_grapple_cooldown_timeout"]
