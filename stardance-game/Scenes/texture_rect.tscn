@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://b3qmxltqmolp2"]
+
+[ext_resource type="Script" uid="uid://dxxsuaqtbv0n2" path="res://error_popup.gd" id="1_gkgfv"]
+
+[node name="TextureRect" type="TextureRect" unique_id=214337945]
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_gkgfv")

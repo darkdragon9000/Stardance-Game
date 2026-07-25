@@ -19,6 +19,8 @@ var shotgun_shell = preload("res://Scenes/shotgun_shell.tscn")
 var rocket = preload("res://Scenes/rocket.tscn")
 var mine = preload("res://Scenes/mine.tscn")
 
+var error_popup = preload("res://Scenes/texture_rect.tscn")
+
 var can_shoot_pistol := true
 var pistol_shot := false
 var can_shoot_shotgun = true
@@ -172,11 +174,13 @@ func _physics_process(delta: float) -> void:
 				active_grapple_line.remove_point(active_grapple_line.get_point_count() - 1)
 				active_grapple_line.add_point(anchor_point)
 				if is_instance_valid(active_grapple_line) == true and global_position.distance_to(anchor_point) <= 15 or not is_instance_valid(grapple_target):
+					grapple_target.reset_velocity()
 					is_grappling = false
 					clear_grapple()
 		else:
 			velocity += ((anchor_point - global_position).normalized()) * grapple_speed * delta
 			if grapple_type == 1:
+				anchor_point = grapple_target.global_position
 				active_grapple_line.remove_point(active_grapple_line.get_point_count() - 1)
 				active_grapple_line.add_point(anchor_point)
 			if global_position.distance_to(anchor_point) <= 45:
@@ -337,6 +341,7 @@ func start_grapple():
 		print(result.collider)
 		if result.collider.is_in_group("mines"):
 			grapple_type = 1
+			grapple_target = result.collider
 		elif result.collider.is_in_group("rockets"):
 			grapple_type = 2
 			grapple_target = result.collider
@@ -362,3 +367,4 @@ func clear_grapple():
 
 func screen_shake(strength: int, time: float):
 	camera_2d.screen_shake(strength, time)
+		
