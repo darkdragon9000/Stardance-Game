@@ -185,6 +185,8 @@ func _physics_process(delta: float) -> void:
 				anchor_point = grapple_target.global_position
 				active_grapple_line.remove_point(active_grapple_line.get_point_count() - 1)
 				active_grapple_line.add_point(anchor_point)
+				grapple_target.explode_timer.stop()
+				grapple_target.explode_timer.start()
 			if global_position.distance_to(anchor_point) <= 45:
 				if grapple_type == 1:
 					is_grappling = false

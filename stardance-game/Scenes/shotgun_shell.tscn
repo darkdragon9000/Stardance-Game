@@ -1,15 +1,96 @@
 [gd_scene format=3 uid="uid://ct76pafibxs3f"]
 
 [ext_resource type="Script" uid="uid://cg8mwnoxrajo5" path="res://Scenes/shotgun_shell.gd" id="1_rvduq"]
+[ext_resource type="Texture2D" uid="uid://bnjtwhbuh6hbn" path="res://sprites/GAP_EasyExplosions_Textures/Untitled drawing (5).png" id="2_qiie7"]
+[ext_resource type="Texture2D" uid="uid://drr21iurakhkx" path="res://sprites/GAP_EasyExplosions_Textures/Flare00.PNG" id="2_rcb08"]
 
-[sub_resource type="Gradient" id="Gradient_rvduq"]
-colors = PackedColorArray(0.92535293, 0.9253529, 0.9253527, 1, 0.51718444, 0.5171845, 0.51718444, 0.5647059)
+[sub_resource type="Curve" id="Curve_2uc5a"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.3823164, 0.0, 0, 0]
+point_count = 2
 
-[node name="Shotgun_Shell" type="Node2D" unique_id=1645399334]
+[sub_resource type="CurveTexture" id="CurveTexture_h4yxj"]
+curve = SubResource("Curve_2uc5a")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4ahsk"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.099999994
+scale_max = 0.25
+scale_curve = SubResource("CurveTexture_h4yxj")
+color = Color(0.55, 0.55, 0.55, 1)
+
+[sub_resource type="CurveTexture" id="CurveTexture_us4bk"]
+
+[sub_resource type="Curve" id="Curve_rcb08"]
+_data = [Vector2(0, 0.2534247), 0.0, 0.0, 0, 0, Vector2(1, 0.08679247), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_kocue"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 2.0136988), 0.0, 0.0, 0, 0, Vector2(1, 0.5320754), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_mcoxj"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_2uc5a"]
+curve_x = SubResource("Curve_rcb08")
+curve_y = SubResource("Curve_kocue")
+curve_z = SubResource("Curve_mcoxj")
+
+[sub_resource type="Curve" id="Curve_ir2dq"]
+_limits = [0.0, 5000.0, 0.0, 1.0]
+_data = [Vector2(0, 5000), 0.0, 0.0, 0, 0, Vector2(1, 1679.2451), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_eaeyf"]
+curve = SubResource("Curve_ir2dq")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5vwxf"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+spread = 30.0
+initial_velocity_min = 2000.0
+initial_velocity_max = 5000.0
+velocity_limit_curve = SubResource("CurveTexture_eaeyf")
+gravity = Vector3(0, -20, 0)
+damping_curve = SubResource("CurveTexture_us4bk")
+scale_min = 0.099999994
+scale_max = 0.19999999
+scale_curve = SubResource("CurveXYZTexture_2uc5a")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rcb08"]
+radius = 100.0
+
+[node name="Shotgun_Shell" type="Node2D" unique_id=1645399334 groups=["shotgun_shells"]]
 script = ExtResource("1_rvduq")
 
+[node name="Smoke" type="GPUParticles2D" parent="." unique_id=503895040]
+emitting = false
+amount = 10
+texture = ExtResource("2_rcb08")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_4ahsk")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1538883256]
+emitting = false
+amount = 12
+texture = ExtResource("2_qiie7")
+lifetime = 0.09999999999999999
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_5vwxf")
+
 [node name="Timer" type="Timer" parent="." unique_id=934771080]
-wait_time = 3.0
+wait_time = 0.2
 one_shot = true
 autostart = true
 
@@ -47,21 +128,10 @@ rotation = -0.36651915
 enabled = false
 target_position = Vector2(200, 0)
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=479267539]
-emitting = false
-amount = 20
-lifetime = 0.25
-one_shot = true
-direction = Vector2(0, 0)
-spread = 25.0
-gravity = Vector2(0, 100)
-initial_velocity_min = 750.0
-initial_velocity_max = 750.0
-damping_min = 50.0
-damping_max = 50.0
-scale_amount_min = 2.0
-scale_amount_max = 2.0
-color = Color(0.74558026, 0.7455802, 0.7455802, 1)
-color_ramp = SubResource("Gradient_rvduq")
+[node name="Area2D" type="Area2D" parent="." unique_id=390851752]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=300895428]
+position = Vector2(100, -4)
+shape = SubResource("CircleShape2D_rcb08")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

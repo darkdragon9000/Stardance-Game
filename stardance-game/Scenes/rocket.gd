@@ -29,8 +29,18 @@ func _on_body_entered(body: Node) -> void:
 		get_parent().add_child(explosion_instance)
 		if body.is_in_group("mines") or body.is_in_group("pistol_bullets") or body.is_in_group("rockets"):
 			GameManager.hitstop(0.3)
-			GameManager.screen_shake(10, 0.15)
 		queue_free()
 
 func reset_velocity() -> void:
 	linear_velocity = Vector2(bulletSpeed, 0).rotated(rotation)
+
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	if area.is_in_group("shotgun_shells") or area.is_in_group("explosions"):
+		var explosion_instance = explosion.instantiate()
+		explosion_instance.global_position = global_position
+		explosion_instance.scale *= 1.2
+		explosion_instance.explosion_strength *= 1.2
+		get_parent().add_child(explosion_instance)
+		GameManager.hitstop(0.3)
+	queue_free()
