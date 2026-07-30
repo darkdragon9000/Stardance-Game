@@ -22,7 +22,13 @@ scale_max = 0.25
 scale_curve = SubResource("CurveTexture_h4yxj")
 color = Color(0.55, 0.55, 0.55, 1)
 
+[sub_resource type="Curve" id="Curve_5vwxf"]
+_limits = [0.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="CurveTexture" id="CurveTexture_us4bk"]
+curve = SubResource("Curve_5vwxf")
 
 [sub_resource type="Curve" id="Curve_rcb08"]
 _data = [Vector2(0, 0.2534247), 0.0, 0.0, 0, 0, Vector2(1, 0.08679247), 0.0, 0.0, 0, 0]
@@ -63,13 +69,14 @@ scale_min = 0.099999994
 scale_max = 0.19999999
 scale_curve = SubResource("CurveXYZTexture_2uc5a")
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_rcb08"]
-radius = 100.0
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_4ahsk"]
+points = PackedVector2Array(0, 0, 185, -90, 223, 0, 185, 90)
 
 [node name="Shotgun_Shell" type="Node2D" unique_id=1645399334 groups=["shotgun_shells"]]
 script = ExtResource("1_rvduq")
 
 [node name="Smoke" type="GPUParticles2D" parent="." unique_id=503895040]
+position = Vector2(30, 0)
 emitting = false
 amount = 10
 texture = ExtResource("2_rcb08")
@@ -83,7 +90,7 @@ process_material = SubResource("ParticleProcessMaterial_4ahsk")
 emitting = false
 amount = 12
 texture = ExtResource("2_qiie7")
-lifetime = 0.09999999999999999
+lifetime = 0.1
 one_shot = true
 explosiveness = 1.0
 fixed_fps = 60
@@ -131,7 +138,6 @@ target_position = Vector2(200, 0)
 [node name="Area2D" type="Area2D" parent="." unique_id=390851752]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=300895428]
-position = Vector2(100, -4)
-shape = SubResource("CircleShape2D_rcb08")
+shape = SubResource("ConvexPolygonShape2D_4ahsk")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

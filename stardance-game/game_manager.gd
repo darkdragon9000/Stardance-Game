@@ -4,7 +4,7 @@ var hitstop_timer : Timer
 var popup_timer : Timer
 var canvas_layer : CanvasLayer
 @onready var debug_lvl: Node = $"."
-@onready var player: CharacterBody2D = get_node("/root/DebugLvl/Player")
+var player: CharacterBody2D
 var error_popup = preload("res://Scenes/texture_rect.tscn")
 var popup_rep := 0
 var reloaded := false
@@ -31,6 +31,10 @@ func _ready() -> void:
 	add_child(popup_timer)
 	canvas_layer = CanvasLayer.new()
 	add_child(canvas_layer)
+
+
+func set_player(current_player: CharacterBody2D) -> void:
+	player = current_player
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -78,6 +82,7 @@ func _on_popup_timer_timeout() -> void:
 		reloaded = true
 		get_tree().paused = false
 		get_tree().call_deferred("reload_current_scene")
+		
 
 func screen_shake(strength: int, time: float):
 	player.screen_shake(strength, time)

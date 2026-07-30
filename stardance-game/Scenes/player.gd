@@ -68,6 +68,7 @@ var grapple_target
 @onready var camera_2d: Camera2D = $Camera2D
 
 func _ready() -> void:
+	GameManager.set_player(self)
 	add_to_group("player")
 
 func _physics_process(delta: float) -> void:
