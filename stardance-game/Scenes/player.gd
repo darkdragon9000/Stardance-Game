@@ -31,6 +31,7 @@ var can_shoot_mine := true
 var shot_in_air := false
 var pistol_force := Vector2.ZERO
 var shotgun_force := Vector2.ZERO
+var shotgun_power
 var rocket_force := Vector2.ZERO
 var explosion_force := Vector2.ZERO
 var knocked_back := false
@@ -38,7 +39,9 @@ var exploded := false
 
 @export var pistol_strength = 130
 @export var shotgun_strength = 150
+@export var shotgun_air_floor = 0.75
 @export var rocket_strength = 130
+
 
 @export var air_decay = 0.75
 
@@ -104,7 +107,7 @@ func _physics_process(delta: float) -> void:
 
 		
 	#handle ground slam mechanic
-	if not is_on_floor() and slam_charges == 1 and Input.is_action_just_pressed("slam"):
+	if not is_on_floor() and slam_charges == 1 and Input.is_action_just_pressed("slam") and not is_grappling:
 		slam_charges = 0
 		was_in_air = true
 		#make sure you can't double jump or switch directions in a slam, also makes sure slam has unique gravity
@@ -125,8 +128,8 @@ func _physics_process(delta: float) -> void:
 	if gun_equipped == 2:
 		if not is_grappling:
 			if Input.is_action_just_pressed("shoot") and can_shoot_shotgun:
-				apply_recoil(get_global_mouse_position(), shotgun_strength, false)
 				shoot()
+				apply_recoil(get_global_mouse_position(), shotgun_power, false)
 	if gun_equipped == 3:
 		if not is_grappling: 
 			if Input.is_action_just_pressed("shoot") and can_shoot_rocket:
@@ -166,7 +169,6 @@ func _physics_process(delta: float) -> void:
 		clear_grapple()
 	
 	if is_grappling:
-		slam_charges = 0
 		if grapple_type == 2:
 			if is_instance_valid(grapple_target):
 				grapple_target.global_position = grapple_target.global_position.move_toward(global_position, grapple_speed * delta)
@@ -246,6 +248,7 @@ func shoot():
 			shotgun_shell_instance.rotation = get_angle_to(get_global_mouse_position())
 			shotgun_shell_instance.global_position = global_position
 			get_parent().add_child(shotgun_shell_instance)
+			shotgun_power = (shotgun_air_floor + shotgun_shell_instance.fire() * (1 - shotgun_air_floor)) * shotgun_strength
 			shotgun_shot = true
 			pistol_shot = false
 			rocket_shot = false

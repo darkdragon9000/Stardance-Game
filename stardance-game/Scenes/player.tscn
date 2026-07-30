@@ -12,6 +12,7 @@ height = 66.0
 [node name="Player" type="CharacterBody2D" unique_id=1102123049]
 script = ExtResource("1_6t5aa")
 slam_power = 149
+shotgun_air_floor = 0.6
 rocket_strength = 80
 grapple_speed = 2000
 grapple_range = 800

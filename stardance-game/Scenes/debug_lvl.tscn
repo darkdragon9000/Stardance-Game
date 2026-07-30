@@ -22,6 +22,7 @@ glow_hdr_threshold = 0.0
 
 [node name="Player" parent="." unique_id=1102123049 instance=ExtResource("2_3fw05")]
 position = Vector2(558, 392)
+shotgun_strength = 200
 rocket_strength = 110
 grapple_range = 500
 

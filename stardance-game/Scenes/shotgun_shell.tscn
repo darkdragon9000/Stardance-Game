@@ -2,50 +2,66 @@
 
 [ext_resource type="Script" uid="uid://cg8mwnoxrajo5" path="res://Scenes/shotgun_shell.gd" id="1_rvduq"]
 
+[sub_resource type="Gradient" id="Gradient_rvduq"]
+colors = PackedColorArray(0.92535293, 0.9253529, 0.9253527, 1, 0.51718444, 0.5171845, 0.51718444, 0.5647059)
+
 [node name="Shotgun_Shell" type="Node2D" unique_id=1645399334]
 script = ExtResource("1_rvduq")
+
+[node name="Timer" type="Timer" parent="." unique_id=934771080]
+wait_time = 3.0
+one_shot = true
+autostart = true
 
 [node name="RayCast2D" type="RayCast2D" parent="." unique_id=820613201]
 enabled = false
 target_position = Vector2(200, 0)
-collision_mask = 4
 
 [node name="RayCast2D2" type="RayCast2D" parent="." unique_id=1570065594]
 rotation = 0.12217305
 enabled = false
 target_position = Vector2(200, 0)
-collision_mask = 4
 
 [node name="RayCast2D3" type="RayCast2D" parent="." unique_id=33951282]
 rotation = 0.2443461
 enabled = false
 target_position = Vector2(200, 0)
-collision_mask = 4
 
 [node name="RayCast2D4" type="RayCast2D" parent="." unique_id=1465801278]
 rotation = 0.36651915
 enabled = false
 target_position = Vector2(200, 0)
-collision_mask = 4
 
 [node name="RayCast2D5" type="RayCast2D" parent="." unique_id=1769409708]
 rotation = -0.12217305
 enabled = false
 target_position = Vector2(200, 0)
-collision_mask = 4
 
 [node name="RayCast2D6" type="RayCast2D" parent="." unique_id=194801795]
 rotation = -0.2443461
 enabled = false
 target_position = Vector2(200, 0)
-collision_mask = 4
 
 [node name="RayCast2D7" type="RayCast2D" parent="." unique_id=2008778646]
 rotation = -0.36651915
 enabled = false
 target_position = Vector2(200, 0)
-collision_mask = 4
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=479267539]
 emitting = false
+amount = 20
+lifetime = 0.25
 one_shot = true
+direction = Vector2(0, 0)
+spread = 25.0
+gravity = Vector2(0, 100)
+initial_velocity_min = 750.0
+initial_velocity_max = 750.0
+damping_min = 50.0
+damping_max = 50.0
+scale_amount_min = 2.0
+scale_amount_max = 2.0
+color = Color(0.74558026, 0.7455802, 0.7455802, 1)
+color_ramp = SubResource("Gradient_rvduq")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
