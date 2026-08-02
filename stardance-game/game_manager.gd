@@ -15,7 +15,6 @@ var camera_pause_pos : Vector2
 var hitstopping := false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	player = get_node("/root/DebugLvl/Player")
 	get_tree().paused = false
 	popup_rep = 0
 	reloaded = false
@@ -31,10 +30,6 @@ func _ready() -> void:
 	add_child(popup_timer)
 	canvas_layer = CanvasLayer.new()
 	add_child(canvas_layer)
-
-
-func set_player(current_player: CharacterBody2D) -> void:
-	player = current_player
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -79,6 +74,8 @@ func _on_popup_timer_timeout() -> void:
 		popup_rep += 1
 	else:
 		popup_timer.stop()
+		popup_timer.wait_time = 0.5
+		popup_rep = 0
 		reloaded = true
 		get_tree().paused = false
 		get_tree().call_deferred("reload_current_scene")

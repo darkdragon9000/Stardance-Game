@@ -67,8 +67,12 @@ var grapple_target
 @onready var gun_label: Label = $"../CanvasLayer/PanelContainer/MarginContainer/Label"
 @onready var camera_2d: Camera2D = $Camera2D
 
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+
 func _ready() -> void:
-	GameManager.set_player(self)
+	animated_sprite_2d.flip_h = false
+	animated_sprite_2d.play()
+	GameManager.player = self
 	add_to_group("player")
 
 func _physics_process(delta: float) -> void:
@@ -88,6 +92,11 @@ func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
+	match direction:
+		1.0:
+			animated_sprite_2d.flip_h = false
+		-1.0:
+			animated_sprite_2d.flip_h = true
 	if is_grappling and grapple_type != 2:
 		pass
 	elif knocked_back:

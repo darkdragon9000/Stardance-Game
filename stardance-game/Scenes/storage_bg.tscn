@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bq7d1lhlm1m61"]
+
+[ext_resource type="Texture2D" uid="uid://bln8v6xgvpryg" path="res://sprites/storage lv 2.png" id="1_0r8nl"]
+[ext_resource type="Texture2D" uid="uid://bijjfqq2ihyik" path="res://sprites/storage lv 1.png" id="2_850w6"]
+
+[node name="StorageBG" type="Node2D" unique_id=1340745891]
+
+[node name="Parallax2D2" type="Parallax2D" parent="." unique_id=1226367914]
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D2" unique_id=1935247788]
+scale = Vector2(1.1979167, 1.2000002)
+texture = ExtResource("1_0r8nl")
+
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=1046932889]
+scroll_scale = Vector2(0.95, 1)
+scroll_offset = Vector2(0, 20)
+repeat_size = Vector2(1150, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=664131968]
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("2_850w6")

@@ -1,13 +1,44 @@
 [gd_scene format=3 uid="uid://ofr3vmp1xo30"]
 
 [ext_resource type="Script" uid="uid://bfd33q2wwr408" path="res://Scenes/player.gd" id="1_6t5aa"]
-[ext_resource type="Texture2D" uid="uid://bi15rubjjs7sd" path="res://sprites/output-onlinepngtools.png" id="1_v0iea"]
 [ext_resource type="Script" uid="uid://ld3x52ixfok2" path="res://Scenes/camera_2d.gd" id="3_fkybt"]
 [ext_resource type="Texture2D" uid="uid://cc8ruaj7tpmrh" path="res://sprites/New Piskel-1.png (2).png" id="3_vgqql"]
+[ext_resource type="Texture2D" uid="uid://7120eycbfgdh" path="res://sprites/GAP_EasyExplosions_Textures/000.png" id="5_tx1dd"]
+[ext_resource type="Texture2D" uid="uid://dr8wcj68i4wd2" path="res://sprites/GAP_EasyExplosions_Textures/001.png" id="6_gymyn"]
+[ext_resource type="Texture2D" uid="uid://by2b5ipiu3so5" path="res://sprites/GAP_EasyExplosions_Textures/002.png" id="7_pu2lt"]
+[ext_resource type="Texture2D" uid="uid://dg4yaq8wqa01t" path="res://sprites/GAP_EasyExplosions_Textures/003.png" id="8_ukyrk"]
+[ext_resource type="Texture2D" uid="uid://bbnua7qvf445k" path="res://sprites/GAP_EasyExplosions_Textures/004.png" id="9_7dp3o"]
+[ext_resource type="Texture2D" uid="uid://vjpghm0jj7jt" path="res://sprites/GAP_EasyExplosions_Textures/005.png" id="10_h4iuc"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fd4e3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_tx1dd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_gymyn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_pu2lt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ukyrk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_7dp3o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_h4iuc")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cvnsp"]
-radius = 24.0
-height = 66.0
+radius = 14.0
+height = 122.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1102123049]
 script = ExtResource("1_6t5aa")
@@ -16,14 +47,6 @@ shotgun_air_floor = 0.6
 rocket_strength = 80
 grapple_speed = 2000
 grapple_range = 800
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1225272244]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("1_v0iea")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1052509502]
-position = Vector2(0, 7)
-shape = SubResource("CapsuleShape2D_cvnsp")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=276101824]
 position_smoothing_enabled = true
@@ -57,6 +80,17 @@ one_shot = true
 
 [node name="GrappleCooldown" type="Timer" parent="." unique_id=1987377852]
 wait_time = 0.7
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1834354148]
+position = Vector2(5.722046e-06, -5.722046e-06)
+scale = Vector2(0.13525002, 0.13525002)
+sprite_frames = SubResource("SpriteFrames_fd4e3")
+frame = 1
+frame_progress = 0.8939371
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1052509502]
+position = Vector2(0, 4)
+shape = SubResource("CapsuleShape2D_cvnsp")
 
 [connection signal="timeout" from="PistolCooldown" to="." method="_on_pistol_cooldown_timeout"]
 [connection signal="timeout" from="ShotgunCooldown" to="." method="_on_shotgun_cooldown_timeout"]
