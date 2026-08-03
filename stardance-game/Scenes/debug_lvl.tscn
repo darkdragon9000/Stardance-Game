@@ -15,9 +15,9 @@ distance = -1305.0
 background_mode = 3
 glow_enabled = true
 glow_intensity = 1.5
-glow_strength = 1.1
-glow_blend_mode = 0
-glow_hdr_threshold = 0.0
+glow_strength = 1.2
+glow_bloom = 0.1
+glow_hdr_threshold = 0.25
 
 [node name="DebugLvl" type="Node2D" unique_id=1328486983]
 
