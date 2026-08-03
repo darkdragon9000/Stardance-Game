@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://chudgy2o0fbxw"]
+
+[ext_resource type="Script" uid="uid://cgsdsl67wgd3r" path="res://tornado.gd" id="1_ijm4g"]
+[ext_resource type="Texture2D" uid="uid://bke6mu5846vnb" path="res://sprites/Untitled drawing (26).png" id="2_lw5ai"]
+
+[sub_resource type="Gradient" id="Gradient_kwhoe"]
+colors = PackedColorArray(0.67, 0.67, 0.67, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tcot5"]
+gradient = SubResource("Gradient_kwhoe")
+
+[sub_resource type="Curve" id="Curve_4xiqm"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 0.35094333), 0.0, 0.0, 0, 0, Vector2(1, 1.6415093), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_13pl0"]
+curve = SubResource("Curve_4xiqm")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8wr7m"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_min = 596.43
+initial_velocity_max = 596.43
+gravity = Vector3(0, 98, 0)
+scale_curve = SubResource("CurveTexture_13pl0")
+color = Color(0.67, 0.67, 0.67, 1)
+color_initial_ramp = SubResource("GradientTexture1D_tcot5")
+
+[node name="Tornado" type="Parallax2D" unique_id=594872507]
+repeat_size = Vector2(1500, 0)
+repeat_times = 2
+script = ExtResource("1_ijm4g")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=491714789]
+position = Vector2(509, 280)
+amount = 12
+texture = ExtResource("2_lw5ai")
+preprocess = 0.8
+process_material = SubResource("ParticleProcessMaterial_8wr7m")

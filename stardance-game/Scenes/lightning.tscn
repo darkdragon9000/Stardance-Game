@@ -1,0 +1,124 @@
+[gd_scene format=3 uid="uid://datem25tmc82j"]
+
+[ext_resource type="Texture2D" uid="uid://c262oawe07bq3" path="res://sprites/lightning1/frame000000000000.png" id="1_fjth1"]
+[ext_resource type="Texture2D" uid="uid://nrr7r3m17dhq" path="res://sprites/lightning1/frame000000000001.png" id="2_h3ip7"]
+[ext_resource type="Texture2D" uid="uid://cnl3hfkt4e81f" path="res://sprites/lightning1/frame000000000002.png" id="3_ae0gy"]
+[ext_resource type="Texture2D" uid="uid://bnk3s0kqgjjuq" path="res://sprites/lightning1/frame000000000003.png" id="4_bm3pb"]
+[ext_resource type="Texture2D" uid="uid://bawi83sddeqoy" path="res://sprites/lightning1/frame000000000004.png" id="5_bmfb8"]
+[ext_resource type="Texture2D" uid="uid://cqxbfalxtefpg" path="res://sprites/lightning1/frame000000000005.png" id="6_muvbp"]
+[ext_resource type="Texture2D" uid="uid://8paj0hbxjv8o" path="res://sprites/lightning1/frame000000000006.png" id="7_oen0t"]
+[ext_resource type="Texture2D" uid="uid://ktrhb2073n5c" path="res://sprites/lightning2/frame000000000000.png" id="8_2dic8"]
+[ext_resource type="Texture2D" uid="uid://b26ic5tnaurmh" path="res://sprites/lightning2/frame000000000001.png" id="9_vq1j0"]
+[ext_resource type="Texture2D" uid="uid://cfxg5feuwvi12" path="res://sprites/lightning2/frame000000000002.png" id="10_xlv8n"]
+[ext_resource type="Texture2D" uid="uid://ctcp0ibwehe2" path="res://sprites/lightning2/frame000000000003.png" id="11_8s4np"]
+[ext_resource type="Texture2D" uid="uid://253jnlleu26s" path="res://sprites/lightning2/frame000000000004.png" id="12_qx548"]
+[ext_resource type="Texture2D" uid="uid://mqf8sd427rs" path="res://sprites/lightning2/frame000000000005.png" id="13_kllb6"]
+[ext_resource type="Texture2D" uid="uid://d3bpme7fcu3jy" path="res://sprites/lightning2/frame000000000006.png" id="14_kd6jl"]
+[ext_resource type="Texture2D" uid="uid://coq5i418axmyf" path="res://sprites/lightning3/frame000000000000.png" id="15_ik34n"]
+[ext_resource type="Texture2D" uid="uid://j0lpx5eumunp" path="res://sprites/lightning3/frame000000000001.png" id="16_goa7t"]
+[ext_resource type="Texture2D" uid="uid://bw1p3emnhwt7k" path="res://sprites/lightning3/frame000000000002.png" id="17_qa6nq"]
+[ext_resource type="Texture2D" uid="uid://balmx75toavjn" path="res://sprites/lightning3/frame000000000003.png" id="18_3j4y6"]
+[ext_resource type="Texture2D" uid="uid://d21308yugc61q" path="res://sprites/lightning3/frame000000000004.png" id="19_v2kdx"]
+[ext_resource type="Texture2D" uid="uid://b8s0iy3ftklgw" path="res://sprites/lightning3/frame000000000005.png" id="20_2of7j"]
+[ext_resource type="Texture2D" uid="uid://d03pwwhvcxrup" path="res://sprites/lightning3/frame000000000006.png" id="21_wqrup"]
+[ext_resource type="Script" uid="uid://bhrlhe8htl7bh" path="res://Scenes/lightning.gd" id="22_jg0yw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jp2j6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_fjth1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_h3ip7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ae0gy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_bm3pb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_bmfb8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_muvbp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_oen0t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_h3ip7")
+}],
+"loop": false,
+"name": &"1",
+"speed": 24.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_2dic8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_vq1j0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_xlv8n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_8s4np")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_qx548")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_kllb6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_kd6jl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_vq1j0")
+}],
+"loop": false,
+"name": &"2",
+"speed": 24.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_ik34n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_goa7t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_qa6nq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_3j4y6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_v2kdx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_2of7j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_wqrup")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_goa7t")
+}],
+"loop": false,
+"name": &"3",
+"speed": 24.0
+}]
+
+[node name="Lightning" type="AnimatedSprite2D" unique_id=774244433]
+scale = Vector2(0.75, 0.75)
+sprite_frames = SubResource("SpriteFrames_jp2j6")
+animation = &"1"
+script = ExtResource("22_jg0yw")
+
+[node name="LightningTimer" type="Timer" parent="." unique_id=871065041]
+
+[connection signal="timeout" from="LightningTimer" to="." method="_on_lightning_timer_timeout"]

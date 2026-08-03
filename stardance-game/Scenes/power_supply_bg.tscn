@@ -1,0 +1,141 @@
+[gd_scene format=3 uid="uid://14sfyd4ngwsg"]
+
+[ext_resource type="Script" uid="uid://djbakecahqyie" path="res://power_supply_bg.gd" id="1_vy72w"]
+[ext_resource type="Texture2D" uid="uid://5081giidejn1" path="res://sprites/gradient.png" id="2_glyql"]
+[ext_resource type="Texture2D" uid="uid://bhqxtiruh6jie" path="res://sprites/Copy of Untitled drawing (9).png" id="3_glyql"]
+[ext_resource type="Texture2D" uid="uid://bopx8bav0ix15" path="res://sprites/Tower1.png" id="3_lp3eq"]
+[ext_resource type="Texture2D" uid="uid://ci7kr6piyawnt" path="res://sprites/Tower2.png" id="4_5tud7"]
+[ext_resource type="Texture2D" uid="uid://veos1ksslc41" path="res://sprites/Tower3.png" id="5_f2csd"]
+[ext_resource type="Texture2D" uid="uid://ctdvfmg055pwo" path="res://sprites/Tower4.png" id="6_ixmjw"]
+[ext_resource type="PackedScene" uid="uid://chudgy2o0fbxw" path="res://Scenes/tornado.tscn" id="8_skret"]
+[ext_resource type="Texture2D" uid="uid://dry8a7s1hlrqw" path="res://sprites/transparent gradient layer 2.png" id="9_b7lkr"]
+[ext_resource type="Texture2D" uid="uid://xymb3x68gosw" path="res://sprites/Copy of Untitled drawing (8).png" id="10_glyql"]
+[ext_resource type="Texture2D" uid="uid://dgod771m4vv00" path="res://sprites/transparent gradient layer 1.png" id="11_hg8pc"]
+[ext_resource type="Texture2D" uid="uid://dk5870niyupi1" path="res://sprites/Coulds2.png" id="11_lp3eq"]
+[ext_resource type="PackedScene" uid="uid://datem25tmc82j" path="res://Scenes/lightning.tscn" id="12_glyql"]
+[ext_resource type="Texture2D" uid="uid://cxciloplbrox7" path="res://sprites/Clouds.png" id="14_5tud7"]
+
+[node name="power_supply_bg" type="Node2D" unique_id=1544398694]
+script = ExtResource("1_vy72w")
+
+[node name="Sky" type="Parallax2D" parent="." unique_id=1963749901]
+
+[node name="Sprite2D" type="Sprite2D" parent="Sky" unique_id=154424880]
+scale = Vector2(1.1979167, 1.2000002)
+texture = ExtResource("2_glyql")
+
+[node name="Mountains2" type="Parallax2D" parent="." unique_id=881089834]
+modulate = Color(0.57, 0.57, 0.57, 1)
+scroll_scale = Vector2(1.05, 1.05)
+scroll_offset = Vector2(0, 20)
+repeat_size = Vector2(1150, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Mountains2" unique_id=344639995]
+position = Vector2(-1, 201)
+scale = Vector2(1.1981481, 1.1981481)
+texture = ExtResource("3_glyql")
+
+[node name="Tower4" type="Parallax2D" parent="." unique_id=278307723]
+scroll_scale = Vector2(1.07, 1.07)
+repeat_size = Vector2(1150, 0)
+repeat_times = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Tower4" unique_id=933397468]
+scale = Vector2(1.1979167, 1.2000002)
+texture = ExtResource("6_ixmjw")
+
+[node name="Tower3" type="Parallax2D" parent="." unique_id=1709673120]
+scroll_scale = Vector2(1.1, 1.1)
+repeat_size = Vector2(1150, 0)
+repeat_times = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Tower3" unique_id=1604676805]
+scale = Vector2(1.1979167, 1.2000002)
+texture = ExtResource("5_f2csd")
+
+[node name="Tower2" type="Parallax2D" parent="." unique_id=1465828426]
+scroll_scale = Vector2(1.13, 1.13)
+repeat_size = Vector2(1150, 0)
+repeat_times = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Tower2" unique_id=1324564223]
+scale = Vector2(1.1979167, 1.2000002)
+texture = ExtResource("4_5tud7")
+
+[node name="Tower1" type="Parallax2D" parent="." unique_id=1920241238]
+scroll_scale = Vector2(1.16, 1.16)
+repeat_size = Vector2(1150, 0)
+repeat_times = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Tower1" unique_id=1724631283]
+scale = Vector2(1.1979167, 1.2000002)
+texture = ExtResource("3_lp3eq")
+
+[node name="Gradient2" type="Parallax2D" parent="." unique_id=933898896]
+scroll_offset = Vector2(0, 20)
+repeat_size = Vector2(1150, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Gradient2" unique_id=68496409]
+position = Vector2(-0.8888416, -18.499996)
+scale = Vector2(1.1981481, 1.1981481)
+texture = ExtResource("9_b7lkr")
+
+[node name="Tornado" parent="." unique_id=594872507 instance=ExtResource("8_skret")]
+scroll_scale = Vector2(1.15, 1.15)
+
+[node name="Tornado2" parent="." unique_id=1745898741 instance=ExtResource("8_skret")]
+scroll_scale = Vector2(1.15, 1.05)
+
+[node name="Gradient1" type="Parallax2D" parent="." unique_id=1887297582]
+scroll_offset = Vector2(0, 20)
+repeat_size = Vector2(1150, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Gradient1" unique_id=376849208]
+position = Vector2(-0.8888416, -18.499996)
+scale = Vector2(1.1981481, 1.1981481)
+texture = ExtResource("11_hg8pc")
+
+[node name="Coulds2" type="Parallax2D" parent="." unique_id=868147119]
+scroll_scale = Vector2(1.1, 1.1)
+scroll_offset = Vector2(-124, -22)
+repeat_size = Vector2(1150, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Coulds2" unique_id=982757314]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(-1, -468.00003)
+scale = Vector2(1.1981481, 1.1981481)
+texture = ExtResource("11_lp3eq")
+
+[node name="Lightnings" type="Parallax2D" parent="." unique_id=2009387526]
+self_modulate = Color(18.892157, 18.892157, 18.892157, 1)
+scroll_scale = Vector2(1.1, 1.1)
+
+[node name="Lightning" parent="Lightnings" unique_id=774244433 instance=ExtResource("12_glyql")]
+
+[node name="Mountains" type="Parallax2D" parent="." unique_id=1849430531]
+modulate = Color(0.57, 0.57, 0.57, 1)
+scroll_scale = Vector2(1.2, 1.2)
+scroll_offset = Vector2(0, 20)
+repeat_size = Vector2(1150, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Mountains" unique_id=444558400]
+position = Vector2(-1, 201)
+scale = Vector2(1.1981481, 1.1981481)
+texture = ExtResource("10_glyql")
+
+[node name="Coulds" type="Parallax2D" parent="." unique_id=2107769194]
+scroll_scale = Vector2(1.3, 1.3)
+scroll_offset = Vector2(0, -20)
+repeat_size = Vector2(1150, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Coulds" unique_id=1687177239]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(-1, -468.00003)
+scale = Vector2(1.1981481, 1.1981481)
+texture = ExtResource("14_5tud7")

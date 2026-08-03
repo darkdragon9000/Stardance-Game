@@ -92,10 +92,10 @@ func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
-	match direction:
-		1.0:
+	match get_global_mouse_position().x > position.x:
+		true:
 			animated_sprite_2d.flip_h = false
-		-1.0:
+		false:
 			animated_sprite_2d.flip_h = true
 	if is_grappling and grapple_type != 2:
 		pass

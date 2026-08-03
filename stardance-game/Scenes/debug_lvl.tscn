@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://8nc3c7g0n45a"]
 
 [ext_resource type="Texture2D" uid="uid://c5fjpdxcqgw1c" path="res://sprites/grid_black_512x512.png" id="1_cksea"]
-[ext_resource type="PackedScene" uid="uid://bq7d1lhlm1m61" path="res://Scenes/storage_bg.tscn" id="1_rydr0"]
+[ext_resource type="PackedScene" uid="uid://14sfyd4ngwsg" path="res://Scenes/power_supply_bg.tscn" id="1_rydr0"]
 [ext_resource type="PackedScene" uid="uid://ofr3vmp1xo30" path="res://Scenes/player.tscn" id="2_3fw05"]
 [ext_resource type="PackedScene" uid="uid://bmaov76ywligj" path="res://Scenes/kill_box.tscn" id="3_3fw05"]
 
@@ -24,8 +24,8 @@ glow_hdr_threshold = 0.25
 [node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=478418243]
 layer = -2
 
-[node name="StorageBG" parent="CanvasLayer2" unique_id=1340745891 instance=ExtResource("1_rydr0")]
-position = Vector2(577, 324)
+[node name="power_supply_bg" parent="CanvasLayer2" unique_id=1544398694 instance=ExtResource("1_rydr0")]
+position = Vector2(577, 342)
 
 [node name="Player" parent="." unique_id=1102123049 instance=ExtResource("2_3fw05")]
 position = Vector2(558, 392)
