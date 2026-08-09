@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://14sfyd4ngwsg" path="res://Scenes/power_supply_bg.tscn" id="1_rydr0"]
 [ext_resource type="PackedScene" uid="uid://ofr3vmp1xo30" path="res://Scenes/player.tscn" id="2_3fw05"]
 [ext_resource type="PackedScene" uid="uid://bmaov76ywligj" path="res://Scenes/kill_box.tscn" id="3_3fw05"]
+[ext_resource type="PackedScene" uid="uid://bdqkw82ukagdm" path="res://Scenes/saw.tscn" id="5_dt8ej"]
+[ext_resource type="PackedScene" uid="uid://dofskkwo104xb" path="res://Scenes/laser.tscn" id="6_eggs6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rydr0"]
 size = Vector2(1150.5, 129)
@@ -26,13 +28,6 @@ layer = -2
 
 [node name="power_supply_bg" parent="CanvasLayer2" unique_id=1544398694 instance=ExtResource("1_rydr0")]
 position = Vector2(577, 342)
-
-[node name="Player" parent="." unique_id=1102123049 instance=ExtResource("2_3fw05")]
-position = Vector2(558, 392)
-collision_mask = 3
-shotgun_strength = 200
-rocket_strength = 110
-grapple_range = 500
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=155711550]
 collision_layer = 2
@@ -93,3 +88,21 @@ shape = SubResource("WorldBoundaryShape2D_rydr0")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=300864037]
 environment = SubResource("Environment_3fw05")
+
+[node name="Saw" parent="." unique_id=2062193088 instance=ExtResource("5_dt8ej")]
+position = Vector2(332, 266)
+
+[node name="Saw2" parent="." unique_id=1558317513 instance=ExtResource("5_dt8ej")]
+position = Vector2(457, 160)
+scale = Vector2(1.5, 1.5)
+
+[node name="Laser" parent="." unique_id=1676743164 instance=ExtResource("6_eggs6")]
+position = Vector2(12, 429)
+scale = Vector2(1, 2.135)
+
+[node name="Player" parent="." unique_id=1102123049 instance=ExtResource("2_3fw05")]
+position = Vector2(558, 392)
+collision_mask = 3
+shotgun_strength = 200
+rocket_strength = 110
+grapple_range = 500

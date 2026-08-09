@@ -6,7 +6,7 @@ extends Node2D
 @onready var gpu_particles_2d: GPUParticles2D = $GPUParticles2D
 @onready var smoke: GPUParticles2D = $Smoke
 @onready var area_2d: Area2D = $Area2D
-
+var can_hitstop := true
 
 func _ready():
 	area_2d.add_to_group("shotgun_shells")
@@ -20,9 +20,17 @@ func fire():
 			var normalized = hit_distance / range
 			var falloff = pow(1.0 - normalized, falloff_speed)
 			total += falloff
+			if ray.get_collider().is_in_group("obstacles"):
+				total += normalized * 1.5
+				print("hit")
+				if can_hitstop:
+					GameManager.hitstop(0.3)
+					can_hitstop = false
+	can_hitstop = true
 	total = total / rays.size()
 	gpu_particles_2d.emitting = true
 	smoke.emitting = true
+	print(total)
 	return total
 
 func _on_timer_timeout():

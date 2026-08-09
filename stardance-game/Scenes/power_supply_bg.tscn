@@ -98,6 +98,13 @@ position = Vector2(-0.8888416, -18.499996)
 scale = Vector2(1.1981481, 1.1981481)
 texture = ExtResource("11_hg8pc")
 
+[node name="Lightnings2" type="Parallax2D" parent="." unique_id=1951887858]
+self_modulate = Color(18.892157, 18.892157, 18.892157, 1)
+scroll_scale = Vector2(1.07, 1.07)
+
+[node name="Lightning" parent="Lightnings2" unique_id=774244433 instance=ExtResource("12_glyql")]
+scale = Vector2(0.5, 0.5)
+
 [node name="Coulds2" type="Parallax2D" parent="." unique_id=868147119]
 scroll_scale = Vector2(1.1, 1.1)
 scroll_offset = Vector2(-124, -22)
@@ -114,7 +121,7 @@ texture = ExtResource("11_lp3eq")
 self_modulate = Color(18.892157, 18.892157, 18.892157, 1)
 scroll_scale = Vector2(1.1, 1.1)
 
-[node name="Lightning" parent="Lightnings" unique_id=774244433 instance=ExtResource("12_glyql")]
+[node name="Lightning" parent="Lightnings" unique_id=923568586 instance=ExtResource("12_glyql")]
 
 [node name="Mountains" type="Parallax2D" parent="." unique_id=1849430531]
 modulate = Color(0.57, 0.57, 0.57, 1)

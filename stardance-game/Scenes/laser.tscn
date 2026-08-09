@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://dofskkwo104xb"]
+
+[ext_resource type="Shader" uid="uid://dixbtsjh4icr6" path="res://laser.tres" id="1_3pc01"]
+[ext_resource type="Script" uid="uid://btyowawvwhi57" path="res://Scenes/kill_box.gd" id="1_krwe7"]
+[ext_resource type="Texture2D" uid="uid://0v8de3juy7br" path="res://sprites/T_VFX_Noise_9.PNG" id="2_c8ure"]
+[ext_resource type="Texture2D" uid="uid://djwl6fcgqqiii" path="res://sprites/Noise1_tiled.png" id="3_krwe7"]
+[ext_resource type="Texture2D" uid="uid://drr21iurakhkx" path="res://sprites/GAP_EasyExplosions_Textures/Flare00.PNG" id="4_c8ure"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c6hsp"]
+shader = ExtResource("1_3pc01")
+shader_parameter/visibility = -0.09999995725
+shader_parameter/Speed = Vector2(2, 0)
+shader_parameter/Texture = ExtResource("2_c8ure")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cnw57"]
+shader = ExtResource("1_3pc01")
+shader_parameter/visibility = 0.4000000665000001
+shader_parameter/Speed = Vector2(4, 2)
+shader_parameter/Texture = ExtResource("3_krwe7")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y5j7k"]
+shader = ExtResource("1_3pc01")
+shader_parameter/visibility = 0.0
+shader_parameter/Speed = Vector2(2, 2)
+shader_parameter/Texture = ExtResource("3_krwe7")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3pc01"]
+shader = ExtResource("1_3pc01")
+shader_parameter/visibility = 0.5850000752875
+shader_parameter/Speed = Vector2(4, 2)
+shader_parameter/Texture = ExtResource("3_krwe7")
+
+[sub_resource type="Curve" id="Curve_krwe7"]
+_data = [Vector2(0, 0.50188684), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_c6hsp"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_cnw57"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_y5j7k"]
+curve_x = SubResource("Curve_krwe7")
+curve_y = SubResource("Curve_c6hsp")
+curve_z = SubResource("Curve_cnw57")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r1vd4"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+direction = Vector3(0, 1, 0)
+spread = 30.0
+initial_velocity_min = -500.0
+initial_velocity_max = -400.0
+radial_velocity_min = 499.99997
+radial_velocity_max = 699.99994
+gravity = Vector3(0, 98, 0)
+scale_min = 0.04
+scale_max = 0.14999999
+scale_curve = SubResource("CurveXYZTexture_y5j7k")
+color = Color(4.415934, 0, 0, 1)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_c6hsp"]
+b = Vector2(0, -265)
+
+[node name="Laser" type="Node2D" unique_id=1676743164]
+
+[node name="Line2D" type="Line2D" parent="." unique_id=1565767173]
+material = SubResource("ShaderMaterial_c6hsp")
+points = PackedVector2Array(0, 0, 0, -265)
+width = 50.0
+default_color = Color(18.892157, 0, 0, 1)
+texture_mode = 2
+
+[node name="Line2D2" type="Line2D" parent="." unique_id=1393669407]
+material = SubResource("ShaderMaterial_c6hsp")
+points = PackedVector2Array(0, 0, 0, -265)
+width = 50.0
+default_color = Color(1, 0.5, 0.5, 1)
+texture_mode = 2
+
+[node name="Line2D3" type="Line2D" parent="." unique_id=588026683]
+material = SubResource("ShaderMaterial_cnw57")
+points = PackedVector2Array(0, 0, 0, -265)
+width = 35.0
+texture_mode = 2
+
+[node name="Line2D4" type="Line2D" parent="." unique_id=3953672]
+material = SubResource("ShaderMaterial_y5j7k")
+points = PackedVector2Array(0, 0, 0, -265)
+width = 50.0
+default_color = Color(1, 0, 0, 1)
+texture_mode = 2
+
+[node name="Line2D5" type="Line2D" parent="." unique_id=739112808]
+material = SubResource("ShaderMaterial_3pc01")
+points = PackedVector2Array(0, 0, 0, -265)
+width = 50.0
+texture_mode = 2
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=708596000]
+amount = 15
+texture = ExtResource("4_c8ure")
+lifetime = 0.15000000000000002
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_r1vd4")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=732173464]
+script = ExtResource("1_krwe7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=434203228]
+scale = Vector2(16, 1)
+shape = SubResource("SegmentShape2D_c6hsp")
