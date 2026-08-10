@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bdqkw82ukagdm"]
 
 [ext_resource type="Script" uid="uid://dycp0gwui2oh7" path="res://Scenes/saw.gd" id="1_4qbox"]
-[ext_resource type="Texture2D" uid="uid://evhu6qp6vyc8" path="res://sprites/saw1.png" id="1_jp1mk"]
+[ext_resource type="Texture2D" uid="uid://rwoamr4c0m6x" path="res://sprites/Untitled drawing (29).png" id="2_4qbox"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4qbox"]
 radius = 54.00926
@@ -12,7 +12,7 @@ script = ExtResource("1_4qbox")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1865534281]
 position = Vector2(5.684342e-14, -5.9604645e-08)
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("1_jp1mk")
+texture = ExtResource("2_4qbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2046868254]
 shape = SubResource("CircleShape2D_4qbox")

@@ -62,8 +62,8 @@ scale_max = 0.14999999
 scale_curve = SubResource("CurveXYZTexture_y5j7k")
 color = Color(4.415934, 0, 0, 1)
 
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_c6hsp"]
-b = Vector2(0, -265)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_krwe7"]
+size = Vector2(3.125, 265)
 
 [node name="Laser" type="Node2D" unique_id=1676743164]
 
@@ -111,5 +111,8 @@ process_material = SubResource("ParticleProcessMaterial_r1vd4")
 script = ExtResource("1_krwe7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=434203228]
+position = Vector2(0, -132.5)
 scale = Vector2(16, 1)
-shape = SubResource("SegmentShape2D_c6hsp")
+shape = SubResource("RectangleShape2D_krwe7")
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
