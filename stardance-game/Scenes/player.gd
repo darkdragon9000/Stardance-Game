@@ -251,7 +251,6 @@ func shoot():
 			rocket_shot = false
 			exploded = false
 		2:
-			shotgun_cooldown.start()
 			can_shoot_shotgun = false
 			print("shoot shotgun")
 			if not is_on_floor():
@@ -261,6 +260,12 @@ func shoot():
 			shotgun_shell_instance.global_position = global_position
 			get_parent().add_child(shotgun_shell_instance)
 			shotgun_power = (shotgun_air_floor + shotgun_shell_instance.fire() * (1 - shotgun_air_floor)) * shotgun_strength
+			if shotgun_shell_instance.cooldown_check():
+				shotgun_cooldown.wait_time = 3
+				shotgun_cooldown.start()
+			else:
+				shotgun_cooldown.wait_time = 1
+				shotgun_cooldown.start()
 			shotgun_shot = true
 			pistol_shot = false
 			rocket_shot = false

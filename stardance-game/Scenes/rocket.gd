@@ -6,7 +6,6 @@ extends RigidBody2D
 @onready var timer: Timer = $Timer
 var explosion = preload("res://Scenes/explosion.tscn")
 
-
 func _ready() -> void:
 	linear_velocity = Vector2(bulletSpeed, 0).rotated(rotation)
 	timer.start()

@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://dk5870niyupi1" path="res://sprites/Coulds2.png" id="11_lp3eq"]
 [ext_resource type="PackedScene" uid="uid://datem25tmc82j" path="res://Scenes/lightning.tscn" id="12_glyql"]
 [ext_resource type="Texture2D" uid="uid://cxciloplbrox7" path="res://sprites/Clouds.png" id="14_5tud7"]
+[ext_resource type="AudioStream" uid="uid://dnxaoquth8s4n" path="res://Songs/VECTORIZE_SURGE.mp3" id="15_5tud7"]
 
 [node name="power_supply_bg" type="Node2D" unique_id=1544398694]
 script = ExtResource("1_vy72w")
@@ -146,3 +147,8 @@ self_modulate = Color(0, 0, 0, 1)
 position = Vector2(-1, -468.00003)
 scale = Vector2(1.1981481, 1.1981481)
 texture = ExtResource("14_5tud7")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1461822523]
+stream = ExtResource("15_5tud7")
+volume_db = 2.0
+autoplay = true

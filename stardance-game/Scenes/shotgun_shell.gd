@@ -26,12 +26,22 @@ func fire():
 				if can_hitstop:
 					GameManager.hitstop(0.3)
 					can_hitstop = false
+			
 	can_hitstop = true
 	total = total / rays.size()
 	gpu_particles_2d.emitting = true
 	smoke.emitting = true
 	print(total)
 	return total
+
+func cooldown_check():
+	for ray in rays:
+		ray.force_raycast_update()
+		if ray.is_colliding():
+			if ray.get_collider().is_in_group("rockets") or ray.get_collider().is_in_group("mines"):
+				return true
+			else:
+				return false
 
 func _on_timer_timeout():
 	queue_free()

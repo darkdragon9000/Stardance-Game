@@ -1,0 +1,123 @@
+[gd_scene format=4 uid="uid://doeu8nxvodtqw"]
+
+[ext_resource type="PackedScene" uid="uid://14sfyd4ngwsg" path="res://Scenes/power_supply_bg.tscn" id="1_ns6vj"]
+[ext_resource type="Texture2D" uid="uid://cp53fc1tis25s" path="res://sprites/GAP_EasyExplosions_Textures/Copy of Untitled drawing (11).png" id="2_w20bw"]
+[ext_resource type="PackedScene" uid="uid://ofr3vmp1xo30" path="res://Scenes/player.tscn" id="3_ara46"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mefdl"]
+texture = ExtResource("2_w20bw")
+texture_region_size = Vector2i(250, 250)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+2:1/0 = 0
+1:1/0 = 0
+0:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+3:1/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+5:1/0 = 0
+5:2/0 = 0
+4:2/0 = 0
+6:2/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+7:2/0 = 0
+3:3/0 = 0
+3:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-125, -125, 125, -125, 125, 125, -125, 125)
+2:3/0 = 0
+2:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-125, -125, 125, -125, 125, 125, -125, 125)
+0:3/size_in_atlas = Vector2i(2, 1)
+0:3/0 = 0
+0:3/0/texture_origin = Vector2i(-125, 0)
+0:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-125, -125, 375, -125, 375, 125, -125, 125)
+2:4/size_in_atlas = Vector2i(1, 2)
+2:4/0 = 0
+2:4/0/texture_origin = Vector2i(0, -125)
+2:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-125, -125, 125, -125, 125, 375, -125, 375)
+0:4/size_in_atlas = Vector2i(2, 2)
+0:4/0 = 0
+0:4/0/texture_origin = Vector2i(-125, -125)
+0:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-125, -125, 375, -125, 375, 375, -125, 375)
+0:6/size_in_atlas = Vector2i(1, 4)
+0:6/0 = 0
+0:6/0/texture_origin = Vector2i(0, -375)
+1:8/size_in_atlas = Vector2i(2, 2)
+1:8/0 = 0
+1:8/0/texture_origin = Vector2i(-125, -125)
+3:9/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lrm6c"]
+texture = ExtResource("2_w20bw")
+texture_region_size = Vector2i(250, 250)
+0:0/0 = 0
+0:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+1:1/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+2:1/0 = 0
+2:2/0 = 0
+0:3/size_in_atlas = Vector2i(2, 1)
+0:3/0 = 0
+2:4/size_in_atlas = Vector2i(1, 2)
+2:4/0 = 0
+0:4/size_in_atlas = Vector2i(2, 2)
+0:4/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+5:1/0 = 0
+5:0/0 = 0
+4:0/0 = 0
+3:0/0 = 0
+3:1/0 = 0
+6:3/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+7:3/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_evh1l"]
+tile_size = Vector2i(250, 250)
+physics_layer_0/collision_layer = 2
+sources/16 = SubResource("TileSetAtlasSource_mefdl")
+sources/17 = SubResource("TileSetAtlasSource_lrm6c")
+
+[node name="Power_supply" type="Node2D" unique_id=1358067194]
+
+[node name="power_supply_bg" parent="." unique_id=1544398694 instance=ExtResource("1_ns6vj")]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=701912622]
+tile_map_data = PackedByteArray("AAAAAAAAEAAAAAQAAAACAAAAEAACAAQAAAADAAAAEAAAAAMAAAADAAEAEAAAAAQAAAACAAIAEAACAAMAAAAAAAIAEAAAAAMAAAD+/wAAEAAAAAMAAAD//wIAEAACAAMAAAD//wEAEAACAAMAAAD9/wIAEAAAAAMAAAD8/wAAEAAAAAQAAAD+/wEAEAACAAMAAAD8/wIAEAACAAMAAAD7/wEAEAACAAQAAAD7/wAAEAACAAMAAAACAP//EAAAAAIAAAADAP//EAABAAIAAAAEAP//EAACAAIAAAACAP7/EAAAAAEAAAACAP3/EAAAAAEAAAACAPz/EAAAAAEAAAAEAP7/EAACAAEAAAAEAP3/EAACAAEAAAAEAPz/EAACAAEAAAADAP7/EAABAAEAAAADAP3/EAABAAEAAAADAPz/EAABAAEAAAACAPv/EAAAAAAAAAAEAPv/EAACAAAAAAADAPv/EAABAAAAAAAFAAAAEAAAAAQAAAAHAAEAEAAAAAQAAAAFAAIAEAAAAAMAAAAHAAAAEAAAAAMAAAABAPr/EAAAAAMAAAAEAPr/EAAAAAMAAAADAPr/EAADAAMAAAACAPj/EAAAAAQAAAAEAPj/EAACAAQAAAD8////EAAGAAIAAAAIAP//EAADAAEAAAAIAP7/EAADAAEAAAAIAP3/EAADAAAAAAAJAP3/EAAFAAIAAAAJAPz/EAAFAAEAAAAJAPv/EAAFAAEAAAAJAPr/EAAFAAAAAAAIAPr/EAAEAAAAAAAHAPr/EAAEAAAAAAAGAPr/EAAEAAAAAAA=")
+tile_set = SubResource("TileSet_evh1l")
+
+[node name="Player" parent="." unique_id=1102123049 instance=ExtResource("3_ara46")]
+position = Vector2(1, -66)
+collision_mask = 3
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=767516757]
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" unique_id=1437141732]
+anchors_preset = -1
+anchor_left = 0.035
+anchor_top = 0.062000003
+anchor_right = 0.21000001
+anchor_bottom = 0.147
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer" unique_id=691704555]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer" unique_id=234174131]
+layout_mode = 2
+text = "Gun"
