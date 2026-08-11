@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://du1b8pgv65dwe"]
+
+[ext_resource type="Script" uid="uid://b7t4dbxlimrw7" path="res://checkpoint.gd" id="1_s20m7"]
+[ext_resource type="Texture2D" uid="uid://drr21iurakhkx" path="res://sprites/GAP_EasyExplosions_Textures/Flare00.PNG" id="2_q25r3"]
+[ext_resource type="Texture2D" uid="uid://byyu45jlj2qw0" path="res://sprites/Untitled drawing (30).png" id="3_4eun3"]
+[ext_resource type="Texture2D" uid="uid://d2o4ilhvaser8" path="res://sprites/GAP_EasyExplosions_Textures/Flare01.png" id="4_7dqgm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_plj7t"]
+size = Vector2(44, 44)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dtr31"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 25.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.14999999
+scale_max = 0.19999999
+color = Color(2.5003004, 0, 0, 0.25)
+
+[sub_resource type="Curve" id="Curve_nni48"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.4009009, 1), 0.0, 0.0, 0, 0, Vector2(0.6171171, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_45wyy"]
+curve = SubResource("Curve_nni48")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5hpic"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 30.0
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 25.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.01
+scale_max = 0.03
+scale_curve = SubResource("CurveTexture_45wyy")
+color = Color(5, 0, 0, 1)
+
+[node name="Checkpoint" type="Area2D" unique_id=1127831669]
+script = ExtResource("1_s20m7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=313302019]
+shape = SubResource("RectangleShape2D_plj7t")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=112014360]
+texture = ExtResource("2_q25r3")
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_dtr31")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1779660668]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_4eun3")
+
+[node name="GPUParticles2D2" type="GPUParticles2D" parent="." unique_id=698433296]
+amount = 10
+texture = ExtResource("4_7dqgm")
+lifetime = 3.0
+process_material = SubResource("ParticleProcessMaterial_5hpic")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

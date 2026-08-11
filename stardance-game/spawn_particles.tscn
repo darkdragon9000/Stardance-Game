@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://c2pi706d458b2"]
+
+[ext_resource type="Texture2D" uid="uid://bpgi8e332ff0t" path="res://sprites/0.png" id="1_hnwin"]
+[ext_resource type="Texture2D" uid="uid://drr21iurakhkx" path="res://sprites/GAP_EasyExplosions_Textures/Flare00.PNG" id="1_jvdna"]
+[ext_resource type="Material" uid="uid://cua3cjg2n5n57" path="res://new_particle_process_material.tres" id="2_l8fac"]
+[ext_resource type="Script" uid="uid://dkjxsmrfx2joo" path="res://spawn_particles.gd" id="2_ykhna"]
+[ext_resource type="Texture2D" uid="uid://3xcd4l4sg078" path="res://sprites/1.png" id="4_jkl7t"]
+
+[sub_resource type="Gradient" id="Gradient_l8fac"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jkl7t"]
+gradient = SubResource("Gradient_l8fac")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y5li5"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 25.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.29999998
+scale_max = 0.39999998
+color = Color(2.5003004, 0, 0, 0.25)
+color_ramp = SubResource("GradientTexture1D_jkl7t")
+
+[node name="GPUParticles2D" type="GPUParticles2D" unique_id=520833438]
+emitting = false
+texture = ExtResource("1_hnwin")
+lifetime = 1.2
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = ExtResource("2_l8fac")
+script = ExtResource("2_ykhna")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=279386297]
+emitting = false
+texture = ExtResource("4_jkl7t")
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = ExtResource("2_l8fac")
+
+[node name="GPUParticles2D2" type="GPUParticles2D" parent="." unique_id=21905699]
+emitting = false
+texture = ExtResource("1_jvdna")
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_y5li5")
+
+[connection signal="finished" from="GPUParticles2D2" to="." method="_on_gpu_particles_2d_2_finished"]

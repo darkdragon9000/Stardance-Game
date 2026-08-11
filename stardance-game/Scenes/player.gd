@@ -53,10 +53,11 @@ var result = null
 var is_grappling: bool
 var anchor_point: Vector2
 var active_grapple_line = null
-var grappled_while_airborne = false
-var can_shoot_grapple = true
+var grappled_while_airborne := false
+var can_shoot_grapple := false
 var grapple_type: int
 var grapple_target
+var spawning : bool
 
 @onready var grapple_cooldown = $GrappleCooldown
 @onready var pistol_cooldown: Timer = $PistolCooldown
@@ -70,10 +71,14 @@ var grapple_target
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready() -> void:
+	global_position = GameManager.spawn_pos
 	animated_sprite_2d.flip_h = false
 	animated_sprite_2d.play()
 	GameManager.player = self
 	add_to_group("player")
+	if GameManager.do_spawn:
+		camera_2d.zoom = Vector2(2.5,2.5)
+		spawning = true
 
 func _physics_process(delta: float) -> void:
 	
@@ -86,7 +91,7 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 
 	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and is_on_floor() and not spawning:
 		velocity.y = JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
@@ -114,7 +119,6 @@ func _physics_process(delta: float) -> void:
 				velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * delta) #use move_towards to prevent velocity from snapping to speed as soon as recoil ends
 		else:
 			velocity.x = move_toward(velocity.x, 0, FRICTION * delta) 
-
 		
 	#handle ground slam mechanic
 	if not is_on_floor() and slam_charges == 1 and Input.is_action_just_pressed("slam") and not is_grappling:
@@ -127,26 +131,27 @@ func _physics_process(delta: float) -> void:
 		print("slam")
 		SlamParticles.emitting = true
 		was_in_air = false
-		
-	move_and_slide()
-	if gun_equipped == 1:
-		if Input.is_action_just_pressed("shoot") and can_shoot_pistol:
-			apply_recoil(get_global_mouse_position(), pistol_strength, false)
-			shoot()
-		if Input.is_action_just_pressed("alt shoot") and can_shoot_grapple:
-			alt_shoot()
-	if gun_equipped == 2:
-		if not is_grappling:
-			if Input.is_action_just_pressed("shoot") and can_shoot_shotgun:
+	
+	if not spawning:
+		move_and_slide()
+		if gun_equipped == 1:
+			if Input.is_action_just_pressed("shoot") and can_shoot_pistol:
+				apply_recoil(get_global_mouse_position(), pistol_strength, false)
 				shoot()
-				apply_recoil(get_global_mouse_position(), shotgun_power, false)
-	if gun_equipped == 3:
-		if not is_grappling: 
-			if Input.is_action_just_pressed("shoot") and can_shoot_rocket:
-				apply_recoil(get_global_mouse_position(), rocket_strength, false)
-				shoot()
-			if Input.is_action_just_pressed("alt shoot") and can_shoot_mine:
+			if Input.is_action_just_pressed("alt shoot") and can_shoot_grapple:
 				alt_shoot()
+		if gun_equipped == 2:
+			if not is_grappling:
+				if Input.is_action_just_pressed("shoot") and can_shoot_shotgun:
+					shoot()
+					apply_recoil(get_global_mouse_position(), shotgun_power, false)
+		if gun_equipped == 3:
+			if not is_grappling: 
+				if Input.is_action_just_pressed("shoot") and can_shoot_rocket:
+					apply_recoil(get_global_mouse_position(), rocket_strength, false)
+					shoot()
+				if Input.is_action_just_pressed("alt shoot") and can_shoot_mine:
+					alt_shoot()
 
 	
 	velocity = velocity + (pistol_force + shotgun_force + rocket_force + explosion_force)
@@ -233,6 +238,9 @@ func _physics_process(delta: float) -> void:
 		3:
 			gun_label.text = "Rocket Launcher"
 	
+	if spawning:
+		animated_sprite_2d.visible = false
+
 func shoot():
 	match gun_equipped:
 		1:
