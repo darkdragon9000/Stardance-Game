@@ -7,7 +7,7 @@ var time := 0.0
 func _process(delta: float) -> void:
 	time += delta
 	sprite_2d.global_position.y += sin(rad_to_deg(time/20))/2
-	print(sin(rad_to_deg(time)))
+	#print(sin(rad_to_deg(time)))
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):

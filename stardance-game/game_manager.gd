@@ -57,7 +57,7 @@ func _process(delta: float) -> void:
 	if spawning:
 		if player.camera_2d.zoom > Vector2(1.002,1.002):
 			player.camera_2d.zoom = lerp(player.camera_2d.zoom, Vector2(1,1), delta * 2)
-			print(player.camera_2d.zoom)
+			#print(player.camera_2d.zoom)
 		else:
 			if player.camera_2d.zoom > Vector2(0.802,0.802):
 				player.camera_2d.zoom = lerp(player.camera_2d.zoom, Vector2(0.8,0.8), delta * 2)

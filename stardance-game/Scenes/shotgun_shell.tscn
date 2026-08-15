@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://cg8mwnoxrajo5" path="res://Scenes/shotgun_shell.gd" id="1_rvduq"]
 [ext_resource type="Texture2D" uid="uid://bnjtwhbuh6hbn" path="res://sprites/GAP_EasyExplosions_Textures/Untitled drawing (5).png" id="2_qiie7"]
 [ext_resource type="Texture2D" uid="uid://drr21iurakhkx" path="res://sprites/GAP_EasyExplosions_Textures/Flare00.PNG" id="2_rcb08"]
+[ext_resource type="Texture2D" uid="uid://ca1h4odip5q20" path="res://new_curve_texture.tres" id="4_mcoxj"]
+[ext_resource type="Texture2D" uid="uid://c08iftvlvi2xk" path="res://new_curve.tres" id="5_2uc5a"]
+[ext_resource type="Texture2D" uid="uid://bx82oqumoxspx" path="res://new_curve_xyz_texture.tres" id="5_5vwxf"]
 
 [sub_resource type="Curve" id="Curve_2uc5a"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.3823164, 0.0, 0, 0]
@@ -22,52 +25,31 @@ scale_max = 0.25
 scale_curve = SubResource("CurveTexture_h4yxj")
 color = Color(0.55, 0.55, 0.55, 1)
 
-[sub_resource type="Curve" id="Curve_5vwxf"]
-_limits = [0.0, 100.0, 0.0, 1.0]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_us4bk"]
-curve = SubResource("Curve_5vwxf")
-
-[sub_resource type="Curve" id="Curve_rcb08"]
-_data = [Vector2(0, 0.2534247), 0.0, 0.0, 0, 0, Vector2(1, 0.08679247), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="Curve" id="Curve_kocue"]
-_limits = [0.0, 3.0, 0.0, 1.0]
-_data = [Vector2(0, 2.0136988), 0.0, 0.0, 0, 0, Vector2(1, 0.5320754), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="Curve" id="Curve_mcoxj"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_2uc5a"]
-curve_x = SubResource("Curve_rcb08")
-curve_y = SubResource("Curve_kocue")
-curve_z = SubResource("Curve_mcoxj")
-
-[sub_resource type="Curve" id="Curve_ir2dq"]
-_limits = [0.0, 5000.0, 0.0, 1.0]
-_data = [Vector2(0, 5000), 0.0, 0.0, 0, 0, Vector2(1, 1679.2451), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_eaeyf"]
-curve = SubResource("Curve_ir2dq")
-
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5vwxf"]
 particle_flag_align_y = true
 particle_flag_disable_z = true
 spread = 30.0
 initial_velocity_min = 2000.0
 initial_velocity_max = 5000.0
-velocity_limit_curve = SubResource("CurveTexture_eaeyf")
+velocity_limit_curve = ExtResource("5_2uc5a")
 gravity = Vector3(0, -20, 0)
-damping_curve = SubResource("CurveTexture_us4bk")
+damping_curve = ExtResource("4_mcoxj")
 scale_min = 0.099999994
 scale_max = 0.19999999
-scale_curve = SubResource("CurveXYZTexture_2uc5a")
+scale_curve = ExtResource("5_5vwxf")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rcb08"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+spread = 0.0
+initial_velocity_min = 200.0
+initial_velocity_max = 500.0
+velocity_limit_curve = ExtResource("5_2uc5a")
+gravity = Vector3(0, -20, 0)
+damping_curve = ExtResource("4_mcoxj")
+scale_min = 0.25
+scale_max = 0.35
+scale_curve = ExtResource("5_5vwxf")
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_4ahsk"]
 points = PackedVector2Array(0, 0, 185, -90, 223, 0, 185, 90)
@@ -95,6 +77,16 @@ one_shot = true
 explosiveness = 1.0
 fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_5vwxf")
+
+[node name="AltFireParticles" type="GPUParticles2D" parent="." unique_id=543451056]
+emitting = false
+amount = 1
+texture = ExtResource("2_qiie7")
+lifetime = 0.1
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_rcb08")
 
 [node name="Timer" type="Timer" parent="." unique_id=934771080]
 wait_time = 0.2

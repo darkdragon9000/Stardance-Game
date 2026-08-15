@@ -39,6 +39,8 @@ var exploded := false
 
 @export var pistol_strength = 130
 @export var shotgun_strength = 150
+@export var charge_strength = 125 
+@export var charge_rate = 66.7
 @export var shotgun_air_floor = 0.75
 @export var rocket_strength = 130
 
@@ -145,6 +147,13 @@ func _physics_process(delta: float) -> void:
 				if Input.is_action_just_pressed("shoot") and can_shoot_shotgun:
 					shoot()
 					apply_recoil(get_global_mouse_position(), shotgun_power, false)
+				if Input.is_action_pressed("alt shoot") and can_shoot_shotgun:
+					charge_strength = charge_strength + (delta * charge_rate)
+					charge_strength = clamp(charge_strength, 125, 225)
+				if Input.is_action_just_released("alt shoot") and can_shoot_shotgun:
+					alt_shoot()
+					apply_recoil(get_global_mouse_position(), shotgun_power, false)
+					charge_strength = 125
 		if gun_equipped == 3:
 			if not is_grappling: 
 				if Input.is_action_just_pressed("shoot") and can_shoot_rocket:
@@ -230,6 +239,9 @@ func _physics_process(delta: float) -> void:
 		gun_equipped = wrapi(gun_equipped - 1, 1, 4)
 		print(gun_equipped)
 	
+	if gun_equipped != 2:
+		charge_strength = 125
+	
 	match gun_equipped:
 		1:
 			gun_label.text = "Pistol"
@@ -300,7 +312,25 @@ func alt_shoot():
 		1:
 			start_grapple()
 		2:
-			pass
+			can_shoot_shotgun = false
+			print("shoot shotgun")
+			if not is_on_floor():
+				shot_in_air = true
+			var shotgun_shell_instance = shotgun_shell.instantiate()
+			shotgun_shell_instance.rotation = get_angle_to(get_global_mouse_position())
+			shotgun_shell_instance.global_position = global_position
+			get_parent().add_child(shotgun_shell_instance)
+			shotgun_power = (shotgun_air_floor + shotgun_shell_instance.alt_fire() * (1 - shotgun_air_floor)) * charge_strength
+			if shotgun_shell_instance.cooldown_check():
+				shotgun_cooldown.wait_time = 3
+				shotgun_cooldown.start()
+			else:
+				shotgun_cooldown.wait_time = 1
+				shotgun_cooldown.start()
+			shotgun_shot = true
+			pistol_shot = false
+			rocket_shot = false
+			exploded = false
 		3:
 			mine_cooldown.start()
 			can_shoot_mine = false

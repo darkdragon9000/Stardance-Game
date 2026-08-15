@@ -1,0 +1,9 @@
+[gd_resource type="CurveTexture" format=3 uid="uid://ca1h4odip5q20"]
+
+[sub_resource type="Curve" id="Curve_5vwxf"]
+_limits = [0.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[resource]
+curve = SubResource("Curve_5vwxf")
