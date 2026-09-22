@@ -19,9 +19,12 @@ var spawning := true
 var particles_up := false
 var do_spawn := true
 var dying := false
+var first_play := false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if get_tree().current_scene.name == "MainMenu":
+		do_spawn = false
 	if not do_spawn:
 		spawning = false
 	get_tree().paused = false
@@ -55,6 +58,7 @@ func _process(delta: float) -> void:
 		if player.camera_2d.zoom.is_equal_approx(Vector2(1,1)):
 			zooming_out = false
 	if spawning:
+		print(spawning)
 		if player.camera_2d.zoom > Vector2(1.002,1.002):
 			player.camera_2d.zoom = lerp(player.camera_2d.zoom, Vector2(1,1), delta * 2)
 			#print(player.camera_2d.zoom)

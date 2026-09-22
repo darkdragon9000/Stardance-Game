@@ -3,6 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://14sfyd4ngwsg" path="res://Scenes/power_supply_bg.tscn" id="1_ns6vj"]
 [ext_resource type="Texture2D" uid="uid://cp53fc1tis25s" path="res://sprites/GAP_EasyExplosions_Textures/Copy of Untitled drawing (11).png" id="2_w20bw"]
 [ext_resource type="PackedScene" uid="uid://ofr3vmp1xo30" path="res://Scenes/player.tscn" id="3_ara46"]
+[ext_resource type="Texture2D" uid="uid://ceqy7jtrqy1l1" path="res://sprites/9slice.png" id="4_lrm6c"]
+[ext_resource type="Texture2D" uid="uid://bbhsyjw2clmq7" path="res://sprites/pistol.png" id="5_evh1l"]
+[ext_resource type="Texture2D" uid="uid://djiv1a58g0vmy" path="res://sprites/shotgun.png" id="6_v15j4"]
+[ext_resource type="Texture2D" uid="uid://bfexonckddbt1" path="res://sprites/rocket launcher.png" id="7_begse"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mefdl"]
 texture = ExtResource("2_w20bw")
@@ -103,21 +107,66 @@ tile_set = SubResource("TileSet_evh1l")
 position = Vector2(1, -66)
 collision_mask = 3
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=767516757]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1399562905]
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" unique_id=1437141732]
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer" unique_id=1591764589]
 anchors_preset = -1
-anchor_left = 0.035
-anchor_top = 0.062000003
-anchor_right = 0.21000001
-anchor_bottom = 0.147
-grow_horizontal = 2
-grow_vertical = 2
+anchor_left = 0.027
+anchor_top = 0.034
+anchor_right = 0.24200001
+anchor_bottom = 0.28100002
+offset_left = -0.10400009
+offset_top = -0.032001495
+offset_right = 62.215973
+offset_bottom = 39.911987
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("4_lrm6c")
+region_rect = Rect2(249.99997, 177.6728, 460.22543, 364.16827)
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+metadata/_edit_use_anchors_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer" unique_id=691704555]
-layout_mode = 2
-size_flags_horizontal = 4
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1336255264]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer" unique_id=234174131]
-layout_mode = 2
-text = "Gun"
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control" unique_id=416555001]
+layout_mode = 0
+offset_left = -82.0
+offset_top = -46.0
+offset_right = 542.0
+offset_bottom = 358.0
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("5_evh1l")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Control" unique_id=868178513]
+layout_mode = 0
+offset_left = -101.0
+offset_top = -56.0
+offset_right = 523.0
+offset_bottom = 348.0
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("6_v15j4")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Control" unique_id=1564282953]
+layout_mode = 0
+offset_left = -79.0
+offset_top = -32.0
+offset_right = 545.0
+offset_bottom = 372.0
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("7_begse")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true

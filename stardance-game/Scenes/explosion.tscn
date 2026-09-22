@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://d2u2j76u1hffs" path="res://explosion.gd" id="1_aayv4"]
 [ext_resource type="Texture2D" uid="uid://c1a57hfil1oed" path="res://sprites/GAP_EasyExplosions_Textures/Untitled drawing (2).png" id="2_4okmj"]
 [ext_resource type="Texture2D" uid="uid://drr21iurakhkx" path="res://sprites/GAP_EasyExplosions_Textures/Flare00.PNG" id="2_a801j"]
+[ext_resource type="AudioStream" uid="uid://df5kv7biur1kq" path="res://sprites/flash/freesound_community-medium-explosion-40472.mp3" id="4_k2xjm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a801j"]
 radius = 303.42215
@@ -154,6 +155,10 @@ one_shot = true
 explosiveness = 1.0
 fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_48id1")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=373437418]
+stream = ExtResource("4_k2xjm")
+autoplay = true
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="DespawnTimer" to="." method="_on_despawn_timer_timeout"]
