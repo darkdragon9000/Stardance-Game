@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c68jt8fhoaplj"]
 
 [ext_resource type="Shader" uid="uid://7hi663t5bbau" path="res://hitstop_shader.gdshader" id="1_2bkp2"]
+[ext_resource type="AudioStream" uid="uid://beugmglgnr1y0" path="res://sprites/flash/lordsonny-glass-cinematic-hit-161212.mp3" id="2_jmwbf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2bkp2"]
 shader = ExtResource("1_2bkp2")
@@ -18,3 +19,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2092342495]
+stream = ExtResource("2_jmwbf")

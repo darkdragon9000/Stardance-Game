@@ -94,6 +94,7 @@ func hitstop(time: float) -> void:
 	target_zoom = player.camera_2d.zoom * Vector2(1.2,1.2)
 	debug_lvl.get_tree().paused = true
 	HitstopEffect.visible = true
+	HitstopEffect.get_child(1).playing = true
 	hitstop_timer.start()
 
 func _on_hitstop_timer_timeout() -> void:

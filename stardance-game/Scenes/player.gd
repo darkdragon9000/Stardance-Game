@@ -285,6 +285,7 @@ func shoot():
 			get_parent().add_child(bullet_instance)
 			audio_stream_player.stream = preload("res://sprites/flash/freesound_community-single-pistol-gunshot-3-101923.mp3")
 			audio_stream_player.playing = true
+			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 			pistol_shot = true
 			shotgun_shot = false
 			rocket_shot = false
@@ -301,6 +302,7 @@ func shoot():
 			shotgun_power = (shotgun_air_floor + shotgun_shell_instance.fire() * (1 - shotgun_air_floor)) * shotgun_strength
 			audio_stream_player.stream = preload("res://sprites/flash/freesound_community-single-pistol-gunshot-33-37187.mp3")
 			audio_stream_player.playing = true
+			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 			if shotgun_shell_instance.cooldown_check():
 				shotgun_cooldown.wait_time = 3
 				shotgun_cooldown.start()
@@ -325,6 +327,7 @@ func shoot():
 			get_parent().add_child(rocket_instance)
 			audio_stream_player.stream = preload("res://sprites/flash/dragon-studio-gunshot-511311.mp3")
 			audio_stream_player.playing = true
+			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 			rocket_shot = true
 			shotgun_shot = false
 			pistol_shot = false

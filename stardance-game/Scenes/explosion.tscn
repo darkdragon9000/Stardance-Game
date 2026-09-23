@@ -158,6 +158,7 @@ process_material = SubResource("ParticleProcessMaterial_48id1")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=373437418]
 stream = ExtResource("4_k2xjm")
+volume_db = 3.0
 autoplay = true
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
