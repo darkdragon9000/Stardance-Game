@@ -14,11 +14,17 @@ var zooming_out := false
 var target_zoom : Vector2
 var camera_pause_pos : Vector2
 var hitstopping := false
-var spawn_pos := Vector2(575,325)
+var spawn_pos := Vector2(1000,850)
 var spawning := true
 var particles_up := false
 var do_spawn := true
 var dying := false
+var checkpoint_reached := false
+var pistol_unlocked := false
+var shotgun_unlocked := false
+var rocket_unlocked := false
+var mine_unlocked := false
+var grapple_unlocked := true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -60,9 +66,9 @@ func _process(delta: float) -> void:
 			#print(player.camera_2d.zoom)
 		else:
 			if player.camera_2d.zoom > Vector2(0.802,0.802):
-				player.camera_2d.zoom = lerp(player.camera_2d.zoom, Vector2(0.8,0.8), delta * 2)
+				player.camera_2d.zoom = lerp(player.camera_2d.zoom, Vector2(1,1), delta * 2)
 			else:
-				player.camera_2d.zoom = Vector2(0.8,0.8)
+				player.camera_2d.zoom = Vector2(1,1)
 			if not particles_up:
 				var spawn_particles_instance = spawn_particles.instantiate()
 				spawn_particles_instance.global_position = spawn_pos
@@ -70,7 +76,7 @@ func _process(delta: float) -> void:
 				particles_up = true
 				spawn_particles_instance.emitting = true
 				player.spawning = false
-				player.can_shoot_grapple = true
+				player.can_shoot_grapple = grapple_unlocked
 				player.animated_sprite_2d.visible = true
 				do_spawn = false
 				spawning = false

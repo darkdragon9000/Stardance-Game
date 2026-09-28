@@ -1,7 +1,5 @@
 extends Area2D
 
-@onready var player: CharacterBody2D = $"../Player"
-
 func _ready() -> void:
 	add_to_group("obstacles")
 

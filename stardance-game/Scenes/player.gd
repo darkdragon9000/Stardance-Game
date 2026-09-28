@@ -1,14 +1,15 @@
 extends CharacterBody2D
 #basic movement
 const ACCELERATION = 1500.0
-const FRICTION = 1200
+const FRICTION = 1000
 @export var SPEED := 300.0
 @export var JUMP_VELOCITY := -400.0
-
+var ground_drag = FRICTION 
 #slam
 var slam_charges := 1
 var slamming := false
 var was_in_air := false
+var was_on_floor := is_on_floor()
 @export var slam_power := 150
 @onready var SlamParticles: CPUParticles2D = $SlamParticles
 
@@ -21,13 +22,13 @@ var mine = preload("res://Scenes/mine.tscn")
 
 var error_popup = preload("res://Scenes/texture_rect.tscn")
 
-var can_shoot_pistol := true
+var can_shoot_pistol := false
 var pistol_shot := false
-var can_shoot_shotgun = true
+var can_shoot_shotgun = false
 var shotgun_shot = false
-var can_shoot_rocket := true
+var can_shoot_rocket := false
 var rocket_shot := false
-var can_shoot_mine := true
+var can_shoot_mine := false
 var shot_in_air := false
 var pistol_force := Vector2.ZERO
 var shotgun_force := Vector2.ZERO
@@ -38,7 +39,7 @@ var knocked_back := false
 var exploded := false
 
 @export var pistol_strength = 130
-@export var shotgun_strength = 150
+@export var shotgun_strength = 120
 @export var charge_strength = 125 
 @export var charge_rate = 66.7
 @export var shotgun_air_floor = 0.75
@@ -61,6 +62,8 @@ var grapple_type: int
 var grapple_target
 var spawning : bool
 
+@onready var jump_buffer_timer = $JumpBufferTimer
+@onready var coyote_timer = $CoyoteTimer
 @onready var grapple_cooldown = $GrappleCooldown
 @onready var pistol_cooldown: Timer = $PistolCooldown
 @onready var shotgun_cooldown = $ShotgunCooldown
@@ -73,7 +76,22 @@ var spawning : bool
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready() -> void:
+	if not GameManager.checkpoint_reached:
+		var marker = get_tree().get_first_node_in_group("spawn_point")
+		if marker:
+			GameManager.spawn_pos = marker.global_position
+			if marker.start_with_pistol:
+				GameManager.pistol_unlocked = true
+			if marker.start_with_shotgun:
+				GameManager.shotgun_unlocked = true
+			if marker.start_with_rocket:
+				GameManager.rocket_unlocked = true
+			if marker.start_with_mines:
+				GameManager.mine_unlocked = true
+			GameManager.grapple_unlocked = marker.start_with_grapple
 	global_position = GameManager.spawn_pos
+	await get_tree().process_frame
+	camera_2d.reset_smoothing()
 	animated_sprite_2d.flip_h = false
 	animated_sprite_2d.play()
 	GameManager.player = self
@@ -81,6 +99,11 @@ func _ready() -> void:
 	if GameManager.do_spawn:
 		camera_2d.zoom = Vector2(2.5,2.5)
 		spawning = true
+	can_shoot_pistol = GameManager.pistol_unlocked
+	can_shoot_shotgun = GameManager.shotgun_unlocked
+	can_shoot_rocket = GameManager.rocket_unlocked
+	can_shoot_mine = GameManager.mine_unlocked
+
 
 func _physics_process(delta: float) -> void:
 	
@@ -93,9 +116,11 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 
 	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor() and not spawning:
-		velocity.y = JUMP_VELOCITY
 
+	if Input.is_action_just_pressed("jump"): #jump buffer
+		jump_buffer_timer.start()
+	if !jump_buffer_timer.is_stopped() and (is_on_floor() || !coyote_timer.is_stopped()) and not spawning:
+		velocity.y = JUMP_VELOCITY
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
@@ -110,17 +135,19 @@ func _physics_process(delta: float) -> void:
 		var target_x = (pistol_force.x + shotgun_force.x + rocket_force.x) + direction * SPEED * 0.2 #target x velocity: (add pistol force to a fraction of player movement)
 		velocity.x = move_toward(velocity.x, target_x, 6) #ease towards target_x
 	else:
-		# Normal delta-scaled acceleration/friction 
-		# Feels loose and would like to revisit turning being snappier and a more standard platformer base feel
+		# Normal delta-scaled acceleration/friction
 		if direction and not slamming:
 			if abs(velocity.x) <= SPEED and is_on_floor():  #if going slower than walk speed on the floor use basic movement to make it snappier
 				velocity.x = direction * SPEED
-			elif direction * velocity.x > 0 and abs(velocity.x) >= SPEED and not is_on_floor():
+			elif direction * velocity.x > 0 and abs(velocity.x) >= SPEED and is_on_floor():
+				velocity.x = move_toward(velocity.x, direction * SPEED, ground_drag * delta)
+			elif direction * velocity.x > 0 and abs(velocity.x) >= SPEED:
 				pass
 			else:
 				velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * delta) #use move_towards to prevent velocity from snapping to speed as soon as recoil ends
 		else:
-			velocity.x = move_toward(velocity.x, 0, FRICTION * delta) 
+			if is_on_floor():
+				velocity.x = move_toward(velocity.x, 0, FRICTION * delta) 
 		
 	#handle ground slam mechanic
 	if not is_on_floor() and slam_charges == 1 and Input.is_action_just_pressed("slam") and not is_grappling:
@@ -128,6 +155,7 @@ func _physics_process(delta: float) -> void:
 		was_in_air = true
 		#make sure you can't double jump or switch directions in a slam, also makes sure slam has unique gravity
 		slamming = true
+		velocity.x = 0
 		velocity +=  get_gravity() * delta * slam_power
 	if is_on_floor() and was_in_air:
 		print("slam")
@@ -162,6 +190,9 @@ func _physics_process(delta: float) -> void:
 				if Input.is_action_just_pressed("alt shoot") and can_shoot_mine:
 					alt_shoot()
 
+	
+	if was_on_floor && is_on_floor(): #coyote time(has to be called after move and slide for the was_on_floor to work
+		coyote_timer.start()
 	
 	velocity = velocity + (pistol_force + shotgun_force + rocket_force + explosion_force)
 	
@@ -271,6 +302,7 @@ func shoot():
 			rocket_shot = false
 			exploded = false
 		2:
+			
 			can_shoot_shotgun = false
 			print("shoot shotgun")
 			if not is_on_floor():

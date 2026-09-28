@@ -20,6 +20,11 @@ config/icon="res://icon.svg"
 GameManager="*uid://etqdpu1ynjvb"
 HitstopEffect="*uid://c68jt8fhoaplj"
 
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
@@ -33,6 +38,7 @@ mines=""
 explosions=""
 shotgun_shells=""
 obstacles=""
+spawn_point=""
 
 [input]
 

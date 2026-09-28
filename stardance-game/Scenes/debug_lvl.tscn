@@ -34,13 +34,31 @@ position = Vector2(577, 342)
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=514645355]
-position = Vector2(576, 495.5)
+position = Vector2(600, 875)
 shape = SubResource("RectangleShape2D_rydr0")
 
 [node name="TextureRect" type="TextureRect" parent="StaticBody2D" unique_id=1184838923]
-offset_top = 431.0
-offset_right = 4608.0
-offset_bottom = 943.0
+offset_left = 23.0
+offset_top = 812.0
+offset_right = 4631.0
+offset_bottom = 1324.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_cksea")
+stretch_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="." unique_id=1246024711]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3" unique_id=1473312613]
+position = Vector2(600, 875)
+shape = SubResource("RectangleShape2D_rydr0")
+
+[node name="TextureRect" type="TextureRect" parent="StaticBody2D3" unique_id=116671004]
+offset_left = -1126.0
+offset_top = 812.0
+offset_right = 3482.0
+offset_bottom = 1324.0
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_cksea")
 stretch_mode = 1
@@ -50,14 +68,14 @@ metadata/_edit_use_anchors_ = true
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1274530596]
-position = Vector2(1525, 300)
+position = Vector2(1645, 611)
 shape = SubResource("RectangleShape2D_rydr0")
 
 [node name="TextureRect" type="TextureRect" parent="StaticBody2D2" unique_id=1771944305]
-offset_left = 948.0
-offset_top = 236.0
-offset_right = 5556.0
-offset_bottom = 748.0
+offset_left = 1066.0
+offset_top = 548.0
+offset_right = 5674.0
+offset_bottom = 1060.0
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_cksea")
 stretch_mode = 1
@@ -97,10 +115,6 @@ position = Vector2(332, 266)
 position = Vector2(457, 160)
 scale = Vector2(1.5, 1.5)
 
-[node name="Laser" parent="." unique_id=1676743164 instance=ExtResource("6_eggs6")]
-position = Vector2(12, 429)
-scale = Vector2(1, 3.225)
-
 [node name="Player" parent="." unique_id=1102123049 instance=ExtResource("2_3fw05")]
 position = Vector2(575, 325)
 collision_mask = 3
@@ -116,8 +130,8 @@ scale = Vector2(1.7599951, 1.7599951)
 position = Vector2(1822, 91)
 
 [node name="Laser2" parent="." unique_id=19092292 instance=ExtResource("6_eggs6")]
-position = Vector2(2075, 236)
+position = Vector2(2078, 216)
 scale = Vector2(1, 3.185)
 
 [node name="Checkpoint" parent="." unique_id=1127831669 instance=ExtResource("7_xj20l")]
-position = Vector2(1203, 155)
+position = Vector2(949, 629)

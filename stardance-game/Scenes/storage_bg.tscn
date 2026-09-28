@@ -8,15 +8,16 @@
 [node name="Parallax2D2" type="Parallax2D" parent="." unique_id=1226367914]
 
 [node name="Sprite2D" type="Sprite2D" parent="Parallax2D2" unique_id=1935247788]
-scale = Vector2(1.1979167, 1.2000002)
+position = Vector2(965, 539)
+scale = Vector2(2.0020833, 2.0000002)
 texture = ExtResource("1_0r8nl")
 
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=1046932889]
-scroll_scale = Vector2(1.1, 1.1)
-scroll_offset = Vector2(0, 20)
-repeat_size = Vector2(1150, 0)
+scroll_offset = Vector2(-1132, 771)
+repeat_size = Vector2(1920, 0)
 repeat_times = 16
 
 [node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=664131968]
+position = Vector2(0, -17)
 scale = Vector2(1.2, 1.2)
 texture = ExtResource("2_850w6")

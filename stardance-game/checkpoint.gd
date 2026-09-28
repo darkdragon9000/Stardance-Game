@@ -7,11 +7,14 @@ var time := 0.0
 func _process(delta: float) -> void:
 	time += delta
 	sprite_2d.global_position.y += sin(rad_to_deg(time/20))/2
+	if GameManager.checkpoint_reached and GameManager.spawn_pos == global_position:
+		queue_free()
 	#print(sin(rad_to_deg(time)))
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		GameManager.spawn_pos = global_position
+		GameManager.checkpoint_reached = true
 		var particles_instance = spawn_particles.instantiate()
 		particles_instance.global_position = global_position
 		get_parent().add_child(particles_instance)
