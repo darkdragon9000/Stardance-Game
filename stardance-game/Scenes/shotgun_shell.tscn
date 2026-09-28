@@ -28,7 +28,7 @@ color = Color(0.55, 0.55, 0.55, 1)
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5vwxf"]
 particle_flag_align_y = true
 particle_flag_disable_z = true
-spread = 30.0
+spread = 15.938
 initial_velocity_min = 2000.0
 initial_velocity_max = 5000.0
 velocity_limit_curve = ExtResource("5_2uc5a")
@@ -36,19 +36,6 @@ gravity = Vector3(0, -20, 0)
 damping_curve = ExtResource("4_mcoxj")
 scale_min = 0.099999994
 scale_max = 0.19999999
-scale_curve = ExtResource("5_5vwxf")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rcb08"]
-particle_flag_align_y = true
-particle_flag_disable_z = true
-spread = 0.0
-initial_velocity_min = 200.0
-initial_velocity_max = 500.0
-velocity_limit_curve = ExtResource("5_2uc5a")
-gravity = Vector3(0, -20, 0)
-damping_curve = ExtResource("4_mcoxj")
-scale_min = 0.25
-scale_max = 0.35
 scale_curve = ExtResource("5_5vwxf")
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_4ahsk"]
@@ -78,15 +65,15 @@ explosiveness = 1.0
 fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_5vwxf")
 
-[node name="AltFireParticles" type="GPUParticles2D" parent="." unique_id=543451056]
+[node name="AltFireParticles" type="GPUParticles2D" parent="." unique_id=1899222051]
 emitting = false
-amount = 1
+amount = 12
 texture = ExtResource("2_qiie7")
 lifetime = 0.1
 one_shot = true
 explosiveness = 1.0
 fixed_fps = 60
-process_material = SubResource("ParticleProcessMaterial_rcb08")
+process_material = SubResource("ParticleProcessMaterial_5vwxf")
 
 [node name="Timer" type="Timer" parent="." unique_id=934771080]
 wait_time = 0.2

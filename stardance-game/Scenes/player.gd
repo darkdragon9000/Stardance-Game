@@ -41,7 +41,7 @@ var exploded := false
 @export var pistol_strength = 130
 @export var shotgun_strength = 120
 @export var charge_strength = 125 
-@export var charge_rate = 66.7
+@export var charge_rate = 25
 @export var shotgun_air_floor = 0.75
 @export var rocket_strength = 130
 
@@ -62,6 +62,8 @@ var grapple_type: int
 var grapple_target
 var spawning : bool
 
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+
 @onready var jump_buffer_timer = $JumpBufferTimer
 @onready var coyote_timer = $CoyoteTimer
 @onready var grapple_cooldown = $GrappleCooldown
@@ -70,7 +72,10 @@ var spawning : bool
 @onready var rocket_cooldown: Timer = $RocketCooldown
 @onready var mine_cooldown: Timer = $MineCooldown
 
-@onready var gun_label: Label = $"../CanvasLayer/PanelContainer/MarginContainer/Label"
+@onready var texture_rect: TextureRect = $"../CanvasLayer/Control/TextureRect"
+@onready var texture_rect_2: TextureRect = $"../CanvasLayer/Control/TextureRect2"
+@onready var texture_rect_3: TextureRect = $"../CanvasLayer/Control/TextureRect3"
+@onready var progress_bar: ProgressBar = $"../CanvasLayer/ProgressBar"
 @onready var camera_2d: Camera2D = $Camera2D
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
@@ -99,10 +104,12 @@ func _ready() -> void:
 	if GameManager.do_spawn:
 		camera_2d.zoom = Vector2(2.5,2.5)
 		spawning = true
+		GameManager.spawning = true
 	can_shoot_pistol = GameManager.pistol_unlocked
 	can_shoot_shotgun = GameManager.shotgun_unlocked
 	can_shoot_rocket = GameManager.rocket_unlocked
 	can_shoot_mine = GameManager.mine_unlocked
+
 
 
 func _physics_process(delta: float) -> void:
@@ -176,10 +183,13 @@ func _physics_process(delta: float) -> void:
 					shoot()
 					apply_recoil(get_global_mouse_position(), shotgun_power, false)
 				if Input.is_action_pressed("alt shoot") and can_shoot_shotgun:
+					progress_bar.visible = true
 					charge_strength = charge_strength + (delta * charge_rate)
-					charge_strength = clamp(charge_strength, 125, 225)
+					charge_strength = clamp(charge_strength, 125, 175)
+					print(charge_strength)
 				if Input.is_action_just_released("alt shoot") and can_shoot_shotgun:
 					alt_shoot()
+					progress_bar.visible = false
 					apply_recoil(get_global_mouse_position(), shotgun_power, false)
 					charge_strength = 125
 		if gun_equipped == 3:
@@ -191,7 +201,7 @@ func _physics_process(delta: float) -> void:
 					alt_shoot()
 
 	
-	if was_on_floor && is_on_floor(): #coyote time(has to be called after move and slide for the was_on_floor to work
+	if was_on_floor && is_on_floor(): #coyote time has to be called after move and slide for the was_on_floor to work
 		coyote_timer.start()
 	
 	velocity = velocity + (pistol_force + shotgun_force + rocket_force + explosion_force)
@@ -275,11 +285,19 @@ func _physics_process(delta: float) -> void:
 	
 	match gun_equipped:
 		1:
-			gun_label.text = "Pistol"
+			texture_rect.visible = true
+			texture_rect_2.visible = false
+			texture_rect_3.visible = false
 		2:
-			gun_label.text = "Shotgun"
+			texture_rect.visible = false
+			texture_rect_2.visible = true
+			texture_rect_3.visible = false
 		3:
-			gun_label.text = "Rocket Launcher"
+			texture_rect.visible = false
+			texture_rect_2.visible = false
+			texture_rect_3.visible = true
+	
+	progress_bar.value = charge_strength
 	
 	if spawning:
 		animated_sprite_2d.visible = false
@@ -297,6 +315,9 @@ func shoot():
 			bullet_instance.global_position = global_position
 			bullet_instance.add_collision_exception_with(self)
 			get_parent().add_child(bullet_instance)
+			audio_stream_player.stream = preload("res://sprites/flash/freesound_community-single-pistol-gunshot-3-101923.mp3")
+			audio_stream_player.playing = true
+			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 			pistol_shot = true
 			shotgun_shot = false
 			rocket_shot = false
@@ -312,6 +333,9 @@ func shoot():
 			shotgun_shell_instance.global_position = global_position
 			get_parent().add_child(shotgun_shell_instance)
 			shotgun_power = (shotgun_air_floor + shotgun_shell_instance.fire() * (1 - shotgun_air_floor)) * shotgun_strength
+			audio_stream_player.stream = preload("res://sprites/flash/freesound_community-single-pistol-gunshot-33-37187.mp3")
+			audio_stream_player.playing = true
+			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 			if shotgun_shell_instance.cooldown_check():
 				shotgun_cooldown.wait_time = 3
 				shotgun_cooldown.start()
@@ -334,6 +358,9 @@ func shoot():
 			rocket_instance.add_collision_exception_with(rocket_instance)
 			rocket_instance.add_collision_exception_with(self)
 			get_parent().add_child(rocket_instance)
+			audio_stream_player.stream = preload("res://sprites/flash/dragon-studio-gunshot-511311.mp3")
+			audio_stream_player.playing = true
+			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 			rocket_shot = true
 			shotgun_shot = false
 			pistol_shot = false
@@ -427,7 +454,7 @@ func start_grapple():
 	var query = PhysicsRayQueryParameters2D.create(global_position, global_position + (grapple_direction * grapple_range)) #sets start and end point for collison detecting ray
 	query.exclude = [self]
 	result = space_state.intersect_ray(query)
-	if result:
+	if result and not result.collider.is_in_group("pistol_bullets"):
 		print(result.collider)
 		if result.collider.is_in_group("mines"):
 			grapple_type = 1

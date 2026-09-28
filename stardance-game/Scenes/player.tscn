@@ -101,6 +101,9 @@ frame_progress = 0.8939371
 position = Vector2(0, 4)
 shape = SubResource("CapsuleShape2D_cvnsp")
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2038690226]
+volume_db = -10.0
+
 [connection signal="timeout" from="PistolCooldown" to="." method="_on_pistol_cooldown_timeout"]
 [connection signal="timeout" from="ShotgunCooldown" to="." method="_on_shotgun_cooldown_timeout"]
 [connection signal="timeout" from="RocketCooldown" to="." method="_on_rocket_cooldown_timeout"]

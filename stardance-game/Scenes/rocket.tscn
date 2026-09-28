@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://boqfg8m5eooc6"]
 
 [ext_resource type="Script" uid="uid://die4rmc4nrcs3" path="res://Scenes/rocket.gd" id="1_kvp10"]
-[ext_resource type="Texture2D" uid="uid://bc4ub0oh8jlco" path="res://sprites/Screenshot_2026-07-05_150206-removebg-preview.png" id="1_wrv6b"]
+[ext_resource type="Texture2D" uid="uid://b2n7327l8u6cw" path="res://sprites/lightning3/rocket.png" id="2_kvp10"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kvp10"]
 radius = 33.01515
@@ -19,8 +19,9 @@ script = ExtResource("1_kvp10")
 bulletSpeed = 750
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=156200338]
-scale = Vector2(0.15, 0.15)
-texture = ExtResource("1_wrv6b")
+position = Vector2(1, 0)
+scale = Vector2(0.431, 0.431)
+texture = ExtResource("2_kvp10")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1898732409]
 shape = SubResource("CircleShape2D_kvp10")

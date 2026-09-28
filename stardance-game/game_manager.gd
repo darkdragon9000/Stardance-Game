@@ -25,9 +25,12 @@ var shotgun_unlocked := false
 var rocket_unlocked := false
 var mine_unlocked := false
 var grapple_unlocked := true
+var first_play := false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if get_tree().current_scene.name == "MainMenu":
+		do_spawn = false
 	if not do_spawn:
 		spawning = false
 	get_tree().paused = false
@@ -61,6 +64,7 @@ func _process(delta: float) -> void:
 		if player.camera_2d.zoom.is_equal_approx(Vector2(1,1)):
 			zooming_out = false
 	if spawning:
+		print(spawning)
 		if player.camera_2d.zoom > Vector2(1.002,1.002):
 			player.camera_2d.zoom = lerp(player.camera_2d.zoom, Vector2(1,1), delta * 2)
 			#print(player.camera_2d.zoom)
@@ -96,6 +100,7 @@ func hitstop(time: float) -> void:
 	target_zoom = player.camera_2d.zoom * Vector2(1.2,1.2)
 	debug_lvl.get_tree().paused = true
 	HitstopEffect.visible = true
+	HitstopEffect.get_child(1).playing = true
 	hitstop_timer.start()
 
 func _on_hitstop_timer_timeout() -> void:
