@@ -3,15 +3,67 @@
 [ext_resource type="Script" uid="uid://bfd33q2wwr408" path="res://Scenes/player.gd" id="1_6t5aa"]
 [ext_resource type="Script" uid="uid://ld3x52ixfok2" path="res://Scenes/camera_2d.gd" id="3_fkybt"]
 [ext_resource type="Texture2D" uid="uid://cc8ruaj7tpmrh" path="res://sprites/New Piskel-1.png (2).png" id="3_vgqql"]
+[ext_resource type="Texture2D" uid="uid://be53afb5f523l" path="res://sprites/player anims/fall000.png" id="4_0gysh"]
 [ext_resource type="Texture2D" uid="uid://7120eycbfgdh" path="res://sprites/GAP_EasyExplosions_Textures/000.png" id="5_tx1dd"]
+[ext_resource type="Texture2D" uid="uid://d1w5n1oy7r5eo" path="res://sprites/player anims/fall001.png" id="5_vfarp"]
 [ext_resource type="Texture2D" uid="uid://dr8wcj68i4wd2" path="res://sprites/GAP_EasyExplosions_Textures/001.png" id="6_gymyn"]
+[ext_resource type="Texture2D" uid="uid://btxpskho7bu2" path="res://sprites/player anims/fall002.png" id="6_y6uwr"]
+[ext_resource type="Texture2D" uid="uid://b0b2g57on2amy" path="res://sprites/player anims/fall003.png" id="7_83xs0"]
 [ext_resource type="Texture2D" uid="uid://by2b5ipiu3so5" path="res://sprites/GAP_EasyExplosions_Textures/002.png" id="7_pu2lt"]
 [ext_resource type="Texture2D" uid="uid://dg4yaq8wqa01t" path="res://sprites/GAP_EasyExplosions_Textures/003.png" id="8_ukyrk"]
+[ext_resource type="Texture2D" uid="uid://cfpc1vbl0v5nm" path="res://sprites/player anims/fall004.png" id="8_ypfnu"]
 [ext_resource type="Texture2D" uid="uid://bbnua7qvf445k" path="res://sprites/GAP_EasyExplosions_Textures/004.png" id="9_7dp3o"]
+[ext_resource type="Texture2D" uid="uid://vslwihrygobk" path="res://sprites/player anims/fall005.png" id="9_xuaoq"]
 [ext_resource type="Texture2D" uid="uid://vjpghm0jj7jt" path="res://sprites/GAP_EasyExplosions_Textures/005.png" id="10_h4iuc"]
+[ext_resource type="Texture2D" uid="uid://q5jp0vols4lf" path="res://sprites/player anims/fall006.png" id="10_wohnl"]
+[ext_resource type="Texture2D" uid="uid://qaa0o2u4xfqa" path="res://sprites/player anims/fall007.png" id="11_36dho"]
+[ext_resource type="Texture2D" uid="uid://d2m5deadogxe" path="res://sprites/player anims/fall008.png" id="12_yh6i2"]
+[ext_resource type="Texture2D" uid="uid://ghrr8t51bxuq" path="res://sprites/player anims/fall009.png" id="13_nv4vc"]
+[ext_resource type="Texture2D" uid="uid://bke0kemto8g8e" path="res://sprites/player anims/run000.png" id="20_8gxox"]
+[ext_resource type="Texture2D" uid="uid://coasqnw2vuj8p" path="res://sprites/player anims/run001.png" id="21_11gg7"]
+[ext_resource type="Texture2D" uid="uid://ctrtq7mrcjc7d" path="res://sprites/player anims/run002.png" id="22_qpa8y"]
+[ext_resource type="Texture2D" uid="uid://dw7iwsj3p0b82" path="res://sprites/player anims/run003.png" id="23_sbwqj"]
+[ext_resource type="Texture2D" uid="uid://b13hobwnj3ghp" path="res://sprites/player anims/run004.png" id="24_xwi16"]
+[ext_resource type="Texture2D" uid="uid://7oyjqhfird7i" path="res://sprites/player anims/run005.png" id="25_sweqm"]
+[ext_resource type="Texture2D" uid="uid://blvqpc5ie4p2r" path="res://sprites/player anims/run006.png" id="26_ph33w"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_fd4e3"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_0gysh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_vfarp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_y6uwr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_83xs0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ypfnu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_xuaoq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_wohnl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_36dho")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_yh6i2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_nv4vc")
+}],
+"loop": true,
+"name": &"fall",
+"speed": 12.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("5_tx1dd")
@@ -32,13 +84,43 @@ animations = [{
 "texture": ExtResource("10_h4iuc")
 }],
 "loop": true,
-"name": &"default",
+"name": &"idle",
 "speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_8gxox")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_11gg7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_qpa8y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_sbwqj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_xwi16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_sweqm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_ph33w")
+}],
+"loop": true,
+"name": &"run",
+"speed": 22.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cvnsp"]
 radius = 14.0
 height = 122.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f1ek2"]
+radius = 15.0
+height = 124.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1102123049]
 script = ExtResource("1_6t5aa")
@@ -94,8 +176,8 @@ wait_time = 0.7
 position = Vector2(5.722046e-06, -5.722046e-06)
 scale = Vector2(0.13525002, 0.13525002)
 sprite_frames = SubResource("SpriteFrames_fd4e3")
-frame = 1
-frame_progress = 0.8939371
+animation = &"run"
+frame_progress = 0.14829439
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1052509502]
 position = Vector2(0, 4)
@@ -104,8 +186,23 @@ shape = SubResource("CapsuleShape2D_cvnsp")
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2038690226]
 volume_db = -10.0
 
+[node name="PistolComboTimer" type="Timer" parent="." unique_id=426897328]
+wait_time = 0.2
+one_shot = true
+
+[node name="SpinComboTimer" type="Timer" parent="." unique_id=878632505]
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1868815851]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1809928073]
+position = Vector2(0, 4)
+shape = SubResource("CapsuleShape2D_f1ek2")
+
 [connection signal="timeout" from="PistolCooldown" to="." method="_on_pistol_cooldown_timeout"]
 [connection signal="timeout" from="ShotgunCooldown" to="." method="_on_shotgun_cooldown_timeout"]
 [connection signal="timeout" from="RocketCooldown" to="." method="_on_rocket_cooldown_timeout"]
 [connection signal="timeout" from="MineCooldown" to="." method="_on_mine_cooldown_timeout"]
 [connection signal="timeout" from="GrappleCooldown" to="." method="_on_grapple_cooldown_timeout"]
+[connection signal="timeout" from="PistolComboTimer" to="." method="_on_pistol_combo_timer_timeout"]
+[connection signal="timeout" from="SpinComboTimer" to="." method="_on_spin_combo_timer_timeout"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

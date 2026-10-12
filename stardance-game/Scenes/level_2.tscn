@@ -8,6 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://bdqkw82ukagdm" path="res://Scenes/saw.tscn" id="6_055b2"]
 [ext_resource type="PackedScene" uid="uid://du1b8pgv65dwe" path="res://checkpoint.tscn" id="7_2mgoq"]
 [ext_resource type="PackedScene" uid="uid://bmaov76ywligj" path="res://Scenes/kill_box.tscn" id="7_055b2"]
+[ext_resource type="Texture2D" uid="uid://ceqy7jtrqy1l1" path="res://sprites/9slice.png" id="9_ait6c"]
+[ext_resource type="Texture2D" uid="uid://bbhsyjw2clmq7" path="res://sprites/pistol.png" id="10_vcilj"]
+[ext_resource type="Texture2D" uid="uid://djiv1a58g0vmy" path="res://sprites/shotgun.png" id="11_bl0du"]
+[ext_resource type="Texture2D" uid="uid://bfexonckddbt1" path="res://sprites/rocket launcher.png" id="12_q0ycs"]
 
 [sub_resource type="Environment" id="Environment_smnlx"]
 background_mode = 3
@@ -39,6 +43,29 @@ sources/1 = SubResource("TileSetAtlasSource_1q6tm")
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_2mgoq"]
 distance = -1305.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ait6c"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vcilj"]
+bg_color = Color(1, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
 [node name="Level 2" type="Node2D" unique_id=1214126520]
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=1654405894]
@@ -46,25 +73,6 @@ layer = -2
 
 [node name="power_supply_bg" parent="CanvasLayer2" unique_id=1544398694 instance=ExtResource("1_v3rpw")]
 position = Vector2(577, 342)
-
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=259508041]
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" unique_id=1664877275]
-anchors_preset = -1
-anchor_left = 0.035
-anchor_top = 0.062000003
-anchor_right = 0.21000001
-anchor_bottom = 0.147
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer" unique_id=376450471]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer" unique_id=1271272312]
-layout_mode = 2
-text = "Gun"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=461587362]
 environment = SubResource("Environment_smnlx")
@@ -74,7 +82,7 @@ tile_map_data = PackedByteArray("AAAJAAgAAQACAAMAAAAJAAkAAQACAAMAAAAKAAkAAQACAAM
 tile_set = SubResource("TileSet_v36qu")
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=1294765752 groups=["spawn_point"]]
-position = Vector2(14039, -2601)
+position = Vector2(982, 336)
 scale = Vector2(2, 2)
 script = ExtResource("2_smnlx")
 start_with_pistol = true
@@ -160,3 +168,96 @@ position = Vector2(-1, 392)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="kill_box" unique_id=1477269478]
 position = Vector2(0, 746)
 shape = SubResource("WorldBoundaryShape2D_2mgoq")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1932413748]
+
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer" unique_id=1390817967]
+anchors_preset = -1
+anchor_left = 0.027
+anchor_top = 0.034
+anchor_right = 0.24200001
+anchor_bottom = 0.28100002
+offset_left = -0.10400009
+offset_top = -0.032001495
+offset_right = 62.215973
+offset_bottom = 39.911987
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("9_ait6c")
+region_rect = Rect2(249.99997, 177.6728, 460.22543, 364.16827)
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+metadata/_edit_use_anchors_ = true
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1344714795]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control" unique_id=1875039425]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.85
+anchor_top = -1.025
+anchor_right = -1.85
+anchor_bottom = -1.025
+offset_left = -82.0
+offset_top = -46.0
+offset_right = 542.0
+offset_bottom = 358.0
+scale = Vector2(1.3193911, 1.3193911)
+texture = ExtResource("10_vcilj")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Control" unique_id=1086525552]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.85
+anchor_top = -1.025
+anchor_right = -1.85
+anchor_bottom = -1.025
+offset_left = -101.0
+offset_top = -56.0
+offset_right = 523.0
+offset_bottom = 348.0
+scale = Vector2(1.3193911, 1.3193911)
+texture = ExtResource("11_bl0du")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Control" unique_id=1409923036]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.85
+anchor_top = -1.025
+anchor_right = -1.85
+anchor_bottom = -1.025
+offset_left = -79.0
+offset_top = -32.0
+offset_right = 545.0
+offset_bottom = 372.0
+scale = Vector2(1.3193911, 1.3193911)
+texture = ExtResource("12_q0ycs")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=1229720399]
+visible = false
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 0.298
+anchor_right = 0.24400002
+anchor_bottom = 0.33900002
+theme_override_styles/background = SubResource("StyleBoxFlat_ait6c")
+theme_override_styles/fill = SubResource("StyleBoxFlat_vcilj")
+min_value = 100.0
+max_value = 120.0
+value = 120.0
+show_percentage = false

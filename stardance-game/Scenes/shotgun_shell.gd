@@ -27,7 +27,8 @@ func fire():
 			var falloff = pow(1.0 - normalized, falloff_speed)
 			total += falloff
 			if c.is_in_group("obstacles"):
-				total += falloff * 1.5   # saw bonus: closer saw = bigger push
+				total += 1.5   # saw bonus: closer saw = bigger push
+				print("initial: " + str(total))
 				print("hit")
 				if can_hitstop:
 					GameManager.hitstop(0.3)
@@ -36,9 +37,11 @@ func fire():
 
 	can_hitstop = true
 	total = total / rays.size()
+	print("divide: " + str(total))
+	total = clamp(total, -100, 1.2)
+	print("clamp: " + str(total))
 	gpu_particles_2d.emitting = true
 	smoke.emitting = true
-	print(total)
 	return total
 
 

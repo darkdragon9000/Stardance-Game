@@ -39,6 +39,7 @@ explosions=""
 shotgun_shells=""
 obstacles=""
 spawn_point=""
+world_environment=""
 
 [input]
 

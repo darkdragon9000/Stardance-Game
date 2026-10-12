@@ -446,7 +446,7 @@ autoscroll = Vector2(50, 50)
 repeat_times = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Parallax2D" unique_id=567528238]
-position = Vector2(578, 419)
+position = Vector2(1534, 779)
 scale = Vector2(2.7, 2.7)
 sprite_frames = SubResource("SpriteFrames_44i23")
 autoplay = "default"

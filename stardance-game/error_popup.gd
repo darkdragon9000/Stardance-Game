@@ -1,6 +1,5 @@
 extends TextureRect
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var popup = randi_range(1, 4)

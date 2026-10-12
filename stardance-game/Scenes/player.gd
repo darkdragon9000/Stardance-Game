@@ -37,11 +37,12 @@ var rocket_force := Vector2.ZERO
 var explosion_force := Vector2.ZERO
 var knocked_back := false
 var exploded := false
+var pistol_combos := 0
 
 @export var pistol_strength = 130
 @export var shotgun_strength = 120
-@export var charge_strength = 125 
-@export var charge_rate = 25
+@export var charge_strength := 100.00
+@export var charge_rate = 5
 @export var shotgun_air_floor = 0.75
 @export var rocket_strength = 130
 
@@ -61,8 +62,13 @@ var can_shoot_grapple := false
 var grapple_type: int
 var grapple_target
 var spawning : bool
+var can_combo := false
+var gun_spinning := false
+@onready var area_2d: Area2D = $Area2D
 
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var pistol_combo_timer: Timer = $PistolComboTimer
+@onready var spin_combo_timer: Timer = $SpinComboTimer
 
 @onready var jump_buffer_timer = $JumpBufferTimer
 @onready var coyote_timer = $CoyoteTimer
@@ -77,6 +83,7 @@ var spawning : bool
 @onready var texture_rect_3: TextureRect = $"../CanvasLayer/Control/TextureRect3"
 @onready var progress_bar: ProgressBar = $"../CanvasLayer/ProgressBar"
 @onready var camera_2d: Camera2D = $Camera2D
+@onready var label: Label = $"../CanvasLayer/Label"
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -94,6 +101,7 @@ func _ready() -> void:
 			if marker.start_with_mines:
 				GameManager.mine_unlocked = true
 			GameManager.grapple_unlocked = marker.start_with_grapple
+		
 	global_position = GameManager.spawn_pos
 	await get_tree().process_frame
 	camera_2d.reset_smoothing()
@@ -110,8 +118,6 @@ func _ready() -> void:
 	can_shoot_rocket = GameManager.rocket_unlocked
 	can_shoot_mine = GameManager.mine_unlocked
 
-
-
 func _physics_process(delta: float) -> void:
 	
 	if is_on_floor():
@@ -120,9 +126,24 @@ func _physics_process(delta: float) -> void:
 		shot_in_air = false
 	# Add the gravity.
 	if not is_on_floor() and not is_grappling:
-		velocity += get_gravity() * delta
+		if gun_spinning and velocity.y > 0:
+			velocity += get_gravity() * delta
+			velocity.y = move_toward(velocity.y, clamp(velocity.y, velocity.y, 125), 25)
+		else:
+			velocity += get_gravity() * delta
 
+	if gun_spinning and pistol_combos > 0:
+		texture_rect.rotation += deg_to_rad(40)
+	else: 
+		texture_rect.texture = preload("res://sprites/pistol.png")
 	# Handle jump.
+
+	if velocity == Vector2.ZERO:
+		animated_sprite_2d.animation = "idle"
+	if is_on_floor() and velocity.x != 0 and not (knocked_back or exploded):
+		animated_sprite_2d.animation = "run"
+	if not is_on_floor() or (knocked_back or exploded):
+		animated_sprite_2d.animation = "fall"
 
 	if Input.is_action_just_pressed("jump"): #jump buffer
 		jump_buffer_timer.start()
@@ -131,10 +152,16 @@ func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
-	match get_global_mouse_position().x > position.x:
-		true:
+	if not is_on_floor() or velocity == Vector2.ZERO:
+		match get_global_mouse_position().x > position.x:
+			true:
+				animated_sprite_2d.flip_h = false
+			false:
+				animated_sprite_2d.flip_h = true
+	else:
+		if velocity.x > 0:
 			animated_sprite_2d.flip_h = false
-		false:
+		if velocity.x < 0:
 			animated_sprite_2d.flip_h = true
 	if is_grappling and grapple_type != 2:
 		pass
@@ -173,10 +200,35 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		if gun_equipped == 1:
 			if Input.is_action_just_pressed("shoot") and can_shoot_pistol:
-				apply_recoil(get_global_mouse_position(), pistol_strength, false)
+				if can_combo:
+					pistol_combos += 1
+					apply_recoil(get_global_mouse_position(), pistol_strength * (1 + minf((float(pistol_combos)/10), 0.5)), false)
+					label.text = "COMBO X" + str(pistol_combos)
+					var label_size_tween = create_tween()
+					label.scale = Vector2(4,4)
+					label_size_tween.set_trans(Tween.TRANS_BOUNCE)
+					label_size_tween.set_ease(Tween.EASE_OUT)
+					label_size_tween.tween_property(label, "scale", Vector2(1,1), 0.5)
+					label.rotation = deg_to_rad(randf_range(-10,10))
+				else:
+					apply_recoil(get_global_mouse_position(), pistol_strength, false)
+					if not gun_spinning:
+						pistol_combos = 0
+						label.text = ""
+				if not gun_spinning:
+					var tween = create_tween()
+					tween.set_trans(tween.TRANS_BACK)
+					tween.set_ease(Tween.EASE_OUT)
+					tween.tween_property(texture_rect, "rotation", deg_to_rad(360), 0.7).as_relative()
 				shoot()
-			if Input.is_action_just_pressed("alt shoot") and can_shoot_grapple:
+				print(pistol_combos)
+			if Input.is_action_pressed("alt shoot") and pistol_combos > 0:
 				alt_shoot()
+			else:
+				gun_spinning = false
+				spin_combo_timer.stop()
+			if Input.is_action_just_released("alt shoot"):
+				texture_rect.rotation = 0
 		if gun_equipped == 2:
 			if not is_grappling:
 				if Input.is_action_just_pressed("shoot") and can_shoot_shotgun:
@@ -184,14 +236,14 @@ func _physics_process(delta: float) -> void:
 					apply_recoil(get_global_mouse_position(), shotgun_power, false)
 				if Input.is_action_pressed("alt shoot") and can_shoot_shotgun:
 					progress_bar.visible = true
-					charge_strength = charge_strength + (delta * charge_rate)
-					charge_strength = clamp(charge_strength, 125, 175)
 					print(charge_strength)
-				if Input.is_action_just_released("alt shoot") and can_shoot_shotgun:
-					alt_shoot()
-					progress_bar.visible = false
-					apply_recoil(get_global_mouse_position(), shotgun_power, false)
-					charge_strength = 125
+					charge_strength = charge_strength + (delta * charge_rate)
+					charge_strength = clamp(charge_strength, 100.00, 120.00)
+#				if Input.is_action_just_released("alt shoot") and can_shoot_shotgun:
+#					alt_shoot()
+#					progress_bar.visible = false
+#					apply_recoil(get_global_mouse_position(), shotgun_power, false)
+#					charge_strength = 100
 		if gun_equipped == 3:
 			if not is_grappling: 
 				if Input.is_action_just_pressed("shoot") and can_shoot_rocket:
@@ -205,6 +257,7 @@ func _physics_process(delta: float) -> void:
 		coyote_timer.start()
 	
 	velocity = velocity + (pistol_force + shotgun_force + rocket_force + explosion_force)
+	
 	
 	#make shot force decay
 	pistol_force = pistol_force.move_toward(Vector2.ZERO, 800 * delta)
@@ -280,22 +333,24 @@ func _physics_process(delta: float) -> void:
 		gun_equipped = wrapi(gun_equipped - 1, 1, 4)
 		print(gun_equipped)
 	
-	if gun_equipped != 2:
-		charge_strength = 125
+	if (gun_equipped != 2 or (gun_equipped == 2 and not Input.is_action_pressed("alt shoot"))) and charge_strength != 100:
+		charge_strength -= (charge_rate * 0.01)
+		print(charge_strength)
 	
-	match gun_equipped:
-		1:
-			texture_rect.visible = true
-			texture_rect_2.visible = false
-			texture_rect_3.visible = false
-		2:
-			texture_rect.visible = false
-			texture_rect_2.visible = true
-			texture_rect_3.visible = false
-		3:
-			texture_rect.visible = false
-			texture_rect_2.visible = false
-			texture_rect_3.visible = true
+	if not GameManager.intro_sequence:
+		match gun_equipped:
+			1:
+				texture_rect.visible = true
+				texture_rect_2.visible = false
+				texture_rect_3.visible = false
+			2:
+				texture_rect.visible = false
+				texture_rect_2.visible = true
+				texture_rect_3.visible = false
+			3:
+				texture_rect.visible = false
+				texture_rect_2.visible = false
+				texture_rect_3.visible = true
 	
 	progress_bar.value = charge_strength
 	
@@ -333,6 +388,12 @@ func shoot():
 			shotgun_shell_instance.global_position = global_position
 			get_parent().add_child(shotgun_shell_instance)
 			shotgun_power = (shotgun_air_floor + shotgun_shell_instance.fire() * (1 - shotgun_air_floor)) * shotgun_strength
+			print("shotgun power: " + str(shotgun_power))
+			print("charge power: " + str(charge_strength/100))
+			shotgun_power *= (charge_strength/100)
+			charge_strength = 100
+			progress_bar.visible = false
+			print("shotgun power boosted: " + str(shotgun_power))
 			audio_stream_player.stream = preload("res://sprites/flash/freesound_community-single-pistol-gunshot-33-37187.mp3")
 			audio_stream_player.playing = true
 			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
@@ -369,7 +430,9 @@ func shoot():
 func alt_shoot():
 	match gun_equipped:
 		1:
-			start_grapple()
+			gun_spinning = true
+			if is_zero_approx(spin_combo_timer.time_left):
+				spin_combo_timer.start()
 		2:
 			can_shoot_shotgun = false
 			print("shoot shotgun")
@@ -379,7 +442,15 @@ func alt_shoot():
 			shotgun_shell_instance.rotation = get_angle_to(get_global_mouse_position())
 			shotgun_shell_instance.global_position = global_position
 			get_parent().add_child(shotgun_shell_instance)
-			shotgun_power = (shotgun_air_floor + shotgun_shell_instance.alt_fire() * (1 - shotgun_air_floor)) * charge_strength
+			shotgun_power = (shotgun_air_floor + shotgun_shell_instance.alt_fire() * (1 - shotgun_air_floor)) * shotgun_strength
+			print("shotgun power: " + str(shotgun_power))
+			print("charge power: " + str(charge_strength/100))
+			shotgun_power *= (charge_strength/100)
+			print("shotgun power boosted: " + str(shotgun_power))
+			audio_stream_player.pitch_scale = randf_range(0.5, 0.75)
+			audio_stream_player.stream = preload("res://sprites/flash/freesound_community-single-pistol-gunshot-33-37187.mp3")
+			audio_stream_player.playing = true
+			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 			if shotgun_shell_instance.cooldown_check():
 				shotgun_cooldown.wait_time = 3
 				shotgun_cooldown.start()
@@ -432,6 +503,8 @@ func apply_recoil(source_position: Vector2, knockback_strength: float, is_explos
 
 func _on_pistol_cooldown_timeout() -> void:
 	can_shoot_pistol = true
+	pistol_combo_timer.start()
+	can_combo = true
 
 func _on_shotgun_cooldown_timeout():
 	can_shoot_shotgun = true
@@ -485,3 +558,28 @@ func clear_grapple():
 func screen_shake(strength: int, time: float):
 	camera_2d.screen_shake(strength, time)
 		
+
+
+func _on_pistol_combo_timer_timeout() -> void:
+	can_combo = false
+
+
+func _on_spin_combo_timer_timeout() -> void:
+	pistol_combos -= 1
+	label.text = "COMBO X" + str(pistol_combos)
+	var label_size_tween = create_tween()
+	label.scale = Vector2(0.5,0.5)
+	label_size_tween.set_trans(Tween.TRANS_EXPO)
+	label_size_tween.set_ease(Tween.EASE_OUT)
+	label_size_tween.tween_property(label, "scale", Vector2(1,1), 0.5)
+	label.rotation = deg_to_rad(randf_range(-10,10))
+	if pistol_combos == 0:
+		label.text = ""
+		texture_rect.rotation = 0
+		texture_rect.texture = preload("res://sprites/pistol.png")
+	
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.is_in_group("obstacles"):
+		GameManager.die()
