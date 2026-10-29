@@ -123,6 +123,7 @@ radius = 15.0
 height = 124.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1102123049]
+z_index = 4
 script = ExtResource("1_6t5aa")
 slam_power = 149
 shotgun_air_floor = 0.6

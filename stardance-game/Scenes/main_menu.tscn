@@ -388,53 +388,52 @@ texture = ExtResource("1_48xlc")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer" unique_id=1771655452]
-anchors_preset = -1
-anchor_top = 0.36100003
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1.0
-offset_top = 0.07197571
-offset_right = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Button" type="Button" parent="CanvasLayer/HBoxContainer" unique_id=1137738240]
+[node name="Button" type="Button" parent="CanvasLayer" unique_id=1137738240]
 custom_minimum_size = Vector2(575, 0)
-layout_mode = 2
+offset_left = 355.0
+offset_top = 488.0
+offset_right = 930.0
+offset_bottom = 930.0
 flat = true
 script = ExtResource("2_44i23")
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HBoxContainer/Button" unique_id=848567902]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Button" unique_id=848567902]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 65.0
-offset_right = 65.0
+offset_left = -1.0
+offset_top = 2.0
+offset_right = -1.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.75, 0.75)
+scale = Vector2(1.2, 1.2)
 pivot_offset = Vector2(287, 213.52)
 texture = ExtResource("3_q4uka")
 expand_mode = 1
 stretch_mode = 3
 
-[node name="Button2" type="Button" parent="CanvasLayer/HBoxContainer" unique_id=1555721647]
+[node name="Button2" type="Button" parent="CanvasLayer" unique_id=1555721647]
 custom_minimum_size = Vector2(575, 0)
-layout_mode = 2
+offset_left = 1009.0
+offset_top = 476.0
+offset_right = 1584.0
+offset_bottom = 930.0
 flat = true
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HBoxContainer/Button2" unique_id=1209199605]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Button2" unique_id=1209199605]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -65.0
-offset_right = -65.0
+offset_left = -6.0
+offset_top = 3.0
+offset_right = -6.0
+offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.75, 0.75)
+scale = Vector2(1.2, 1.2)
 pivot_offset = Vector2(287, 213.52)
 texture = ExtResource("4_65suo")
 expand_mode = 1
@@ -452,4 +451,4 @@ sprite_frames = SubResource("SpriteFrames_44i23")
 autoplay = "default"
 frame_progress = 0.1921269
 
-[connection signal="pressed" from="CanvasLayer/HBoxContainer/Button" to="CanvasLayer/HBoxContainer/Button" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/Button" to="CanvasLayer/Button" method="_on_pressed"]

@@ -40,14 +40,14 @@ var exploded := false
 var pistol_combos := 0
 
 @export var pistol_strength = 130
-@export var shotgun_strength = 120
+@export var shotgun_strength = 180
 @export var charge_strength := 100.00
 @export var charge_rate = 5
 @export var shotgun_air_floor = 0.75
 @export var rocket_strength = 130
 
 
-@export var air_decay = 0.75
+@export var air_decay = 0.8
 
 #grapple
 @export var grapple_speed = 100
@@ -64,6 +64,11 @@ var grapple_target
 var spawning : bool
 var can_combo := false
 var gun_spinning := false
+
+var pistol_sound = preload("res://sprites/flash/freesound_community-single-pistol-gunshot-3-101923.mp3")
+var shotgun_sound = preload("res://sprites/flash/freesound_community-single-pistol-gunshot-33-37187.mp3")
+var rocket_sound = preload("res://sprites/flash/dragon-studio-gunshot-511311.mp3")
+
 @onready var area_2d: Area2D = $Area2D
 
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
@@ -119,40 +124,42 @@ func _ready() -> void:
 	can_shoot_mine = GameManager.mine_unlocked
 
 func _physics_process(delta: float) -> void:
+	var on_floor = is_on_floor()
 	
-	if is_on_floor():
+	if on_floor:
 		slamming = false
 		slam_charges = 1
 		shot_in_air = false
 	# Add the gravity.
-	if not is_on_floor() and not is_grappling:
+	if not on_floor and not is_grappling:
 		if gun_spinning and velocity.y > 0:
 			velocity += get_gravity() * delta
 			velocity.y = move_toward(velocity.y, clamp(velocity.y, velocity.y, 125), 25)
 		else:
 			velocity += get_gravity() * delta
 
-	if gun_spinning and pistol_combos > 0:
+	if gun_spinning and pistol_combos > 0 and gun_equipped == 1:
 		texture_rect.rotation += deg_to_rad(40)
 	else: 
-		texture_rect.texture = preload("res://sprites/pistol.png")
+		gun_spinning = false
+		spin_combo_timer.stop()
 	# Handle jump.
 
 	if velocity == Vector2.ZERO:
 		animated_sprite_2d.animation = "idle"
-	if is_on_floor() and velocity.x != 0 and not (knocked_back or exploded):
+	if on_floor and velocity.x != 0 and not (knocked_back or exploded):
 		animated_sprite_2d.animation = "run"
-	if not is_on_floor() or (knocked_back or exploded):
+	if not on_floor or (knocked_back or exploded):
 		animated_sprite_2d.animation = "fall"
 
 	if Input.is_action_just_pressed("jump"): #jump buffer
 		jump_buffer_timer.start()
-	if !jump_buffer_timer.is_stopped() and (is_on_floor() || !coyote_timer.is_stopped()) and not spawning:
+	if !jump_buffer_timer.is_stopped() and (on_floor || !coyote_timer.is_stopped()) and not spawning:
 		velocity.y = JUMP_VELOCITY
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
-	if not is_on_floor() or velocity == Vector2.ZERO:
+	if not on_floor or velocity == Vector2.ZERO:
 		match get_global_mouse_position().x > position.x:
 			true:
 				animated_sprite_2d.flip_h = false
@@ -171,57 +178,63 @@ func _physics_process(delta: float) -> void:
 	else:
 		# Normal delta-scaled acceleration/friction
 		if direction and not slamming:
-			if abs(velocity.x) <= SPEED and is_on_floor():  #if going slower than walk speed on the floor use basic movement to make it snappier
+			if abs(velocity.x) <= SPEED and on_floor:  #if going slower than walk speed on the floor use basic movement to make it snappier
 				velocity.x = direction * SPEED
-			elif direction * velocity.x > 0 and abs(velocity.x) >= SPEED and is_on_floor():
+			elif direction * velocity.x > 0 and abs(velocity.x) >= SPEED and on_floor:
 				velocity.x = move_toward(velocity.x, direction * SPEED, ground_drag * delta)
 			elif direction * velocity.x > 0 and abs(velocity.x) >= SPEED:
 				pass
 			else:
 				velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * delta) #use move_towards to prevent velocity from snapping to speed as soon as recoil ends
 		else:
-			if is_on_floor():
+			if on_floor:
 				velocity.x = move_toward(velocity.x, 0, FRICTION * delta) 
 		
 	#handle ground slam mechanic
-	if not is_on_floor() and slam_charges == 1 and Input.is_action_just_pressed("slam") and not is_grappling:
+	if not on_floor and slam_charges == 1 and Input.is_action_just_pressed("slam") and not is_grappling:
 		slam_charges = 0
 		was_in_air = true
 		#make sure you can't double jump or switch directions in a slam, also makes sure slam has unique gravity
 		slamming = true
 		velocity.x = 0
 		velocity +=  get_gravity() * delta * slam_power
-	if is_on_floor() and was_in_air:
+	if on_floor and was_in_air:
 		print("slam")
 		SlamParticles.emitting = true
 		was_in_air = false
 	
+	print(spin_combo_timer.time_left)
+	
 	if not spawning:
 		move_and_slide()
 		if gun_equipped == 1:
-			if Input.is_action_just_pressed("shoot") and can_shoot_pistol:
-				if can_combo:
-					pistol_combos += 1
-					apply_recoil(get_global_mouse_position(), pistol_strength * (1 + minf((float(pistol_combos)/10), 0.5)), false)
-					label.text = "COMBO X" + str(pistol_combos)
-					var label_size_tween = create_tween()
-					label.scale = Vector2(4,4)
-					label_size_tween.set_trans(Tween.TRANS_BOUNCE)
-					label_size_tween.set_ease(Tween.EASE_OUT)
-					label_size_tween.tween_property(label, "scale", Vector2(1,1), 0.5)
-					label.rotation = deg_to_rad(randf_range(-10,10))
-				else:
-					apply_recoil(get_global_mouse_position(), pistol_strength, false)
+			if Input.is_action_just_pressed("shoot"):
+				if not can_shoot_pistol and not gun_spinning:
+					pistol_combos = 0
+					label.text = ""
+				if can_shoot_pistol:
+					if can_combo and not spin_combo_timer.time_left > 0 and not pistol_cooldown.time_left > 0:
+						pistol_combos += 1
+						apply_recoil(get_global_mouse_position(), pistol_strength * (1 + minf((float(pistol_combos)/15), 0.35)), false)
+						label.text = "COMBO X" + str(pistol_combos)
+						var label_size_tween = create_tween()
+						label.scale = Vector2(4,4)
+						label_size_tween.set_trans(Tween.TRANS_BOUNCE)
+						label_size_tween.set_ease(Tween.EASE_OUT)
+						label_size_tween.tween_property(label, "scale", Vector2(1,1), 0.5)
+						label.rotation = deg_to_rad(randf_range(-10,10))
+					else:
+						apply_recoil(get_global_mouse_position(), pistol_strength, false)
+						if not gun_spinning:
+							pistol_combos = 0
+							label.text = ""
 					if not gun_spinning:
-						pistol_combos = 0
-						label.text = ""
-				if not gun_spinning:
-					var tween = create_tween()
-					tween.set_trans(tween.TRANS_BACK)
-					tween.set_ease(Tween.EASE_OUT)
-					tween.tween_property(texture_rect, "rotation", deg_to_rad(360), 0.7).as_relative()
-				shoot()
-				print(pistol_combos)
+						var tween = create_tween()
+						tween.set_trans(tween.TRANS_BACK)
+						tween.set_ease(Tween.EASE_OUT)
+						tween.tween_property(texture_rect, "rotation", deg_to_rad(360), 0.7).as_relative()
+					shoot()
+					print(pistol_combos)
 			if Input.is_action_pressed("alt shoot") and pistol_combos > 0:
 				alt_shoot()
 			else:
@@ -229,12 +242,13 @@ func _physics_process(delta: float) -> void:
 				spin_combo_timer.stop()
 			if Input.is_action_just_released("alt shoot"):
 				texture_rect.rotation = 0
+				pistol_combos -= 1
 		if gun_equipped == 2:
 			if not is_grappling:
 				if Input.is_action_just_pressed("shoot") and can_shoot_shotgun:
 					shoot()
 					apply_recoil(get_global_mouse_position(), shotgun_power, false)
-				if Input.is_action_pressed("alt shoot") and can_shoot_shotgun:
+				if Input.is_action_pressed("alt shoot"):
 					progress_bar.visible = true
 					print(charge_strength)
 					charge_strength = charge_strength + (delta * charge_rate)
@@ -253,8 +267,9 @@ func _physics_process(delta: float) -> void:
 					alt_shoot()
 
 	
-	if was_on_floor && is_on_floor(): #coyote time has to be called after move and slide for the was_on_floor to work
+	if was_on_floor && not on_floor: #coyote time has to be called after move and slide for the was_on_floor to work
 		coyote_timer.start()
+	was_on_floor = on_floor
 	
 	velocity = velocity + (pistol_force + shotgun_force + rocket_force + explosion_force)
 	
@@ -319,38 +334,38 @@ func _physics_process(delta: float) -> void:
 	if is_grappling and active_grapple_line != null:
 		active_grapple_line.set_point_position(0, global_position)
 	
-	if Input.is_action_just_pressed("pistol"):
-		gun_equipped = 1
-	if Input.is_action_just_pressed("shotgun"):
-		gun_equipped = 2
-	if Input.is_action_just_pressed("rocket launcher"):
-		gun_equipped = 3
+	#if Input.is_action_just_pressed("pistol"):
+	#	gun_equipped = 1
+	#if Input.is_action_just_pressed("shotgun"):
+	#	gun_equipped = 2
+	#if Input.is_action_just_pressed("rocket launcher"):
+	#	gun_equipped = 3
 	
-	if Input.is_action_just_pressed("cycle weapons right"):
-		gun_equipped = wrapi(gun_equipped + 1, 1, 4)
-		print(gun_equipped)
-	if Input.is_action_just_pressed("cycle weapons left"):
-		gun_equipped = wrapi(gun_equipped - 1, 1, 4)
-		print(gun_equipped)
+	#if Input.is_action_just_pressed("cycle weapons right"):
+	#	gun_equipped = wrapi(gun_equipped + 1, 1, 4)
+	#	print(gun_equipped)
+	#if Input.is_action_just_pressed("cycle weapons left"):
+	#	gun_equipped = wrapi(gun_equipped - 1, 1, 4)
+	#	print(gun_equipped)
 	
 	if (gun_equipped != 2 or (gun_equipped == 2 and not Input.is_action_pressed("alt shoot"))) and charge_strength != 100:
 		charge_strength -= (charge_rate * 0.01)
 		print(charge_strength)
 	
-	if not GameManager.intro_sequence:
-		match gun_equipped:
-			1:
-				texture_rect.visible = true
-				texture_rect_2.visible = false
-				texture_rect_3.visible = false
-			2:
-				texture_rect.visible = false
-				texture_rect_2.visible = true
-				texture_rect_3.visible = false
-			3:
-				texture_rect.visible = false
-				texture_rect_2.visible = false
-				texture_rect_3.visible = true
+	#if not GameManager.intro_sequence:
+	#	match gun_equipped:
+	#		1:
+	#			texture_rect.visible = true
+	#			texture_rect_2.visible = false
+	#			texture_rect_3.visible = false
+	#		2:
+	#			texture_rect.visible = false
+	#			texture_rect_2.visible = true
+	#			texture_rect_3.visible = false
+	#		3:
+	#			texture_rect.visible = false
+	#			texture_rect_2.visible = false
+	#			texture_rect_3.visible = true
 	
 	progress_bar.value = charge_strength
 	
@@ -370,31 +385,35 @@ func shoot():
 			bullet_instance.global_position = global_position
 			bullet_instance.add_collision_exception_with(self)
 			get_parent().add_child(bullet_instance)
-			audio_stream_player.stream = preload("res://sprites/flash/freesound_community-single-pistol-gunshot-3-101923.mp3")
+			audio_stream_player.stream = pistol_sound
+			audio_stream_player.volume_db = GameManager.sfx_volume
 			audio_stream_player.playing = true
 			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 			pistol_shot = true
 			shotgun_shot = false
 			rocket_shot = false
 			exploded = false
+			print(shot_in_air)
 		2:
 			
 			can_shoot_shotgun = false
 			print("shoot shotgun")
+			print(velocity.y > 0)
 			if not is_on_floor():
 				shot_in_air = true
 			var shotgun_shell_instance = shotgun_shell.instantiate()
 			shotgun_shell_instance.rotation = get_angle_to(get_global_mouse_position())
 			shotgun_shell_instance.global_position = global_position
 			get_parent().add_child(shotgun_shell_instance)
-			shotgun_power = (shotgun_air_floor + shotgun_shell_instance.fire() * (1 - shotgun_air_floor)) * shotgun_strength
+			shotgun_power = (shotgun_air_floor + shotgun_shell_instance.fire(velocity.y > 0) * (1 - shotgun_air_floor)) * shotgun_strength
 			print("shotgun power: " + str(shotgun_power))
 			print("charge power: " + str(charge_strength/100))
 			shotgun_power *= (charge_strength/100)
 			charge_strength = 100
 			progress_bar.visible = false
 			print("shotgun power boosted: " + str(shotgun_power))
-			audio_stream_player.stream = preload("res://sprites/flash/freesound_community-single-pistol-gunshot-33-37187.mp3")
+			audio_stream_player.volume_db = GameManager.sfx_volume
+			audio_stream_player.stream = shotgun_sound
 			audio_stream_player.playing = true
 			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 			if shotgun_shell_instance.cooldown_check():
@@ -419,7 +438,8 @@ func shoot():
 			rocket_instance.add_collision_exception_with(rocket_instance)
 			rocket_instance.add_collision_exception_with(self)
 			get_parent().add_child(rocket_instance)
-			audio_stream_player.stream = preload("res://sprites/flash/dragon-studio-gunshot-511311.mp3")
+			audio_stream_player.volume_db = GameManager.sfx_volume
+			audio_stream_player.stream = rocket_sound
 			audio_stream_player.playing = true
 			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 			rocket_shot = true
@@ -436,7 +456,7 @@ func alt_shoot():
 		2:
 			can_shoot_shotgun = false
 			print("shoot shotgun")
-			if not is_on_floor():
+			if not is_on_floor:
 				shot_in_air = true
 			var shotgun_shell_instance = shotgun_shell.instantiate()
 			shotgun_shell_instance.rotation = get_angle_to(get_global_mouse_position())
@@ -448,7 +468,7 @@ func alt_shoot():
 			shotgun_power *= (charge_strength/100)
 			print("shotgun power boosted: " + str(shotgun_power))
 			audio_stream_player.pitch_scale = randf_range(0.5, 0.75)
-			audio_stream_player.stream = preload("res://sprites/flash/freesound_community-single-pistol-gunshot-33-37187.mp3")
+			audio_stream_player.stream = shotgun_sound
 			audio_stream_player.playing = true
 			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 			if shotgun_shell_instance.cooldown_check():

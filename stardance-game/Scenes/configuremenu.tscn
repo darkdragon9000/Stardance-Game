@@ -1,0 +1,147 @@
+[gd_scene format=3 uid="uid://dp0q8x1g77h67"]
+
+[ext_resource type="Texture2D" uid="uid://ceqy7jtrqy1l1" path="res://sprites/9slice.png" id="1_6sdg4"]
+[ext_resource type="Script" uid="uid://c0w651op7jyyh" path="res://Scenes/configuremenu.gd" id="1_aeaei"]
+[ext_resource type="FontFile" uid="uid://bg1kaq7d32h0b" path="res://sprites/lightning3/Sprintura Demo.otf" id="2_aeaei"]
+[ext_resource type="Texture2D" uid="uid://d2qc42gwvyrtx" path="res://sprites/GAP_EasyExplosions_Textures/Untitled drawing (45).png" id="3_c17ur"]
+[ext_resource type="Texture2D" uid="uid://bq0fitt17umcm" path="res://sprites/GAP_EasyExplosions_Textures/Untitled drawing (44).png" id="4_d10gc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eb3qt"]
+bg_color = Color(0.34117648, 0, 0, 1)
+expand_margin_top = 5.0
+expand_margin_bottom = 5.0
+
+[node name="configuremenu" type="CanvasLayer" unique_id=1009197410]
+process_mode = 3
+layer = 13
+script = ExtResource("1_aeaei")
+
+[node name="9PatchRect" type="NinePatchRect" parent="." unique_id=1335361201]
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.15
+anchor_right = 0.85
+anchor_bottom = 0.85
+texture = ExtResource("1_6sdg4")
+region_rect = Rect2(249.99997, 177.6728, 460.22543, 364.16827)
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="9PatchRect" unique_id=1691649340]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.05
+anchor_right = 0.85
+anchor_bottom = 0.25
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_aeaei")
+theme_override_font_sizes/font_size = 96
+text = "_CONFIGURE()"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="9PatchRect" unique_id=1955175956]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.25
+anchor_right = 0.85
+anchor_bottom = 0.3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_aeaei")
+theme_override_font_sizes/font_size = 48
+text = "music volume"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="9PatchRect" unique_id=1704317058]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.38
+anchor_right = 0.85
+anchor_bottom = 0.4
+theme_override_icons/grabber = ExtResource("3_c17ur")
+theme_override_icons/grabber_highlight = ExtResource("4_d10gc")
+theme_override_styles/slider = SubResource("StyleBoxFlat_eb3qt")
+value = 100.0
+
+[node name="Label3" type="Label" parent="9PatchRect" unique_id=1429288080]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.5
+anchor_right = 0.85
+anchor_bottom = 0.5
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_aeaei")
+theme_override_font_sizes/font_size = 48
+text = "sfx volume"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSlider2" type="HSlider" parent="9PatchRect" unique_id=1992174914]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.62
+anchor_right = 0.85
+anchor_bottom = 0.65
+theme_override_icons/grabber = ExtResource("3_c17ur")
+theme_override_icons/grabber_highlight = ExtResource("4_d10gc")
+theme_override_styles/slider = SubResource("StyleBoxFlat_eb3qt")
+value = 100.0
+
+[node name="Button" type="Button" parent="9PatchRect" unique_id=23867663]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.75
+anchor_right = 0.7
+anchor_bottom = 0.9
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="9PatchRect/Button" unique_id=2097778356]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 362.94556
+offset_bottom = 78.60004
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_6sdg4")
+region_rect = Rect2(249.99997, 177.6728, 460.22543, 364.16827)
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+metadata/_edit_use_anchors_ = true
+
+[node name="Label2" type="Label" parent="9PatchRect/Button/NinePatchRect" unique_id=386935172]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.25
+anchor_right = 0.85
+anchor_bottom = 0.3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_aeaei")
+theme_override_font_sizes/font_size = 100
+text = "BACK"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="9PatchRect/Button" to="." method="_on_button_pressed"]

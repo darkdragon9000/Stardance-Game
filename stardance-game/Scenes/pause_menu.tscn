@@ -1,0 +1,167 @@
+[gd_scene format=3 uid="uid://7ntkt4dkt8mg"]
+
+[ext_resource type="Texture2D" uid="uid://bsxii4nblqh36" path="res://sprites/pause thing.png" id="1_1och7"]
+[ext_resource type="Script" uid="uid://bh354737mwfu" path="res://Scenes/pause_menu.gd" id="1_bpi0q"]
+[ext_resource type="FontFile" uid="uid://bg1kaq7d32h0b" path="res://sprites/lightning3/Sprintura Demo.otf" id="2_bpi0q"]
+[ext_resource type="Texture2D" uid="uid://ceqy7jtrqy1l1" path="res://sprites/9slice.png" id="3_vmyb1"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1671321415]
+process_mode = 3
+layer = 9
+script = ExtResource("1_bpi0q")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1435957967]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("1_1och7")
+
+[node name="Label" type="Label" parent="TextureRect" unique_id=719388513]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 50.0
+offset_right = 583.0
+offset_bottom = 167.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_bpi0q")
+theme_override_font_sizes/font_size = 96
+text = "PAUSEd"
+
+[node name="Button" type="Button" parent="." unique_id=519321758]
+offset_top = 188.0
+offset_right = 646.2
+offset_bottom = 360.0
+flat = true
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Button" unique_id=574165684]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.017929424
+anchor_top = -1.1599535
+anchor_right = 1.035626
+anchor_bottom = -1.0658606
+offset_left = -76.67783
+offset_top = 199.512
+offset_right = 120.75692
+offset_bottom = 398.328
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_vmyb1")
+region_rect = Rect2(249.99997, 177.6728, 460.22543, 364.16827)
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button/NinePatchRect" unique_id=1888218117]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.22600001
+anchor_top = 0.319
+anchor_right = 1.008
+anchor_bottom = 0.90400004
+offset_left = -33.13109
+offset_top = 0.16500854
+offset_right = -33.329834
+offset_bottom = 0.16500854
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_bpi0q")
+theme_override_font_sizes/font_size = 70
+text = "_resume()"
+
+[node name="Button2" type="Button" parent="." unique_id=1820740780]
+anchors_preset = -1
+anchor_top = 0.38200003
+anchor_right = 0.252
+anchor_bottom = 0.54200006
+offset_top = -4.560028
+offset_right = 100.16
+offset_bottom = -5.3600464
+flat = true
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="Button2" unique_id=105936924]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.14529371
+anchor_top = -1.2378606
+anchor_right = 0.87756824
+anchor_bottom = -1.1437675
+offset_left = 0.32216665
+offset_top = 212.912
+offset_right = 197.75691
+offset_bottom = 411.728
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_vmyb1")
+region_rect = Rect2(249.99997, 177.6728, 460.22543, 364.16827)
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button2/NinePatchRect2" unique_id=661102162]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.23
+anchor_top = 0.40600002
+anchor_right = 1.008
+anchor_bottom = 1.0
+offset_left = 0.075027466
+offset_top = 0.049995422
+offset_right = 2.7662964
+offset_bottom = -1.75
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_bpi0q")
+theme_override_font_sizes/font_size = 50
+text = "_configure()"
+
+[node name="Button3" type="Button" parent="." unique_id=1444381540]
+offset_top = 638.0
+offset_right = 484.0
+offset_bottom = 810.0
+flat = true
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="Button3" unique_id=274867639]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.1466942
+anchor_right = 1.0366735
+anchor_bottom = 1.0
+offset_right = 120.99994
+offset_bottom = 42.999924
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_vmyb1")
+region_rect = Rect2(249.99997, 177.6728, 460.22543, 364.16827)
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button3/NinePatchRect3" unique_id=1819464359]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.223
+anchor_top = 0.4
+anchor_right = 1.005
+anchor_bottom = 0.9850001
+offset_left = -2.206253
+offset_top = -0.99998474
+offset_right = -2.3162231
+offset_bottom = -1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_bpi0q")
+theme_override_font_sizes/font_size = 50
+text = "_shut_down()"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="Button3" to="." method="_on_button_3_pressed"]

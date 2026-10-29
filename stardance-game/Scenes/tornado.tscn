@@ -34,7 +34,7 @@ repeat_times = 2
 script = ExtResource("1_ijm4g")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=491714789]
-position = Vector2(509, 280)
+position = Vector2(960, 542)
 amount = 12
 texture = ExtResource("2_lw5ai")
 preprocess = 0.8
