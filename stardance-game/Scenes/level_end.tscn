@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://crjp8r3qlh74u"]
+
+[ext_resource type="Script" uid="uid://bpnxu3wdl2ow3" path="res://area_2d.gd" id="1_0xttq"]
+[ext_resource type="Shader" uid="uid://bx54asfosyskl" path="res://glitch_fx.gdshader" id="2_gyu8x"]
+[ext_resource type="Texture2D" uid="uid://xhb5aij56qgh" path="res://sprites/GAP_EasyExplosions_Textures/level end.png" id="3_s7we8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6xfj2"]
+size = Vector2(71, 166)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fpn1k"]
+shader = ExtResource("2_gyu8x")
+shader_parameter/intensity = 1.0
+shader_parameter/bar_count = 16.0
+shader_parameter/bar_chance = 0.25
+shader_parameter/bar_displace = 0.0250000011875
+shader_parameter/jitter = 0.006
+shader_parameter/steps_per_second = 12.0
+shader_parameter/burst_rate = 2.0
+shader_parameter/burst_chance = 0.5
+
+[node name="Level_end" type="Area2D" unique_id=1355466894]
+script = ExtResource("1_0xttq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=306521101]
+position = Vector2(-12.5, 20)
+shape = SubResource("RectangleShape2D_6xfj2")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1330776471]
+material = SubResource("ShaderMaterial_fpn1k")
+position = Vector2(1.5258789e-05, 1.5258789e-05)
+scale = Vector2(0.58194447, 0.58194447)
+texture = ExtResource("3_s7we8")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

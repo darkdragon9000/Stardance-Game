@@ -7,8 +7,10 @@ extends Area2D
 @onready var smoke: GPUParticles2D = $Node2D/Smoke
 @onready var sparks: GPUParticles2D = $Node2D/Sparks
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 var explosion_strength = 160
 func _ready() -> void:
+	audio_stream_player.volume_db = GameManager.sfx_volume
 	despawn_timer.start()
 	add_to_group("explosions")
 	sparks.emitting = true

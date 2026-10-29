@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://kpfmx2qr3mv7"]
+
+[ext_resource type="Script" uid="uid://bma1qbvbknwlf" path="res://level_text.gd" id="1_lvc00"]
+[ext_resource type="FontFile" uid="uid://bg1kaq7d32h0b" path="res://sprites/lightning3/Sprintura Demo.otf" id="2_ih2ey"]
+
+[node name="LevelText" type="CanvasLayer" unique_id=2017035083]
+layer = 20
+script = ExtResource("1_lvc00")
+
+[node name="Label" type="Label" parent="." unique_id=331142711]
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.05
+anchor_right = 0.85
+anchor_bottom = 0.25
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_ih2ey")
+theme_override_font_sizes/font_size = 96
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -33,14 +33,26 @@ var click_tooltip_alpha = 0
 var bg_music : AudioStreamPlayer
 var world_environment : WorldEnvironment
 var intro_sequence := false
+var bass_drop = preload("res://Songs/dragon-studio-drop-the-bass-463664.mp3")
+var texture_rect : TextureRect
+var texture_rect_2 : TextureRect
+var texture_rect_3 : TextureRect
+var music_volume := 0.0
+var sfx_volume := 0.0
+var level : int
+var level_text = preload("res://level_text.gd")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if get_tree().current_scene.name != "MainMenu":
+		texture_rect = get_node("/root/" + str(get_tree().get_first_node_in_group("Levels").name) + "/CanvasLayer/Control/TextureRect")
+		texture_rect_2 = get_node("/root/" + str(get_tree().get_first_node_in_group("Levels").name) + "/CanvasLayer/Control/TextureRect2")
+		texture_rect_3 = get_node("/root/" + str(get_tree().get_first_node_in_group("Levels").name) + "/CanvasLayer/Control/TextureRect3")
 	print(get_tree().current_scene.name)
+	world_environment = get_tree().get_first_node_in_group("world_environment")
 	if get_tree().current_scene.name == "level1":
 		print("click gotten")
 		click_tooltip = get_tree().get_first_node_in_group("tooltips")
-		world_environment = get_tree().get_first_node_in_group("world_environment")
 		world_environment.environment.adjustment_brightness = 0.0
 		var intro_tween = create_tween()
 		intro_tween.set_ease(Tween.EASE_IN)
@@ -52,8 +64,15 @@ func _ready() -> void:
 		get_node("/root/level1/CanvasLayer/Control/TextureRect2").visible = false
 		pistol_unlocked = false
 		shotgun_unlocked = false
+	if get_tree().current_scene.name == "DebugLvl":
+		pistol_unlocked = true
+		shotgun_unlocked = true
+		rocket_unlocked = true
+		mine_unlocked = true
+		grapple_unlocked = true
 	if get_tree().current_scene.name == "MainMenu":
 		do_spawn = false
+		spawning = false
 	if not do_spawn:
 		spawning = false
 	get_tree().paused = false
@@ -65,6 +84,12 @@ func _ready() -> void:
 		"level1":
 			bg_music.stream = preload("res://Songs/VECTORIZE_BOOT_SEQUENCE().mp3")
 			bg_music.volume_db = -20
+		"DebugLvl":
+			bg_music.stream = preload("res://Songs/VECTORIZE_BOOT_SEQUENCE().mp3")
+			bg_music.volume_db = music_volume
+		"Level2":
+			bg_music.stream = preload("res://Songs/VECTORIZE_SURGE.mp3")
+			bg_music.volume_db = music_volume
 	add_child(bg_music)
 	bg_music.play()
 	var vol_tween = create_tween()
@@ -82,11 +107,17 @@ func _ready() -> void:
 	canvas_layer = CanvasLayer.new()
 	add_child(canvas_layer)
 	print(spawn_pos)
+	print(get_node("/root/" + str(get_tree().get_first_node_in_group("Levels").name) + "/CanvasLayer/TextureRect").visible)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	reloaded = false
+	print(spawning)
+	if reloaded:
+		texture_rect = get_node("/root/" + str(get_tree().get_first_node_in_group("Levels").name) + "/CanvasLayer/Control/TextureRect")
+		texture_rect_2 = get_node("/root/" + str(get_tree().get_first_node_in_group("Levels").name) + "/CanvasLayer/Control/TextureRect2")
+		texture_rect_3 = get_node("/root/" + str(get_tree().get_first_node_in_group("Levels").name) + "/CanvasLayer/Control/TextureRect3")
+		reloaded = false
 	if hitstopping:
 		player.camera_2d.position = camera_pause_pos
 	if zooming_in:
@@ -122,7 +153,7 @@ func _process(delta: float) -> void:
 		#	click_tooltip.modulate = Color(1,1,1,click_tooltip_alpha)
 		#	click_tooltip_alpha += 0.01
 		if bg_music.stream.resource_path == "res://Songs/VECTORIZE_BOOT_SEQUENCE().mp3":
-			bg_music.stream = preload("res://Songs/dragon-studio-drop-the-bass-463664.mp3")
+			bg_music.stream = bass_drop
 			bg_music.play()
 			screen_shake(3,0.15)
 		if Input.is_action_just_pressed("shoot"):
@@ -152,6 +183,7 @@ func _process(delta: float) -> void:
 			get_node("/root/level1/CanvasLayer/Control/TextureRect").visible = true
 			intro_sequence = false
 			player.pistol_strength = 130
+			show_level_text()
 		#	click_tooltip.modulate = Color(1,1,1,0)
 
 func _input(event: InputEvent) -> void:
@@ -159,6 +191,18 @@ func _input(event: InputEvent) -> void:
 		if event.is_pressed() and not event.is_echo():
 			popup_rep = 76
 			dying = false
+	if event.is_action_pressed("pistol"):
+		set_gun(1)
+	if event.is_action_pressed("shotgun"):
+		set_gun(2)
+	if event.is_action_pressed("rocket launcher"):
+		set_gun(3)
+	if event.is_action_pressed("cycle weapons right"):
+		set_gun(wrapi(player.gun_equipped + 1, 1, 4))
+	if event.is_action_pressed("cycle weapons left"):
+		set_gun(wrapi(player.gun_equipped - 1, 1, 4))
+	if event.is_action_pressed("pause") and not get_tree().paused:
+		PauseMenu.pause()
 
 func pistol_unlock() -> void:
 	var tween = create_tween()
@@ -218,3 +262,13 @@ func die() -> void:
 	popup_timer.start()
 	dying = true
 	bg_music.stream_paused = true
+
+func set_gun(gun: int) -> void:
+	player.gun_equipped = gun
+	texture_rect.visible = gun == 1
+	texture_rect_2.visible = gun == 2
+	texture_rect_3.visible = gun == 3
+
+func show_level_text() -> void:
+	var level_text_instance = level_text.new()
+	get_parent().add_child(level_text_instance)

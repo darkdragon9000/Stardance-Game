@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var range = 200
+@export var range = 360
 @export var falloff_speed = 1.03
 @onready var rays : Array = [$RayCast2D, $RayCast2D2, $RayCast2D3, $RayCast2D4, $RayCast2D5, $RayCast2D6, $RayCast2D7]
 @onready var gpu_particles_2d: GPUParticles2D = $GPUParticles2D
@@ -16,18 +16,24 @@ func _ready():
 		ray.add_exception(GameManager.player)   # never hit the player, no matter who spawns the shell
 
 
-func fire():
+func fire(falling: bool):
+	print(falling)
 	var total: float = 0.0
 	for ray in rays:
 		ray.force_raycast_update()
 		if ray.is_colliding():
 			var c = ray.get_collider()
 			var hit_distance = ray.get_collision_point().distance_to(global_position)
-			var normalized = hit_distance / range
+			print(hit_distance)
+			var normalized = clamp(hit_distance, hit_distance, 360) / range
+			print(normalized)
 			var falloff = pow(1.0 - normalized, falloff_speed)
 			total += falloff
 			if c.is_in_group("obstacles"):
-				total += 1.5   # saw bonus: closer saw = bigger push
+				if falling:
+					total += 2.5
+				else:
+					total += 1.5   # saw bonus: closer saw = bigger push
 				print("initial: " + str(total))
 				print("hit")
 				if can_hitstop:
@@ -38,7 +44,10 @@ func fire():
 	can_hitstop = true
 	total = total / rays.size()
 	print("divide: " + str(total))
-	total = clamp(total, -100, 1.2)
+	if falling:
+		total = clamp(total, -100, 1.5)
+	else:
+		total = clamp(total, -100, 1.2)
 	print("clamp: " + str(total))
 	gpu_particles_2d.emitting = true
 	smoke.emitting = true
