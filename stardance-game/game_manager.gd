@@ -20,10 +20,10 @@ var particles_up := false
 var do_spawn := true
 var dying := false
 var checkpoint_reached := false
-var pistol_unlocked := false
-var shotgun_unlocked := false
-var rocket_unlocked := false
-var mine_unlocked := false
+var pistol_unlocked := true
+var shotgun_unlocked := true
+var rocket_unlocked := true
+var mine_unlocked := true
 var grapple_unlocked := true
 var first_play := false
 var platform : StaticBody2D
