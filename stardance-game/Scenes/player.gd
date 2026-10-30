@@ -68,6 +68,7 @@ var gun_spinning := false
 var pistol_sound = preload("res://sprites/flash/freesound_community-single-pistol-gunshot-3-101923.mp3")
 var shotgun_sound = preload("res://sprites/flash/freesound_community-single-pistol-gunshot-33-37187.mp3")
 var rocket_sound = preload("res://sprites/flash/dragon-studio-gunshot-511311.mp3")
+var mine_sound = preload("res://Songs/freesound_community-short-beep-tone-47916.mp3")
 
 @onready var area_2d: Area2D = $Area2D
 
@@ -203,7 +204,6 @@ func _physics_process(delta: float) -> void:
 		SlamParticles.emitting = true
 		was_in_air = false
 	
-	print(spin_combo_timer.time_left)
 	
 	if not spawning:
 		move_and_slide()
@@ -386,7 +386,7 @@ func shoot():
 			bullet_instance.add_collision_exception_with(self)
 			get_parent().add_child(bullet_instance)
 			audio_stream_player.stream = pistol_sound
-			audio_stream_player.volume_db = GameManager.sfx_volume
+			audio_stream_player.volume_db = GameManager.sfx_volume - 5.0
 			audio_stream_player.playing = true
 			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 			pistol_shot = true
@@ -412,7 +412,7 @@ func shoot():
 			charge_strength = 100
 			progress_bar.visible = false
 			print("shotgun power boosted: " + str(shotgun_power))
-			audio_stream_player.volume_db = GameManager.sfx_volume
+			audio_stream_player.volume_db = GameManager.sfx_volume - 5.0
 			audio_stream_player.stream = shotgun_sound
 			audio_stream_player.playing = true
 			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
@@ -438,7 +438,7 @@ func shoot():
 			rocket_instance.add_collision_exception_with(rocket_instance)
 			rocket_instance.add_collision_exception_with(self)
 			get_parent().add_child(rocket_instance)
-			audio_stream_player.volume_db = GameManager.sfx_volume
+			audio_stream_player.volume_db = GameManager.sfx_volume - 5.0
 			audio_stream_player.stream = rocket_sound
 			audio_stream_player.playing = true
 			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
@@ -488,6 +488,10 @@ func alt_shoot():
 			mine_instance.global_position = global_position
 			mine_instance.add_collision_exception_with(self)
 			get_parent().add_child(mine_instance)
+			audio_stream_player.volume_db = GameManager.sfx_volume - 5.0
+			audio_stream_player.stream = mine_sound
+			audio_stream_player.playing = true
+			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 
 func apply_recoil(source_position: Vector2, knockback_strength: float, is_explosion: bool):
 	var force_direction = (global_position - source_position).normalized() #create a vector for the direction of recoil

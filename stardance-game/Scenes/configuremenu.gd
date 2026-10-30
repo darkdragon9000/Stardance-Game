@@ -4,6 +4,7 @@ extends CanvasLayer
 @onready var label_3: Label = $"9PatchRect/Label3"
 @onready var h_slider: HSlider = $"9PatchRect/HSlider"
 @onready var h_slider_2: HSlider = $"9PatchRect/HSlider2"
+@onready var nine_patch_rect: NinePatchRect = $"9PatchRect"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -21,4 +22,17 @@ func _process(delta: float) -> void:
 
 
 func _on_button_pressed() -> void:
+	var t = create_tween()
+	t.set_ease(Tween.EASE_OUT)
+	t.set_trans(Tween.TRANS_QUINT)
+	t.tween_property(nine_patch_rect,"scale", Vector2.ZERO, 0.3)
+	await t.finished
 	visible = false
+
+func appear() -> void:
+	nine_patch_rect.scale = Vector2.ZERO
+	visible = true
+	var t = create_tween()
+	t.set_ease(Tween.EASE_OUT)
+	t.set_trans(Tween.TRANS_EXPO)
+	t.tween_property(nine_patch_rect,"scale", Vector2(1,1), 0.5)

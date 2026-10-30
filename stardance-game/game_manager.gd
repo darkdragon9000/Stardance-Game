@@ -112,7 +112,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	print(spawning)
 	if reloaded:
 		texture_rect = get_node("/root/" + str(get_tree().get_first_node_in_group("Levels").name) + "/CanvasLayer/Control/TextureRect")
 		texture_rect_2 = get_node("/root/" + str(get_tree().get_first_node_in_group("Levels").name) + "/CanvasLayer/Control/TextureRect2")
@@ -224,6 +223,7 @@ func hitstop(time: float) -> void:
 	debug_lvl.get_tree().paused = true
 	HitstopEffect.visible = true
 	HitstopEffect.get_child(1).playing = true
+	print(HitstopEffect.get_child(1).volume_db)
 	hitstop_timer.start()
 
 func _on_hitstop_timer_timeout() -> void:
