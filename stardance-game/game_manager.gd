@@ -41,6 +41,20 @@ var music_volume := 0.0
 var sfx_volume := 0.0
 var level : int
 var level_text = preload("res://level_text.gd")
+var storage_beaten := false
+var power_supply_beaten := false
+var GPU_beaten := false
+var current_level = null
+var pending_intro := false  # NEW: set by the main menu play button, consumed by _on_level_ready
+var vol_tween : Tween  # NEW (volume fix): member variable so the fade can be cancelled
+var click_tip = preload("res://Scenes/click_tip.tscn")
+# NEW (volume fix): kills any running fade before starting a new one
+func _fade_music_to(db: float, time: float) -> void:
+	if vol_tween and vol_tween.is_valid():
+		vol_tween.kill()
+	vol_tween = create_tween()
+	vol_tween.set_trans(Tween.TRANS_LINEAR)
+	vol_tween.tween_property(bg_music, "volume_db", db, time)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -50,20 +64,8 @@ func _ready() -> void:
 		texture_rect_3 = get_node("/root/" + str(get_tree().get_first_node_in_group("Levels").name) + "/CanvasLayer/Control/TextureRect3")
 	print(get_tree().current_scene.name)
 	world_environment = get_tree().get_first_node_in_group("world_environment")
-	if get_tree().current_scene.name == "level1":
-		print("click gotten")
-		click_tooltip = get_tree().get_first_node_in_group("tooltips")
-		world_environment.environment.adjustment_brightness = 0.0
-		var intro_tween = create_tween()
-		intro_tween.set_ease(Tween.EASE_IN)
-		intro_tween.set_trans(Tween.TRANS_QUINT)
-		intro_tween.tween_property(world_environment.environment, "adjustment_brightness", 0.3, 10.0)
-		intro_sequence = true
-		get_node("/root/level1/CanvasLayer/NinePatchRect").visible = false
-		get_node("/root/level1/CanvasLayer/Control/TextureRect").visible = false
-		get_node("/root/level1/CanvasLayer/Control/TextureRect2").visible = false
-		pistol_unlocked = false
-		shotgun_unlocked = false
+	# The whole `if current_scene.name == "level1":` intro block was removed from here.
+	# It now lives in _start_intro(), triggered by the level's signal.
 	if get_tree().current_scene.name == "DebugLvl":
 		pistol_unlocked = true
 		shotgun_unlocked = true
@@ -95,9 +97,7 @@ func _ready() -> void:
 			bg_music.volume_db = music_volume
 	add_child(bg_music)
 	bg_music.play()
-	var vol_tween = create_tween()
-	vol_tween.set_trans(Tween.TRANS_LINEAR)
-	vol_tween.tween_property(bg_music, "volume_db", -5, 5)
+	_fade_music_to(-5, 5)  # CHANGED (volume fix): replaces the three local vol_tween lines
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	hitstop_timer = Timer.new()
 	hitstop_timer.one_shot = true
@@ -110,7 +110,6 @@ func _ready() -> void:
 	canvas_layer = CanvasLayer.new()
 	add_child(canvas_layer)
 	print(spawn_pos)
-	print(get_node("/root/" + str(get_tree().get_first_node_in_group("Levels").name) + "/CanvasLayer/TextureRect").visible)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -151,9 +150,8 @@ func _process(delta: float) -> void:
 				do_spawn = false
 				spawning = false
 	if waiting_for_shot:
-		#while click_tooltip.modulate != Color(1,1,1,1):
-		#	click_tooltip.modulate = Color(1,1,1,click_tooltip_alpha)
-		#	click_tooltip_alpha += 0.01
+		var click_tip_i = click_tip.instantiate()
+		add_child(click_tip)
 		if bg_music.stream.resource_path == "res://Songs/VECTORIZE_BOOT_SEQUENCE().mp3":
 			bg_music.stream = bass_drop
 			bg_music.play()
@@ -185,7 +183,8 @@ func _process(delta: float) -> void:
 			get_node("/root/level1/CanvasLayer/Control/TextureRect").visible = true
 			intro_sequence = false
 			player.pistol_strength = 130
-			show_level_text()
+			var lvl_text_instance = level_text.instantiate()
+			get_tree().get_first_node_in_group("Levels").add_child(lvl_text_instance)
 		#	click_tooltip.modulate = Color(1,1,1,0)
 
 func _input(event: InputEvent) -> void:
@@ -203,7 +202,7 @@ func _input(event: InputEvent) -> void:
 		set_gun(wrapi(player.gun_equipped + 1, 1, 4))
 	if event.is_action_pressed("cycle weapons left"):
 		set_gun(wrapi(player.gun_equipped - 1, 1, 4))
-	if event.is_action_pressed("pause") and not get_tree().paused:
+	if event.is_action_pressed("pause") and not get_tree().paused and not get_tree().current_scene.name == "MainMenu":
 		PauseMenu.pause()
 
 func pistol_unlock() -> void:
@@ -215,6 +214,63 @@ func pistol_unlock() -> void:
 	platform.queue_free()
 	waiting_for_shot = true
 	player.pistol_strength = 180
+
+# CHANGED: decides whether to run the intro, instead of always running it
+func _on_level_ready(level_node) -> void:
+	current_level = level_node
+	print("Level is loaded and referenced safely: ", current_level.name)
+
+	# Refresh references that die with the old scene
+	player = get_tree().get_first_node_in_group("player")  # adjust to your group name
+	world_environment = get_tree().get_first_node_in_group("world_environment")
+	reloaded = true  # makes _process re-grab texture_rect, texture_rect_2, texture_rect_3
+
+	# Death/reload path or debug level: normal spawn carries on untouched
+	if not pending_intro:
+		return
+
+	pending_intro = false
+
+	# Cancel the normal spawn that was already started
+	spawning = false
+	do_spawn = false
+	particles_up = true  # stops the spawn-particles block from firing later
+	player.spawning = false
+	player.animated_sprite_2d.visible = true
+	player.camera_2d.zoom = Vector2(1, 1)
+
+	_start_intro()
+
+# The intro that used to be in _ready()'s level1 branch
+func _start_intro() -> void:
+	intro_sequence = true
+	pistol_unlocked = false
+	shotgun_unlocked = false
+	click_tooltip = get_tree().get_first_node_in_group("tooltips")
+
+	var ui_root := "/root/" + str(current_level.name) + "/CanvasLayer/"
+	get_node(ui_root + "NinePatchRect").visible = false
+	get_node(ui_root + "Control/TextureRect").visible = false
+	get_node(ui_root + "Control/TextureRect2").visible = false
+
+	world_environment.environment.adjustment_brightness = 0.0
+	var intro_tween = create_tween()
+	intro_tween.set_ease(Tween.EASE_IN)
+	intro_tween.set_trans(Tween.TRANS_QUINT)
+	intro_tween.tween_property(world_environment.environment, "adjustment_brightness", 0.3, 10.0)
+
+	get_tree().paused = false
+	popup_rep = 0
+	HitstopEffect.visible = false
+
+	# CHANGED (volume fix): kill the old fade, set volume BEFORE play(), then fade up
+	if vol_tween and vol_tween.is_valid():
+		vol_tween.kill()
+	bg_music.stop()
+	bg_music.stream = preload("res://Songs/VECTORIZE_BOOT_SEQUENCE().mp3")
+	bg_music.volume_db = -20
+	bg_music.play()
+	_fade_music_to(-5, 5)
 
 func hitstop(time: float) -> void:
 	camera_pause_pos = player.camera_2d.position
@@ -271,7 +327,3 @@ func set_gun(gun: int) -> void:
 	texture_rect.visible = gun == 1
 	texture_rect_2.visible = gun == 2
 	texture_rect_3.visible = gun == 3
-
-func show_level_text() -> void:
-	var level_text_instance = level_text.new()
-	get_parent().add_child(level_text_instance)

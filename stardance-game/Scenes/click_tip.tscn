@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bwwkvhycrnj1h"]
+
+[ext_resource type="Script" uid="uid://b6mmnoky4oc4n" path="res://click_tip.gd" id="1_8jwbk"]
+[ext_resource type="Texture2D" uid="uid://dodl8mu781umc" path="res://sprites/lightning3/click icon.png" id="2_404wd"]
+
+[node name="click_tip" type="Node2D" unique_id=414751622]
+script = ExtResource("1_8jwbk")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2067365453]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=1459138165]
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.6
+anchor_right = 0.7
+anchor_bottom = 1.0
+offset_right = -6.1035156e-05
+offset_bottom = 0.07998657
+texture = ExtResource("2_404wd")
+expand_mode = 2
+stretch_mode = 6

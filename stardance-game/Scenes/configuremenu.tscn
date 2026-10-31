@@ -112,6 +112,7 @@ anchor_right = 0.7
 anchor_bottom = 0.9
 offset_right = 8.0
 offset_bottom = 8.0
+flat = true
 
 [node name="NinePatchRect" type="NinePatchRect" parent="9PatchRect/Button" unique_id=2097778356]
 layout_mode = 1

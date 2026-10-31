@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bmaov76ywligj" path="res://Scenes/kill_box.tscn" id="1_4dpyx"]
 [ext_resource type="PackedScene" uid="uid://bq7d1lhlm1m61" path="res://Scenes/storage_bg.tscn" id="1_iixi8"]
+[ext_resource type="Script" uid="uid://b8ijtvc1x5n67" path="res://Scenes/Levels/level_1.gd" id="1_ksf1i"]
 [ext_resource type="PackedScene" uid="uid://ofr3vmp1xo30" path="res://Scenes/player.tscn" id="2_3mqfk"]
 [ext_resource type="Texture2D" uid="uid://34xl3751nktt" path="res://tile 1.png" id="3_3mqfk"]
 [ext_resource type="PackedScene" uid="uid://bdqkw82ukagdm" path="res://Scenes/saw.tscn" id="4_cyadu"]
@@ -653,6 +654,7 @@ size = Vector2(547.9999, 823.0001)
 size = Vector2(1170.5996, 51.719337)
 
 [node name="level1" type="Node2D" unique_id=226719403 groups=["Levels"]]
+script = ExtResource("1_ksf1i")
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=777096316]
 layer = -2
@@ -1083,12 +1085,13 @@ one_way_collision = true
 position = Vector2(54700, -5291)
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=409426402 groups=["spawn_point"]]
-position = Vector2(54027, -4910)
+position = Vector2(1124, 774)
 script = ExtResource("24_pmbdk")
-start_with_pistol = true
-start_with_shotgun = true
-start_with_rocket = true
-start_with_mines = true
+start_with_pistol = false
+start_with_shotgun = false
+start_with_rocket = false
+start_with_mines = false
+start_with_grapple = false
 
 [connection signal="body_entered" from="pistolactivate" to="pistolactivate" method="_on_body_entered"]
 [connection signal="body_entered" from="shotgunactivate" to="shotgunactivate" method="_on_body_entered"]

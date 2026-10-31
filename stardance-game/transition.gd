@@ -3,7 +3,7 @@ extends CanvasLayer
 @onready var rect: ColorRect = $ColorRect
 var mat: ShaderMaterial
 var busy := false
-var level_text = preload("res://level_text.gd")
+var level_text = preload("res://Scenes/level_text.tscn")
 
 func _ready() -> void:
 	layer = 100
@@ -23,6 +23,7 @@ func go_to(path: String) -> void:
 		return
 	busy = true
 
+	
 	GameManager.bg_music.stop()
 	var glitch_sfx := AudioStreamPlayer.new()
 	glitch_sfx.stream = preload("res://Songs/dragon-studio-glitch-sound-effect-450447.mp3")
@@ -58,3 +59,5 @@ func go_to(path: String) -> void:
 	await t.finished
 	busy = false
 	await get_tree().create_timer(2.5).timeout
+	var lvl_text_instance = level_text.instantiate()
+	get_tree().get_first_node_in_group("Levels").add_child(lvl_text_instance)

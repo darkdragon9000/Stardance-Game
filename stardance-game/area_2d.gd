@@ -8,3 +8,10 @@ func _on_body_entered(body: Node2D) -> void:
 		match get_tree().current_scene.name:
 			"level1":
 				Transition.go_to("res://Scenes/level_2.tscn")
+				GameManager.storage_beaten = true
+			"Level2":
+				Transition.go_to("res://Scenes/level_4.tscn")
+				GameManager.power_supply_beaten = true
+			"level4":
+				Transition.go_to("res://Scenes/end_thing.tscn")
+				GameManager.GPU_beaten = true

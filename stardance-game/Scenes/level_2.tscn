@@ -25,6 +25,7 @@
 [ext_resource type="Texture2D" uid="uid://drr21iurakhkx" path="res://sprites/GAP_EasyExplosions_Textures/Flare00.PNG" id="22_4k5rq"]
 [ext_resource type="Texture2D" uid="uid://d2o4ilhvaser8" path="res://sprites/GAP_EasyExplosions_Textures/Flare01.png" id="23_5jii6"]
 [ext_resource type="Script" uid="uid://bteoh211m7k5" path="res://Scenes/grappleactivate.gd" id="24_4k5rq"]
+[ext_resource type="Texture2D" uid="uid://bpi00q1l5fyua" path="res://Scenes/grapple.png" id="25_d42f2"]
 
 [sub_resource type="Environment" id="Environment_smnlx"]
 background_mode = 3
@@ -1166,7 +1167,7 @@ scale = Vector2(0.18114147, 0.18114147)
 texture = ExtResource("12_q0ycs")
 
 [node name="grappleactivate" type="Area2D" parent="." unique_id=2008089754]
-position = Vector2(427, -5000)
+position = Vector2(450, -5097)
 scale = Vector2(2, 2)
 script = ExtResource("24_4k5rq")
 
@@ -1188,18 +1189,14 @@ lifetime = 3.0
 process_material = SubResource("ParticleProcessMaterial_nuasi")
 
 [node name="Sprite2D" type="Sprite2D" parent="grappleactivate" unique_id=1270253271]
-position = Vector2(4.4999995, 9.499877)
-scale = Vector2(0.18114147, 0.18114147)
-texture = ExtResource("12_q0ycs")
+position = Vector2(4.5, -0.43)
+scale = Vector2(0.116, 0.116)
+texture = ExtResource("25_d42f2")
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=1294765752 groups=["spawn_point"]]
 position = Vector2(877, 7)
 scale = Vector2(2, 2)
 script = ExtResource("2_smnlx")
-start_with_pistol = true
-start_with_shotgun = true
-start_with_rocket = true
-start_with_mines = true
 
 [connection signal="body_entered" from="rocketactivate" to="rocketactivate" method="_on_body_entered"]
 [connection signal="body_entered" from="grappleactivate" to="grappleactivate" method="_on_body_entered"]
