@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://dww8hcby2aib5"]
+
+[ext_resource type="Script" uid="uid://lcomcnvb2ls3" path="res://weapon_tip.gd" id="1_6qgjq"]
+[ext_resource type="Texture2D" uid="uid://bt8bfvqu1ijgq" path="res://sprites/weapon tips/pistol tip.png" id="2_pl4ji"]
+
+[node name="weapon tip" type="CanvasLayer" unique_id=516020210]
+script = ExtResource("1_6qgjq")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1044538928]
+anchors_preset = -1
+anchor_left = 0.030000001
+anchor_top = 0.614
+anchor_right = 0.395
+anchor_bottom = 0.98
+offset_left = -0.6000023
+offset_top = -0.11999512
+offset_right = 0.6088867
+offset_bottom = -0.52001953
+texture = ExtResource("2_pl4ji")
+expand_mode = 1
+
+[node name="Button" type="Button" parent="." unique_id=728629743]
+anchors_preset = -1
+anchor_left = 0.03
+anchor_top = 0.614
+anchor_right = 0.395
+anchor_bottom = 0.98
+offset_right = 8.0
+offset_bottom = 8.0
+flat = true
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

@@ -40,7 +40,7 @@ var texture_rect_3 : TextureRect
 var music_volume := 0.0
 var sfx_volume := 0.0
 var level : int
-var level_text = preload("res://level_text.gd")
+var level_text = preload("res://Scenes/level_text.tscn")
 var storage_beaten := false
 var power_supply_beaten := false
 var GPU_beaten := false
@@ -72,6 +72,12 @@ func _ready() -> void:
 		rocket_unlocked = true
 		mine_unlocked = true
 		grapple_unlocked = true
+	else:
+		pistol_unlocked = false
+		shotgun_unlocked = false
+		rocket_unlocked = false
+		mine_unlocked = false
+		grapple_unlocked = false
 	if get_tree().current_scene.name == "MainMenu":
 		do_spawn = false
 		spawning = false
@@ -162,7 +168,7 @@ func _process(delta: float) -> void:
 			var tween = create_tween()
 			var fx_tween = create_tween()
 			print(Engine.time_scale)
-			tween.tween_property(Engine, "time_scale", 1.0, 1.0)
+			tween.tween_property(Engine, "time_scale", 1.0, 0.2)
 			player.pistol_strength = 200
 			player.camera_2d.position_smoothing_speed = 4
 			world_environment.environment.adjustment_brightness = 2.0
@@ -208,8 +214,8 @@ func _input(event: InputEvent) -> void:
 func pistol_unlock() -> void:
 	var tween = create_tween()
 	print(Engine.time_scale)
-	tween.tween_property(Engine, "time_scale", 1.0, 1.0)
-	Engine.time_scale = 0.05
+	Engine.time_scale = 1.0
+	tween.tween_property(Engine, "time_scale", 0.01, 0.2)
 	platform = get_tree().get_first_node_in_group("platform")
 	platform.queue_free()
 	waiting_for_shot = true

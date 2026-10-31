@@ -1194,9 +1194,12 @@ scale = Vector2(0.116, 0.116)
 texture = ExtResource("25_d42f2")
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=1294765752 groups=["spawn_point"]]
-position = Vector2(877, 7)
+position = Vector2(7366, -4349)
 scale = Vector2(2, 2)
 script = ExtResource("2_smnlx")
+start_with_rocket = false
+start_with_mines = false
+start_with_grapple = false
 
 [connection signal="body_entered" from="rocketactivate" to="rocketactivate" method="_on_body_entered"]
 [connection signal="body_entered" from="grappleactivate" to="grappleactivate" method="_on_body_entered"]

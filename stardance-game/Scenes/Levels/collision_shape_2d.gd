@@ -1,5 +1,8 @@
 extends Area2D
 
+var tip_scn = preload("res://Scenes/weapon_tip.tscn")
+var tip = preload("res://sprites/weapon tips/pistol tip.png")
+
 func _ready():
 	pass
 
@@ -9,4 +12,7 @@ func _on_body_entered(body):
 		GameManager.pistol_unlocked = true
 		body.can_shoot_pistol = true
 		GameManager.pistol_unlock()
+		var wt_instance = tip_scn.instantiate()
+		wt_instance.given_texture = tip
+		get_parent().add_child(wt_instance)
 		queue_free()
