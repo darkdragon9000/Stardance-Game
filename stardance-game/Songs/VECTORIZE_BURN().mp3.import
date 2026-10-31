@@ -12,8 +12,8 @@ dest_files=["res://.godot/imported/VECTORIZE_BURN().mp3-9e3c4f0f2f6508685e4e5935
 
 [params]
 
-loop=false
-loop_offset=0
-bpm=0
+loop=true
+loop_offset=0.0
+bpm=0.0
 beat_count=0
 bar_beats=4
