@@ -1,9 +1,8 @@
 [gd_scene format=3 uid="uid://dxy7hg136qell"]
 
 [ext_resource type="Script" uid="uid://crrtxgyxl2dq1" path="res://Scenes/mine.gd" id="1_mygvu"]
-[ext_resource type="Texture2D" uid="uid://b1w0rdkip60ab" path="res://sprites/mine.png" id="2_mygvu"]
+[ext_resource type="Texture2D" uid="uid://dpvjeeahockhu" path="res://sprites/mine_placeholder-removebg-preview.png" id="1_qoe3o"]
 [ext_resource type="AudioStream" uid="uid://b5k3hl6yumitv" path="res://Songs/melbeebelbee-grappling-gun-soundeffect-382148.mp3" id="3_o84ae"]
->>>>>>> origin/main
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mygvu"]
 radius = 37.054016
@@ -26,8 +25,9 @@ move_speed = 150
 shape = SubResource("CircleShape2D_mygvu")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2072858147]
-scale = Vector2(0.16197063, 0.16197062)
-texture = ExtResource("2_mygvu")
+position = Vector2(3, 1)
+scale = Vector2(0.21038252, 0.2103825)
+texture = ExtResource("1_qoe3o")
 
 [node name="ExplodeTimer" type="Timer" parent="." unique_id=1295670895]
 wait_time = 3.0
