@@ -90,6 +90,9 @@ func _ready() -> void:
 		"Level2":
 			bg_music.stream = preload("res://Songs/VECTORIZE_SURGE.mp3")
 			bg_music.volume_db = music_volume
+		"level4":
+			bg_music.stream = preload("res://Songs/VECTORIZE_BURN().mp3")
+			bg_music.volume_db = music_volume
 	add_child(bg_music)
 	bg_music.play()
 	var vol_tween = create_tween()
