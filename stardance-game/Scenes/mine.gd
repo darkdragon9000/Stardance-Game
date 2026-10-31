@@ -3,6 +3,7 @@ extends RigidBody2D
 @export var move_speed : int
 var impulse_applied := false
 var explosion = preload("res://Scenes/explosion.tscn")
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var explode_timer: Timer = $ExplodeTimer
 @onready var area_2d: Area2D = $Area2D
 var hit_by_rocket := false
@@ -19,6 +20,8 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		state.apply_central_impulse(direction * move_speed)
 		impulse_applied = true
 
+func _process(delta: float) -> void:
+	audio_stream_player.volume_db = GameManager.sfx_volume - 2.0
 
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("pistol_bullets"):

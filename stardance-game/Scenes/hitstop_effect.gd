@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 @onready var color_rect: ColorRect = $ColorRect
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -9,4 +10,4 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	audio_stream_player.volume_db = GameManager.sfx_volume

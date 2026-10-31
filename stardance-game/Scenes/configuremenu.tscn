@@ -22,6 +22,7 @@ anchor_left = 0.15
 anchor_top = 0.15
 anchor_right = 0.85
 anchor_bottom = 0.85
+pivot_offset = Vector2(672, 378)
 texture = ExtResource("1_6sdg4")
 region_rect = Rect2(249.99997, 177.6728, 460.22543, 364.16827)
 patch_margin_left = 100

@@ -77,4 +77,4 @@ func _on_button_3_pressed() -> void:
 
 func _on_button_2_pressed() -> void:
 	print("pressed")
-	Configuremenu.visible = true
+	Configuremenu.appear()
