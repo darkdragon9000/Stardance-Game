@@ -26,6 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://d2o4ilhvaser8" path="res://sprites/GAP_EasyExplosions_Textures/Flare01.png" id="23_5jii6"]
 [ext_resource type="Script" uid="uid://bteoh211m7k5" path="res://Scenes/grappleactivate.gd" id="24_4k5rq"]
 [ext_resource type="Texture2D" uid="uid://bpi00q1l5fyua" path="res://Scenes/grapple.png" id="25_d42f2"]
+[ext_resource type="PackedScene" uid="uid://crjp8r3qlh74u" path="res://Scenes/level_end.tscn" id="27_nx14l"]
 
 [sub_resource type="Environment" id="Environment_smnlx"]
 background_mode = 3
@@ -1194,12 +1195,15 @@ scale = Vector2(0.116, 0.116)
 texture = ExtResource("25_d42f2")
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=1294765752 groups=["spawn_point"]]
-position = Vector2(7366, -4349)
+position = Vector2(-8779, -8559)
 scale = Vector2(2, 2)
 script = ExtResource("2_smnlx")
 start_with_rocket = false
 start_with_mines = false
 start_with_grapple = false
+
+[node name="Level_end" parent="." unique_id=1355466894 instance=ExtResource("27_nx14l")]
+position = Vector2(-9056, -8580)
 
 [connection signal="body_entered" from="rocketactivate" to="rocketactivate" method="_on_body_entered"]
 [connection signal="body_entered" from="grappleactivate" to="grappleactivate" method="_on_body_entered"]

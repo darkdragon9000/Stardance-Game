@@ -43,11 +43,15 @@ func go_to(path: String) -> void:
 	GameManager.particles_up = false
 	get_tree().paused = false
 	GameManager.popup_rep = 0
+
 	get_tree().change_scene_to_file(path)
 	await get_tree().create_timer(0.1).timeout
 	GameManager.reloaded = true
-	GameManager.bg_music.stream = preload("res://Songs/VECTORIZE_SURGE.mp3")
-	GameManager.bg_music.volume_db = -20.0
+	match path:
+		"res://Scenes/level_2.tscn":
+			GameManager.bg_music.stream = preload("res://Songs/VECTORIZE_SURGE.mp3")
+		"res://Scenes/Levels/level_4.tscn":
+			GameManager.bg_music.stream = preload("res://Songs/VECTORIZE_BURN() (intro).mp3")
 	GameManager.bg_music.play()
 	
 	# bars clear, glitch settles

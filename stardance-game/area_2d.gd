@@ -5,12 +5,13 @@ extends Area2D
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		body.set_physics_process(false)  # stop the player moving mid-glitch
+		print(get_tree().current_scene.name)
 		match get_tree().current_scene.name:
 			"level1":
 				Transition.go_to("res://Scenes/level_2.tscn")
 				GameManager.storage_beaten = true
 			"Level2":
-				Transition.go_to("res://Scenes/level_4.tscn")
+				Transition.go_to("res://Scenes/Levels/level_4.tscn")
 				GameManager.power_supply_beaten = true
 			"level4":
 				Transition.go_to("res://Scenes/end_thing.tscn")

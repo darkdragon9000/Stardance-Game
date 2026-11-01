@@ -15,3 +15,8 @@ func _on_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/Levels/level_1.tscn")
 	GameManager.pending_intro = true
 	GameManager.do_spawn = true
+
+
+
+func _on_button_2_pressed() -> void:
+	Configuremenu.appear()

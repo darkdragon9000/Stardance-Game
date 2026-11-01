@@ -452,3 +452,4 @@ autoplay = "default"
 frame_progress = 0.1921269
 
 [connection signal="pressed" from="CanvasLayer/Button" to="CanvasLayer/Button" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/Button2" to="CanvasLayer/Button" method="_on_button_2_pressed"]

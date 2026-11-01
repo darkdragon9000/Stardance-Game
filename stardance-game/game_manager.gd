@@ -99,10 +99,11 @@ func _ready() -> void:
 			bg_music.stream = preload("res://Songs/VECTORIZE_SURGE.mp3")
 			bg_music.volume_db = music_volume
 		"level4":
-			bg_music.stream = preload("res://Songs/VECTORIZE_BURN().mp3")
+			bg_music.stream = preload("res://Songs/VECTORIZE_BURN() (intro).mp3")
 			bg_music.volume_db = music_volume
 	add_child(bg_music)
 	bg_music.play()
+	bg_music.connect("finished", _on_bg_music_finished)
 	_fade_music_to(-5, 5)  # CHANGED (volume fix): replaces the three local vol_tween lines
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	hitstop_timer = Timer.new()
@@ -333,3 +334,8 @@ func set_gun(gun: int) -> void:
 	texture_rect.visible = gun == 1
 	texture_rect_2.visible = gun == 2
 	texture_rect_3.visible = gun == 3
+
+func _on_bg_music_finished() -> void:
+	if get_tree().current_scene.name == "level4":
+		bg_music.stream = preload("res://Songs/VECTORIZE_BURN() (drop).mp3")
+		bg_music.play()

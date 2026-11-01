@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://2magv4q374y0"
+path="res://.godot/imported/VECTORIZE_BURN() (intro).mp3-c78ab3515303dfef997a72d1cf216a17.mp3str"
+
+[deps]
+
+source_file="res://Songs/VECTORIZE_BURN() (intro).mp3"
+dest_files=["res://.godot/imported/VECTORIZE_BURN() (intro).mp3-c78ab3515303dfef997a72d1cf216a17.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

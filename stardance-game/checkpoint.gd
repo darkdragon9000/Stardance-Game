@@ -4,6 +4,10 @@ var spawn_particles = preload("res://spawn_particles.tscn")
 @onready var sprite_2d: Sprite2D = $Sprite2D
 var initial_pos := global_position
 var time := 0.0
+
+func _ready() -> void:
+	position = position
+
 func _process(delta: float) -> void:
 	time += delta
 	sprite_2d.global_position.y += sin(rad_to_deg(time/20))/2
